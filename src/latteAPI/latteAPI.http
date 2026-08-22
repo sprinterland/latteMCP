@@ -1,0 +1,49 @@
+@latteAPI_HostAddress = http://localhost:5019
+
+### Health check (no auth)
+GET {{latteAPI_HostAddress}}/health
+Accept: application/json
+
+### Browse the menu (no auth)
+GET {{latteAPI_HostAddress}}/menu
+Accept: application/json
+
+### Login as a waitress — copy the returned token into @token below
+# @name login
+POST {{latteAPI_HostAddress}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "carla",
+  "password": "carla-2026"
+}
+
+### Place an order using the token from the login response above
+@token = {{login.response.body.token}}
+
+POST {{latteAPI_HostAddress}}/orders
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "items": [
+    { "menuItemId": 1, "size": "Medium", "quantity": 2 },
+    { "menuItemId": 3, "size": "Large", "quantity": 1 }
+  ]
+}
+
+### List all orders
+GET {{latteAPI_HostAddress}}/orders
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Look up a single order by id (replace {orderId} with an id from a previous response)
+GET {{latteAPI_HostAddress}}/orders/{orderId}
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Calling an authenticated endpoint without a token fails
+GET {{latteAPI_HostAddress}}/orders
+Accept: application/json
+
+###

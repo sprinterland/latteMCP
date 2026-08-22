@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/latteAPI/latteAPI.csproj" />
+    <Project Path="src/latteMCP/latteMCP.csproj" />
+    <Project Path="src/latteMCPclient/latteMCPclient.csproj" />
+  </Folder>
+</Solution>
