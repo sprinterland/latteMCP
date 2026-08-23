@@ -436,3 +436,15 @@ current year only and linking older ones from the top.
   same review (MCP-tool-vs-OpenAPI scope ambiguity in ADR-0005/`CLAUDE.md`; no shared-conventions
   home for the repeated MCP tool error-message format) were logged as `CR-1787513864547-86c1` and
   `CR-1787513864557-2d8f` but not acted on this round.
+- Framework fix, requested directly by the user: `_frw/_data/change_requests.jsonl`'s `severity`
+  field gained a `moderate` tier (`minor`/`moderate`/`major`, no migration needed since old
+  entries' existing values stay valid), and a new `affected_entities` field (fixed enum:
+  `requirements`/`domain-model`/`architecture`/`architecture-overview`/`interfaces`/`test-spec`/
+  `decisions`/`glossary`/`api-conventions`/`dev-practices`/`process`) records which framework
+  doc-entity type(s) a change request concerns, instead of leaving that to free-text `description`
+  alone. Propagated into `claude-project-framework`'s `docs/framework-maintenance.md` and
+  `_design/domain-model.md`'s lookup copy (commit `1c44c0d`). A Rule 15/16 review found and fixed
+  gaps in the first draft (no value for framework/meta docs, `architecture` ambiguity, a
+  non-distinguishing date-based cutoff) and deferred two lower-priority findings as
+  `CR-1787517912972-b7e1` and `CR-1787517912973-c92a` — see `docs/project/review_log.md`'s entry
+  below.

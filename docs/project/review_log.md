@@ -453,3 +453,51 @@ records the `_frw/_data/change_requests.jsonl` `id`(s) of any enhancement sugges
   acted on — `CR-1787513864547-86c1` (ADR-0005/`CLAUDE.md` doesn't say whether an MCP tool surface
   is exempt from the OpenAPI mandate) and `CR-1787513864557-2d8f` (no shared-conventions home for
   the repeated MCP tool error-message format, unlike the HTTP side's `api-conventions.md`).
+
+## 2026-08-23 23:25 — latteMCP: pending commit (this entry's own commit) / commit `1c44c0d` (claude-project-framework) — Add `moderate` severity tier and `affected_entities` field to `change_requests.jsonl`'s schema
+
+### Project Reviewer
+
+- Command: `/code-review high`, three passes (initial edit, after amending in the enum-gap/date-cutoff/architecture-ambiguity fixes, after amending in two wording fixes)
+- Repo: latteMCP @ HEAD (pending commit); `claude-project-framework` @ `1c44c0d`
+- Module(s): n/a — framework-level (`docs/framework-maintenance.md`'s "Framework activity logs" schema description)
+- Framework version: `26.08.23:23.20.557`
+- Outcome: not clean on first two passes; findings fixed each round; two low-severity findings from
+  the final pass logged as deferred rather than fixed (see Framework Reviewer below).
+
+### Framework Reviewer
+
+- Command: same review as Project Reviewer above (full overlap — this push's entire substance is
+  the schema description itself, in both `docs/framework-maintenance.md` copies).
+- Repo: same as above.
+- Module(s): n/a — framework-level.
+- Framework version: `26.08.23:23.20.557`
+- Outcome: not clean — 5 findings across two passes, 3 fixed, 2 deferred.
+  1. Fidelity: confirmed both `docs/framework-maintenance.md` copies stayed verbatim in sync
+     throughout, and the version/commit pointer line matched the propagation commit at each step —
+     no issue.
+  2. Ambiguity: the initial `affected_entities` enum had no value for framework/meta artifacts
+     (`CLAUDE.md`, `review_log.md`, `CHANGELOG.md`, `PLAN.md`, `00-index.md`, `discovery/*`, the
+     `_data/*.jsonl` schemas themselves) even though most real historical entries concern exactly
+     those — fixed by adding an open-ended `process` catch-all value.
+  3. Ambiguity: `architecture` collided between a module's own `architecture.md` and the top-level
+     `docs/architecture/overview.md` — fixed by splitting into `architecture` and
+     `architecture-overview`.
+  4. Correctness: the "entries logged before 2026-08-23 predate this schema" cutoff was date-level
+     while every existing entry is also dated 2026-08-23, so it couldn't actually distinguish
+     anything — fixed by switching to "identify by field absence" instead of a date.
+  5. Completeness: `_frw/_design/domain-model.md`'s own lookup copy of this schema (kept for
+     `_design/`'s self-sufficiency, per that file's own "if the two disagree, `docs/framework-
+     maintenance.md` wins and this table should be corrected to match" clause) was not updated in
+     the same commit — fixed by syncing it.
+  A second review pass then found the `process` catch-all's own example list read as closed/
+  exhaustive rather than open-ended (missing a module's own `plan.md` and future top-level docs
+  like a hypothetical `docs/security.md`) — fixed by rewording it as an explicit catch-all. A third
+  pass found two more issues, deferred rather than fixed given diminishing returns on a
+  single-field schema change: the new `affected_entities` enum values collide by name with
+  `_frw/_design/`'s own file names (`domain-model`, `architecture`, etc.) with no disambiguation —
+  logged as `CR-1787517912972-b7e1`; and the new `moderate` severity tier has no documented
+  selection criteria, unlike the `affected_entities` enum's careful disambiguation — logged as
+  `CR-1787517912973-c92a`.
+- Enhancement suggestions: `CR-1787517912972-b7e1`, `CR-1787517912973-c92a` (both this round, both
+  deferred rather than acted on).

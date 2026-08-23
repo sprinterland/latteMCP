@@ -55,10 +55,9 @@ still has something permanent to cite if the shared clone/repo is ever unreachab
 machine, no network, repo moved) at review time:
 
 **Bootstrapped from / last synced at [`claude-project-framework`](https://github.com/sprinterland/claude-project-framework)
-commit `ea694ae`, version `26.08.23:20.16.061`** (2026-08-23 — expanded
-`docs/modules/_module-template/requirements.md`'s `Source:` field enum from 4 to 5 values plus
-split-provenance guidance, closing a gap between the template, `CLAUDE.md` Workflow Rule 5, and
-real downstream usage — see `_data/change_requests.jsonl` `CR-1787505166518-a99b`).
+commit `1c44c0d`, version `26.08.23:23.20.557`** (2026-08-23 — added a `moderate` severity tier
+and a fixed-enum `affected_entities` field to `_data/change_requests.jsonl`'s schema, requested
+directly by the user in latteMCP).
 This line records only the current sync as a static fact, same as the rest of this file's
 principle of pointing rather than restating — the full history of every prior sync already lives
 in `docs/project/CHANGELOG.md` and `_frw/_data/update_history.jsonl`, not here.
@@ -106,8 +105,20 @@ record of how the entry got there.
   moment they're noticed during *any* activity in *any* project — planning, coding, discovery,
   review, even the task that's about to fix the very thing being logged (see `CLAUDE.md` Workflow
   Rule 17): `id`, `timestamp`, `project`, `activity` (`planning`/`coding`/`discovery`/`review`/
-  etc.), `description`, `severity` (`minor`/`major`), `status` (`open`/`resolved`), `resolution`,
-  `resolved_at`.
+  etc.), `description`, `severity` (`minor`/`moderate`/`major`), `affected_entities` (array of one
+  or more of `requirements`/`domain-model`/`architecture`/`architecture-overview`/`interfaces`/
+  `test-spec`/`decisions`/`glossary`/`api-conventions`/`dev-practices`/`process` — which framework
+  doc-entity type(s) the change request concerns; `architecture` is a module's own
+  `architecture.md`, `architecture-overview` is the top-level `docs/architecture/overview.md`, and
+  `process` is the open-ended catch-all for a framework/meta artifact not covered by any more
+  specific value above — `CLAUDE.md` itself, `PLAN.md` (root or a module's own
+  `docs/modules/<module>/plan.md` per Workflow Rule 12), `docs/00-index.md`, `docs/discovery/*`,
+  `docs/project/*` (`CHANGELOG.md`, `review_log.md`, `completed_plan.md`), the `_data/*.jsonl`
+  schemas described in this section, or a future cross-cutting top-level doc not yet given its own
+  value — use it for anything the more specific values above don't fit, not only the examples
+  named here), `status` (`open`/`resolved`), `resolution`, `resolved_at`. An entry with no
+  `affected_entities` field predates this schema addition — identify by field absence, not by
+  timestamp, since existing entries and this change share the same calendar date.
 
 `change_requests.jsonl` is written far more often than the other two, and — per `CLAUDE.md` Rule
 17 — from *any* project at *any* time, not only during a deliberate, one-at-a-time maintenance
