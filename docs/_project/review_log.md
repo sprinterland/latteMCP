@@ -114,3 +114,41 @@ records any enhancement suggestions raised (or "none").
 - Enhancement suggestions: none new this round — this round's findings were all fixed rather than
   deferred, since they were direct follow-through on gaps the prior round's own design left
   behind, not new open questions.
+
+## 2026-08-23 17:30 — commit 07e20dc (Move `_frw/` to shared external `claude-project-framework` repo)
+
+### Project Reviewer
+
+- Command: `/code-review high`, one invocation covering the full diff (CLAUDE.md, PLAN.md,
+  docs/framework-maintenance.md, docs/dev-practices.md, docs/_project/CHANGELOG.md, and the
+  removal of `_frw/` from this repo).
+- Repo: latteMCP @ `07e20dc`
+- Module(s): n/a — docs/framework-process change, no module code touched
+- Framework version: `26.08.23:17.26.865` (live-read from the shared external `_frw/` clone at
+  `/Users/sprn/claudework/newFrw/_frw/`, commit `a1c86e4` in `claude-project-framework`)
+- Outcome: one finding, fixed — `docs/dev-practices.md` still described `_frw/` as something
+  local to this repo (bare references to `_frw/docs/dev-practices.md`) without reflecting that
+  it's now the external shared clone/repo described in `docs/framework-maintenance.md`; fixed by
+  clarifying the first mention. A closer pass while fixing it turned up two more of the same
+  class, applied in the same commit: `docs/_project/review_log.md`'s own format description (this
+  file, the paragraph above the entries) still keyed the `_frw/VERSION` fallback to whether "this
+  project has since deleted its own `_frw/`" — reworded to match Rule 15's live-clone-with-fallback
+  wording; and `CLAUDE.md`'s "Reusable Framework Template" section still called the shared location
+  an "external directory" with a "concrete external path," leftover from before
+  `claude-project-framework` existed as an actual GitHub repo, breaking word-for-word fidelity
+  with `_frw/CLAUDE.md.template` (which already said "repo"/"location") — reworded to match.
+
+### Framework Reviewer
+
+- Command: same invocation as Project Reviewer above, re-read through the Rule 16 lens (this push
+  touches `CLAUDE.md` and `docs/framework-maintenance.md`, and the two scopes substantially
+  overlap for a framework-focused change like this one).
+- Repo: latteMCP @ `07e20dc`
+- Module(s): n/a — framework-level
+- Framework version: `26.08.23:17.26.865`
+- Outcome: fidelity check — confirmed `CLAUDE.md`'s "Reusable Framework Template" section and
+  Rules 15/16 are now word-for-word identical to `_frw/CLAUDE.md.template`'s corresponding
+  sections (after the wording fix above); confirmed no file under `_frw/` carries any
+  latteMCP-specific fact. Ambiguity check — none found beyond the dev-practices.md/review_log.md
+  gaps already listed under Project Reviewer above (same review pass, same fixes).
+- Enhancement suggestions: none this round.
