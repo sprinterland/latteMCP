@@ -303,4 +303,43 @@ records the `_frw/_data/change_requests.jsonl` `id`(s) of any enhancement sugges
   `CLAUDE.md` and `CLAUDE.md.template` apart from the one project-specific parenthetical; confirmed
   the append-only "resolved" definition is identical in both repos'
   `docs/framework-maintenance.md`. Ambiguity check — none found.
+
+## 2026-08-23 19:52 — commit range HEAD~1 → HEAD (Add `_design/`; formalize written-plan Maintenance-rule step)
+
+### Project Reviewer
+
+- Command: `/code-review high docs/framework-maintenance.md` (this project's only changed file:
+  the "Bootstrapped from" sync pointer and the new Maintenance-rule step-2 text with its
+  renumbering).
+- Repo: latteMCP @ HEAD; `claude-project-framework` @ `01ae9df`
+- Module(s): n/a — docs/framework-process change, no module code touched
+- Framework version: `26.08.23:19.50.336`
+- Outcome: not clean — 2 findings, both fixed. (1) The "Previous sync" addition left an unclosed
+  parenthetical, nesting the entire prior-sync description inside the new sync's parenthetical —
+  fixed by closing the parenthetical after the new-sync description and dropping the "Previous
+  sync" restatement in favor of a pointer to `CHANGELOG.md`/`update_history.jsonl`, per this same
+  file's own "pointer, not restatement" principle. (2) Grepped the whole repo for stale
+  `step N` cross-references after the renumbering — none found.
+
+### Framework Reviewer
+
+- Command: `/code-review high` scoped to `docs/framework-maintenance.md` (both repos) plus every
+  new file under `claude-project-framework`'s `_design/` and its `README.md` edit — reused as one
+  pass per Rule 16, since this push is entirely framework-focused (full scope overlap with Project
+  Reviewer above, plus the propagated-copy validation Maintenance rule step 5 requires).
+- Repo: latteMCP @ HEAD; `claude-project-framework` @ `01ae9df`
+- Module(s): n/a — framework-level
+- Framework version: `26.08.23:19.50.336`
+- Outcome: not clean — 2 findings in the `_design/` propagation, both fixed before the (still
+  local, unpushed) propagation commit was amended. (1) `_design/domain-model.md`'s "Propagation"
+  glossary entry cited "Maintenance rule steps 3–4" but its definition text matches only step 4 —
+  fixed to cite step 4 alone. (2) `_design/decisions/0008-...md` cited a
+  "`CLAUDE.md.template`'s 'Executing actions with care' guidance" section that doesn't exist
+  anywhere in that file (it conflated the harness's own operating instructions with the template's
+  actual content) — fixed by rewriting the sentence without the false citation. Fidelity check —
+  confirmed `docs/framework-maintenance.md`'s Maintenance-rule text and `_data/` file-tree bullet
+  are word-for-word identical between `latteMCP` and `claude-project-framework` apart from the
+  project-specific "Bootstrapped from" pointer, as expected. Ambiguity check — the 2 findings above
+  are exactly the ambiguity/self-consistency gaps this lens exists to catch.
+- Enhancement suggestions: none this round.
 - Enhancement suggestions: none this round.

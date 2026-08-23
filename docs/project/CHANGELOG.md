@@ -7,6 +7,18 @@ current year only and linking older ones from the top.
 
 ## 2026-08-23
 
+- Added `_design/` to the shared `claude-project-framework` repo: the framework's own design
+  rationale (`requirements.md`, `domain-model.md`, `architecture.md`, framework-level ADRs
+  `FRW-ADR-0001`–`0008` in `decisions/`, an annotated rule-by-rule spec for `CLAUDE.md.template`,
+  an annotated section-by-section spec for `PLAN.md.template`, and a manual verification
+  checklist in `test-spec.md`) — enough, per its own `FRW-REQ-005`, to recreate the bundle from
+  scratch if every template file were lost. Like `_data/`, `_design/` is never copied into a
+  bootstrapped project; `README.md` and `docs/framework-maintenance.md`'s file-tree listings
+  (both repos) were updated to mention it. Also formalized a new Maintenance-rule step 2 requiring
+  a written, user-approved plan before any framework-level change is implemented (`FRW-ADR-0008`),
+  renumbering the rule's later steps (old 2–5 → new 3–6) in both `docs/framework-maintenance.md`
+  copies and fixing every "Maintenance rule step N" cross-reference accordingly. `_frw` synced to
+  commit `01ae9df`, version `26.08.23:19.50.336`.
 - Resolved the ADR-for-framework-changes question flagged (but never actually asked) in
   `review_log.md`'s 2026-08-23 14:42 entry: asked the user directly — no, a framework-level
   process change does **not** get its own ADR; `docs/framework-maintenance.md`,

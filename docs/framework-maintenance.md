@@ -26,6 +26,8 @@ CLAUDE.md.template      — a tech/project-agnostic copy of a project's `CLAUDE.
 PLAN.md.template        — minimal starter plan.md
 _data/                  — `_frw`'s own framework-update notes; never copied into a bootstrapped
                           project (unlike everything else above, which is)
+_design/                — `_frw`'s own design rationale — why the bundle is shaped this way, enough
+                          to recreate it from scratch; like `_data/`, never copied into a project
 docs/                   — mirrors a project's docs/ tree, but every file is a template: process
                           and structure only, no project-specific facts. `modules/` holds one
                           `_module-template/` folder instead of real modules.
@@ -42,9 +44,9 @@ concretely, each `docs/project/review_log.md` entry's Framework Reviewer sub-ent
 `CLAUDE.md` Workflow Rule 16) — can cite a precise, unambiguous point in `_frw`'s history rather
 than a vague "recent."
 
-Bump it (regenerate the timestamp, overwrite the file) as step 3 of the Maintenance rule below,
+Bump it (regenerate the timestamp, overwrite the file) as step 4 of the Maintenance rule below,
 every time `_frw` actually changes — never on an ordinary `docs/`/`CLAUDE.md` change that doesn't
-propagate — and commit the bump locally as part of that step; step 4 below reviews and pushes it.
+propagate — and commit the bump locally as part of that step; step 5 below reviews and pushes it.
 Because `_frw` is a shared external repo rather than a per-project copy, this project's review log
 normally reads its `VERSION` file live from the local clone (kept up to date with `git pull`) at
 review time.
@@ -53,14 +55,14 @@ still has something permanent to cite if the shared clone/repo is ever unreachab
 machine, no network, repo moved) at review time:
 
 **Bootstrapped from / last synced at [`claude-project-framework`](https://github.com/sprinterland/claude-project-framework)
-commit `461bd5e`, version `26.08.23:19.14.972`** (2026-08-23 — added `_data/update_history.jsonl`,
-`_data/push_reviews.jsonl`, and `_data/change_requests.jsonl` (the three append-only logs
-described in "Framework activity logs" below) and the Maintenance rule steps/`CLAUDE.md` Rule 17
-that govern them, then fixed several design gaps a Rule 15/16 review of that same addition found
-— a collision-prone ID scheme, a split review/push step, a few docs that fell out of sync with
-themselves in the same diff, and an unresolvable "resolved" semantics for an append-only log —
-and resolved a long-open governance question: framework-level process changes don't get their
-own ADR (CLAUDE.md Rule 11); see `change_requests.jsonl` for the itemized list).
+commit `01ae9df`, version `26.08.23:19.50.336`** (2026-08-23 — added `_design/`, the framework's
+own design rationale (requirements, domain model, architecture, framework-level ADRs `FRW-ADR-
+0001`–`0008`, and annotated specs for `CLAUDE.md.template`/`PLAN.md.template`), and formalized a
+new Maintenance-rule step requiring a written, user-approved plan before any framework-level
+change is implemented — see `_design/decisions/0008-written-plan-before-framework-changes.md`).
+This line records only the current sync as a static fact, same as the rest of this file's
+principle of pointing rather than restating — the full history of every prior sync already lives
+in `docs/project/CHANGELOG.md` and `_frw/_data/update_history.jsonl`, not here.
 
 ## What's project-specific vs. framework, precisely
 
@@ -88,7 +90,7 @@ original line. A reader reconstructing current state takes, per `id`, the line w
 `timestamp`/`resolved_at`; every earlier line for that `id` stays in the file as the historical
 record of how the entry got there.
 
-- **`update_history.jsonl`** — one record per completed framework update (Maintenance rule step 5
+- **`update_history.jsonl`** — one record per completed framework update (Maintenance rule step 6
   below): `id`, `timestamp`, `project` (which project's need triggered the update), `summary`,
   `questions_asked` (the Rule 2 confirmations made while deciding it — `[]` if none needed),
   `decisions_made` (Rule 4 judgment calls made along the way, with the reasoning — `[]` if none),
@@ -96,7 +98,7 @@ record of how the entry got there.
   entry this summarizes, e.g. `"2026-08-23 — Add _data/ activity logs..."` — a pointer, so the two
   don't need to say the same thing twice), `status` (`completed`).
 - **`push_reviews.jsonl`** — one record per Rule 15/16 review run immediately before pushing
-  `_frw`'s own propagation commit (Maintenance rule step 4 below): `id`, `timestamp`, `project`,
+  `_frw`'s own propagation commit (Maintenance rule step 5 below): `id`, `timestamp`, `project`,
   `frw_commit`, `command`, `scope`, `outcome`, `review_log_ref` (the `docs/project/review_log.md`
   entry heading this corresponds to — a pointer, not a restatement, for the same reason as
   `changelog_ref` above), `enhancement_suggestions` (this entry's own `change_requests.jsonl` ids,
@@ -136,14 +138,20 @@ never made unilaterally:
 
 1. When a change looks like a framework-level change (not just a project fact), stop and ask the
    user whether to make it, before touching either `CLAUDE.md` or the shared `_frw`.
-2. If approved, apply it to this project's own files first (`CLAUDE.md`, and `docs/` if the
+2. Once approved, draft a written plan for the change — its scope, the files it will touch (in
+   this project and/or the shared `_frw` clone), and an outline of the content/edits — and get
+   the user's sign-off on that plan before making any edits. This applies to every framework-level
+   change, large or small; a one-line plan for a one-line change still satisfies it. Plan Mode is
+   the natural way to do this in an interactive session. Only once the plan is approved does the
+   rest of this rule proceed.
+3. Apply it to this project's own files first (`CLAUDE.md`, and `docs/` if the
    change affects process there too), same as any other confirmed decision (Workflow Rule 6).
-3. Then propagate the equivalent generic version of the same change into the local `_frw` clone
+4. Then propagate the equivalent generic version of the same change into the local `_frw` clone
    (including its `CLAUDE.md.template` if `CLAUDE.md` itself changed) so the template bundle
    stays current with the philosophy it's meant to hand off, bump its `VERSION` file to the
    current timestamp (see "Versioning" above), and commit the propagation in the local `_frw`
    clone — not pushed yet.
-4. Run the Rule 15/16 review already required before any push (`CLAUDE.md` Rules 15/16) — for a
+5. Run the Rule 15/16 review already required before any push (`CLAUDE.md` Rules 15/16) — for a
    framework-level change, this same pass also validates the propagated `_frw` copy (Rule 16's
    fidelity lens). If it finds a problem with the propagation commit itself, fix it and amend
    that commit (safe — it's still local and unpushed, cited nowhere yet) and re-run the review;
@@ -153,6 +161,6 @@ never made unilaterally:
    `claude-project-framework` on GitHub in the same sitting — every propagation is a version
    change and a push, no exceptions, and a reviewed propagation commit shouldn't sit local and
    unpushed once it's clean.
-5. Note the framework change in `docs/project/CHANGELOG.md` same as any other material change,
+6. Note the framework change in `docs/project/CHANGELOG.md` same as any other material change,
    and append a record to `_frw/_data/update_history.jsonl` summarizing the update (see
    "Framework activity logs" above).
