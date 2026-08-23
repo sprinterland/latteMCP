@@ -501,3 +501,67 @@ records the `_frw/_data/change_requests.jsonl` `id`(s) of any enhancement sugges
   `CR-1787517912973-c92a`.
 - Enhancement suggestions: `CR-1787517912972-b7e1`, `CR-1787517912973-c92a` (both this round, both
   deferred rather than acted on).
+
+## 2026-08-24 00:25 — latteMCP: commit `5371b6e` / commit `1374628` (claude-project-framework) — Add a minor-propagation fast lane to the Maintenance rule (`FRW-ADR-0009`)
+
+### Project Reviewer
+
+- Command: `/code-review high`, 3 invocations spawning 6 parallel doc-consistency/correctness finder agents in total (single-file ambiguity; flow-ordering; ADR/wording logic; altitude/completeness; reuse/simplification/altitude/conventions; correctness angles A+B+C)
+- Repo: latteMCP @ `5371b6e`; `claude-project-framework` @ `1374628`
+- Module(s): n/a — framework-level (`docs/framework-maintenance.md`'s Maintenance rule, steps 1-2)
+- Framework version: `26.08.24:00.06.658`
+- Outcome: not clean on any invocation; every real finding fixed in place (commit amends
+  `cc6acc9` → `dc009a5` → `7a7b227` → `84043e9` → `1374628`); two design-level concerns deferred
+  (see Framework Reviewer below).
+
+### Framework Reviewer
+
+- Command: same review as Project Reviewer above (full overlap — this push's entire substance is
+  the Maintenance-rule change and its `_design/` self-description, in both repos).
+- Repo: same as above.
+- Module(s): n/a — framework-level.
+- Framework version: `26.08.24:00.06.658`
+- Outcome: not clean — 10 findings across the 6 agents, 8 fixed, 2 deferred as `change_requests.jsonl`
+  entries. Several later-reporting agents found issues that an earlier amend had already fixed
+  (stale drift against a mid-review commit state) — noted below where relevant, not double-counted.
+  1. Ambiguity: the "confined to a single file" criterion didn't say whether a project doc and its
+     identical `_frw` mirror count as one file or two — exactly the pair this fast lane is meant to
+     cover — fixed by stating the mirror pair counts as one (and, in a later round, that a lone
+     `_frw`-only file with no project-side counterpart, e.g. one `_design/` doc, likewise counts as
+     one).
+  2. Fidelity: `_design/architecture.md`'s compressed step-1/2 summary put the user ask in step 1,
+     but the canonical rule has no ask until step 2 — fixed by rewriting the summary to match.
+  3. Fidelity: `_design/requirements.md` and `test-spec.md` each dropped two of the four
+     minor-propagation criteria ("comparably small self-contained edit"; "does not change an
+     existing rule's meaning") when condensing the canonical wording — fixed by restoring all four,
+     then superseded by finding 6 below.
+  4. Correctness: `_design/decisions/0009-*.md`'s Consequences claimed the fast lane would help
+     "the majority of past propagations, by inspection" — checking that claim against
+     `_data/update_history.jsonl` showed only `UPD-0003` actually qualifies under the ADR's own
+     criteria — fixed by replacing the claim with the checked citation.
+  5. Fidelity: `_design/domain-model.md`'s "Maintenance rule" glossary entry still described the
+     old unconditional ask-then-plan flow — fixed to describe the two-tier split.
+  6. Ambiguity: `FRW-ADR-0009`'s Decision prose said "four criteria" but read as five
+     comma-separated clauses — fixed by reformatting as an explicit four-item list.
+  7. Completeness: neither the minor-propagation criteria nor Maintenance-rule step 3 addressed a
+     change confined entirely to `_frw`-internal files with no project-side counterpart (e.g. a
+     lone `_design/` doc) — fixed by extending the "single file" criterion and adding a step-3
+     no-op note for that case.
+  8. Cosmetic: `FRW-ADR-0008`'s `Status:` field extended past the README's documented fixed-enum
+     values with an inline explanation — fixed by moving the explanation to a separate "Superseded
+     note" bullet; that bullet's own convention wasn't documented anywhere, so
+     `_design/decisions/README.md`'s legend was updated to permit and describe it.
+  9. Reuse/altitude: the four criteria were restated near-verbatim in five places
+     (`docs/framework-maintenance.md`, `_design/requirements.md`, `test-spec.md`, `architecture.md`,
+     `decisions/0009-*.md`) instead of pointing to one canonical source — and had already drifted
+     within this same change (`architecture.md`'s copy lagged the other four after finding 1's later
+     refinement) — fixed by converting `requirements.md`, `test-spec.md`, and `architecture.md` to
+     point at `docs/framework-maintenance.md`'s Maintenance rule instead of restating it (the ADR's
+     own restatement is left as-is, consistent with other ADRs' self-contained Decision sections).
+  10. Design (deferred): the "single file" criterion is calibrated to the narrowest historical
+      propagation (only `UPD-0003` of 5 past entries would qualify), and the criteria have no guard
+      against a large change being split into several sequential "minor" propagations that
+      collectively achieve what one large change would be blocked from — both real considerations,
+      neither acted on since they'd mean redesigning already-approved criteria or adding back
+      ceremony unilaterally; logged as `CR-1787520515394-219f` and `CR-1787520659261-b488`.
+- Enhancement suggestions: `CR-1787520515394-219f`, `CR-1787520659261-b488`.

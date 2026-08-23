@@ -5,6 +5,26 @@ log — only entries that change what a reader of `docs/` would believe about th
 scale, split into `CHANGELOG-<year>.md` once this file gets unwieldy, keeping this file as the
 current year only and linking older ones from the top.
 
+## 2026-08-24
+
+- Framework fix, requested directly by the user: the Maintenance rule's step 1-2 approval (asking
+  about a framework-level change, then drafting and getting sign-off on a written plan) split into
+  two tiers. A **minor propagation** — confined to a single file (a project doc and its identical
+  `_frw` mirror count as one; a lone `_frw`-only file with no project-side counterpart, e.g. a
+  single `_design/` doc, likewise counts as one), a wording clarification/single field/comparably
+  small self-contained edit, no new rule/section/file or change to an existing rule's meaning, and
+  no architectural/security/business-rule implication — now combines the ask and the plan into one
+  message (the diff itself, one yes/no) instead of two separate round-trips. Anything else, or any
+  doubt about the classification, still goes through the full ask-then-written-plan sequence.
+  Steps 3-6 (apply, propagate + version bump, Rule 15/16 review, logging) are unchanged. Propagated
+  into `claude-project-framework`'s `docs/framework-maintenance.md` (commit `1374628`, version
+  `26.08.24:00.06.658`); `FRW-ADR-0009` added and `FRW-ADR-0008` marked superseded (its own text
+  left as-written per `_design/`'s never-edit-a-past-ADR rule); `_design/requirements.md`,
+  `architecture.md`, `test-spec.md`, and `domain-model.md` updated to match. A Rule 15/16 review
+  (6 parallel finder agents across 3 invocations) found and fixed real gaps, and deferred two
+  design-level concerns as logged change requests — see `docs/project/review_log.md`'s entry below
+  and `_frw/_data/push_reviews.jsonl` `REV-0007` for the full list.
+
 ## 2026-08-23
 
 - Added `_design/` to the shared `claude-project-framework` repo: the framework's own design

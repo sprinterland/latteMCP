@@ -55,7 +55,7 @@ still has something permanent to cite if the shared clone/repo is ever unreachab
 machine, no network, repo moved) at review time:
 
 **Bootstrapped from / last synced at [`claude-project-framework`](https://github.com/sprinterland/claude-project-framework)
-commit `7a7b227`, version `26.08.24:00.06.658`** (2026-08-24 — added a minor-propagation fast lane
+commit `1374628`, version `26.08.24:00.06.658`** (2026-08-24 — added a minor-propagation fast lane
 to the Maintenance rule's step 1-2 approval, requested directly by the user in latteMCP; see
 FRW-ADR-0009).
 This line records only the current sync as a static fact, same as the rest of this file's
