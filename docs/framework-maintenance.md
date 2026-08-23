@@ -55,11 +55,10 @@ still has something permanent to cite if the shared clone/repo is ever unreachab
 machine, no network, repo moved) at review time:
 
 **Bootstrapped from / last synced at [`claude-project-framework`](https://github.com/sprinterland/claude-project-framework)
-commit `01ae9df`, version `26.08.23:19.50.336`** (2026-08-23 — added `_design/`, the framework's
-own design rationale (requirements, domain model, architecture, framework-level ADRs `FRW-ADR-
-0001`–`0008`, and annotated specs for `CLAUDE.md.template`/`PLAN.md.template`), and formalized a
-new Maintenance-rule step requiring a written, user-approved plan before any framework-level
-change is implemented — see `_design/decisions/0008-written-plan-before-framework-changes.md`).
+commit `ea694ae`, version `26.08.23:20.16.061`** (2026-08-23 — expanded
+`docs/modules/_module-template/requirements.md`'s `Source:` field enum from 4 to 5 values plus
+split-provenance guidance, closing a gap between the template, `CLAUDE.md` Workflow Rule 5, and
+real downstream usage — see `_data/change_requests.jsonl` `CR-1787505166518-a99b`).
 This line records only the current sync as a static fact, same as the rest of this file's
 principle of pointing rather than restating — the full history of every prior sync already lives
 in `docs/project/CHANGELOG.md` and `_frw/_data/update_history.jsonl`, not here.

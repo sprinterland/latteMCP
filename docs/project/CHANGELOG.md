@@ -392,3 +392,17 @@ current year only and linking older ones from the top.
   to `Confirmed`; `test-spec.md` stays `Draft` pending automated tests. Updated
   `docs/_discovery/coverage.md` (dropped the now-`Confirmed` `latteMCP` row) and `docs/00-index.md`'s
   module table.
+- Framework fix: `claude-project-framework`'s
+  `docs/modules/_module-template/requirements.md` `Source:` field enum only listed 4 values, but
+  `CLAUDE.md` Workflow Rule 5 itself prescribes a 5th wording never added to the template, and
+  real usage in this project's own `docs/modules/latteAPI/requirements.md` (`API-REQ-004`/`005`,
+  and `MCP-REQ-001`'s split-provenance case) needed guidance the template didn't give. Expanded
+  the template's enum to 5 values (adding the missing Rule 5 wording) plus guidance for
+  split-provenance entries; deliberately did **not** add a 6th "Confirmed by implementation"
+  value for the already-built-when-discovered case — an earlier draft of the fix did, but
+  `/code-review high` caught that it would launder never-human-reviewed content into
+  Confirmed-sounding language, contradicting Rule 5's own reservation of that phrasing for actual
+  human sign-off. Clarified instead that the existing "Draft (inferred from code)" value already
+  covers that case. This project's own docs already conformed to the corrected pattern, so no
+  `docs/modules/*` edits were needed here, only this entry and the `framework-maintenance.md` sync
+  pointer. Logged and resolved as `CR-1787505166518-a99b` in `_frw/_data/change_requests.jsonl`.

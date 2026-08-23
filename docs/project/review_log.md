@@ -343,3 +343,61 @@ records the `_frw/_data/change_requests.jsonl` `id`(s) of any enhancement sugges
   are exactly the ambiguity/self-consistency gaps this lens exists to catch.
 - Enhancement suggestions: none this round.
 - Enhancement suggestions: none this round.
+
+## 2026-08-23 20:16 — commit ea694ae (claude-project-framework) — Add missing `Source:` field values to module requirements template
+
+### Project Reviewer
+
+- Command: `/code-review high` — first pass scoped to the propagation commit in
+  `claude-project-framework` (no `docs/modules/*` content in latteMCP itself needed changing, per
+  the plan's own finding that existing usage already conformed); ran clean the first time.
+  Re-review of the amended commit (see Framework Reviewer below) could not be run through the
+  `/code-review` tool a second time — it returned "session limit · resets 10:20pm
+  (Europe/Istanbul)" — so the second pass was a manual line-by-line read of the amended diff
+  instead, checking specifically for the two failure modes the first pass had just found
+  (Confirmed-phrasing reuse, inconsistent split-provenance tagging) plus general clarity. This is
+  a logged, deliberate substitution for the tool on this one round, not a skipped review.
+- Repo: latteMCP @ HEAD; `claude-project-framework` @ `ea694ae`
+- Module(s): n/a — docs/framework-process change, no module code touched
+- Framework version: `26.08.23:20.16.061`
+- Outcome (first pass, tool): not clean — 3 findings.
+  1. `_data/change_requests.jsonl`'s appended line for `CR-1787505166518-a99b` still had
+     `status:"open"`/`resolution:null` even though the commit message called it resolved — fixed
+     by appending a further, correctly `resolved` line (same `id`, per this repo's append-only
+     convention).
+  2. The new `Source:` value "Confirmed by implementation — `<ref>`" reused "Confirmed" phrasing
+     for content no person had reviewed, contradicting `CLAUDE.md` Workflow Rule 5's explicit
+     reservation of that phrasing for actual human sign-off, and overlapped in meaning with the
+     pre-existing "Draft (inferred from code)" value — fixed by dropping the new value entirely
+     and clarifying that "Draft (inferred from code — path)" already covers the already-built/
+     discovered-by-Track-A case, with `Status:` (not `Source:`) recording later verification.
+  3. The split-provenance example tagged its two clauses inconsistently (`VALUE (X)` vs.
+     `Y VALUE`) — fixed to tag both clauses the same way (`VALUE (tag)`).
+  All three fixed; the local, unpushed propagation commit was amended (`5f090f3` → `ea694ae`)
+  rather than adding a follow-up commit, per Maintenance rule step 5.
+- Outcome (second pass, manual): clean. Confirmed the amended `Source:` enum no longer uses
+  "Confirmed" for anything a person hasn't reviewed; confirmed the split-provenance example is
+  consistently tagged; confirmed `_data/change_requests.jsonl` and the other two `_data/*.jsonl`
+  files still parse as valid JSON Lines
+  (`python3 -c "import json; [json.loads(l) for l in open(f)]"` per file); separately caught (via
+  my own re-read of the two latteMCP record-keeping files below, not part of this diff) that
+  `docs/project/CHANGELOG.md` and `docs/framework-maintenance.md`'s sync pointer both still said
+  "6 values" after the fix dropped the third value back out, leaving 5 — corrected both before
+  this log entry.
+
+### Framework Reviewer
+
+- Command: same review as Project Reviewer above (this push touches `docs/framework-maintenance.md`
+  directly, plus the propagated template file in `claude-project-framework`).
+- Repo: latteMCP @ HEAD; `claude-project-framework` @ `ea694ae`
+- Module(s): n/a — framework-level
+- Framework version: `26.08.23:20.16.061`
+- Outcome: fidelity check — `docs/modules/_module-template/requirements.md` stays
+  placeholder/structural only (no framework-design rationale leaked into it, per `_design/
+  requirements.md`'s `FRW-REQ-008`); `CLAUDE.md` / `CLAUDE.md.template` needed no edit since Rule
+  5's prose already matched the added wording and neither file enumerates `Source:` values itself.
+  Ambiguity check — the 3 findings above (Project Reviewer, first pass) are exactly the
+  ambiguity/self-consistency gaps this lens exists to catch; none remaining after the fix.
+  Enhancement-opportunity check — none additional noticed this round.
+- Enhancement suggestions: none this round (the round's own subject, `CR-1787505166518-a99b`, is
+  now resolved rather than newly suggested).
