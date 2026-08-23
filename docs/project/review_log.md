@@ -184,3 +184,37 @@ records any enhancement suggestions raised (or "none").
   round's terminology cleanup; confirmed no file in `_frw` carries any latteMCP-specific fact.
   Ambiguity check — none found.
 - Enhancement suggestions: none this round.
+
+## 2026-08-23 18:28 — commit 306a0cb (Rename docs/_discovery and docs/_project to docs/discovery and docs/project)
+
+### Project Reviewer
+
+- Command: `/code-review high`, one invocation covering the full diff (`CLAUDE.md`, `PLAN.md`,
+  `docs/00-index.md`, `docs/decisions/0005-api-docs-openapi-per-operation-samples.md`,
+  `docs/dev-practices.md`, `docs/framework-maintenance.md`, and the `docs/_discovery/` →
+  `docs/discovery/` / `docs/_project/` → `docs/project/` renames themselves).
+- Repo: latteMCP @ `306a0cb`
+- Module(s): n/a — docs/framework-process change, no module code touched
+- Framework version: `26.08.23:18.23.266` (live-read from the shared external `_frw` clone at
+  `/Users/sprn/claudework/newFrw/`, commit `9512282` in `claude-project-framework`)
+- Outcome: clean — verified every live/prescriptive reference to the old paths was updated, no
+  stray `docs/_discovery`/`docs/_project` directories or references remained, the external `_frw`
+  clone matched what `docs/framework-maintenance.md` and the CHANGELOG claimed, `CLAUDE.md`'s
+  "Reusable Framework Template" section and Rules 15/16 stayed word-for-word identical to
+  `_frw`'s `CLAUDE.md.template`, and relative links from moved files (e.g.
+  `docs/discovery/debt_log.md` → `../project/CHANGELOG.md`) resolved correctly. No findings.
+
+### Framework Reviewer
+
+- Command: same invocation as Project Reviewer above, re-read through the Rule 16 lens (this push
+  touches `CLAUDE.md` and `docs/framework-maintenance.md`, and the two scopes substantially
+  overlap for a framework-focused change like this one).
+- Repo: latteMCP @ `306a0cb`
+- Module(s): n/a — framework-level
+- Framework version: `26.08.23:18.23.266`
+- Outcome: fidelity check — confirmed `CLAUDE.md`'s "Reusable Framework Template" section and
+  Rules 15/16 are still word-for-word identical to `_frw`'s `CLAUDE.md.template` after the rename;
+  confirmed no file in `_frw` (including the new `_data/README.md`) carries any latteMCP-specific
+  fact. Ambiguity check — none found; the new `_data/` folder's purpose and copy-exclusion are
+  documented in both `_frw/README.md` and this project's `docs/framework-maintenance.md`.
+- Enhancement suggestions: none this round.
