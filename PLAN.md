@@ -22,7 +22,8 @@ Per that file's transition note, `latteAPI`/`latteMCP`'s existing `Confirmed` st
 1/2 is not retroactively revoked; their open automated-test items below now also serve to satisfy
 the new stricter policy, not just close out a nice-to-have. That file also now requires a
 two-reviewer gate before every `git push` — Project Reviewer always, Framework Reviewer when
-`CLAUDE.md`/`_frw/**`/framework docs are touched (see "Secondary Review Before Push") — applies
+`CLAUDE.md`/framework docs (`docs/framework-maintenance.md`, `docs/migrations.md`) are touched
+(see "Secondary Review Before Push") — applies
 from this point forward regardless of phase; each run is logged in
 `docs/_project/review_log.md`, and a completed task's entry in `docs/_project/completed_plan.md`
 should note the review outcome the same way it already notes manual-verification dates.

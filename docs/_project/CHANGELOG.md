@@ -7,6 +7,51 @@ current year only and linking older ones from the top.
 
 ## 2026-08-23
 
+- Moved `_frw/` out of this repo entirely (framework-level change, applies to future projects
+  too): it now lives in its own public GitHub repo,
+  [`sprinterland/claude-project-framework`](https://github.com/sprinterland/claude-project-framework)
+  (initial commit `243a06b` carried `_frw/VERSION` `26.08.23:14.54.273` unchanged from the last
+  in-repo state; a follow-up commit `a1c86e4` then updated the template docs themselves — see
+  below — bumping `VERSION` to `26.08.23:17.26.865`), rather than being vendored into any one
+  project's repo and later copied-then-deleted at bootstrap time. This lets multiple projects on
+  this machine bootstrap from, and propagate framework-level changes into, the same shared copy
+  instead of each keeping (or not keeping) its own drifting copy. Removed `_frw/` from this repo.
+  Rewrote `docs/framework-maintenance.md`'s "What `_frw/` is" and "Versioning" sections to describe
+  the external repo/clone model (live-read `_frw/VERSION` from the local clone at review time,
+  static "bootstrapped from" fact as fallback — recorded here as commit `a1c86e4`, version
+  `26.08.23:17.26.865`, 2026-08-23) and updated the Maintenance rule's step 3 to commit + push
+  instead of just commit. Updated `CLAUDE.md`'s "Reusable Framework Template" section, Rule 15
+  (VERSION lookup no longer keyed to whether a project "still keeps its own `_frw/`" — it never
+  does now; keyed to whether the shared clone is reachable instead), and Rule 16 (dropped "anything
+  under `_frw/`" from its push-trigger list, since no push from this repo can touch a location
+  outside it; added a note that a propagation edit made directly in the shared `_frw/` repo is
+  reviewed there, on its own terms, not as part of this repo's Rule 16). Updated `PLAN.md`'s
+  `_frw/**` mention to name the actual framework doc paths instead, since `_frw/**` can no longer
+  be part of a push touching this repo. Mirrored the same conceptual changes into the framework
+  bundle itself: `_frw/README.md`'s bootstrap steps 1–3 (no longer "copy the whole `_frw/`
+  directory in, then delete it" — now "copy just the individual template files out of the shared,
+  external `_frw/`; never vendor the folder itself"), `_frw/CLAUDE.md.template` (same three edits
+  as this project's `CLAUDE.md`, genericized), `_frw/docs/framework-maintenance.md` (same
+  restructure, genericized with placeholder repo/commit/version fields for the next project to
+  fill in at its own bootstrap time), `_frw/docs/00-index.md`, and
+  `_frw/docs/_project/review_log.md` (both had conditional wording keyed to "if this project still
+  keeps/spins off its own `_frw/`," now dropped since the shared-repo model applies unconditionally
+  going forward). Rule 15's own secondary review of this change (`/code-review high`, logged in
+  `docs/_project/review_log.md`) flagged that `docs/dev-practices.md`'s bare `_frw/` references
+  (its own "no `_frw/` update needed" line, pointing to `_frw/docs/dev-practices.md` for the full
+  settings menu) hadn't been touched to reflect the new external/shared model — fixed by noting,
+  the first time `_frw/` is mentioned in that file, that it's the external framework clone/repo
+  described in `docs/framework-maintenance.md`. The Framework Reviewer lens (Rule 16, same
+  invocation, re-read for `_frw/CLAUDE.md.template` fidelity) caught one more: `CLAUDE.md`'s
+  "Reusable Framework Template" section still said `_frw/` lives in a shared "external directory"
+  with a "concrete external path" — leftover wording from before `claude-project-framework` existed
+  as an actual GitHub repo — while `docs/framework-maintenance.md` and the template already said
+  "repo"/"location"; reworded to match, so `CLAUDE.md` and `_frw/CLAUDE.md.template` are now
+  word-for-word identical in this section as intended. Also found, on a closer pass while fixing
+  the above: this project's own `docs/_project/review_log.md` (not just its `_frw/` template
+  counterpart) still described the Framework Reviewer's `_frw/VERSION` fallback as keyed to
+  whether "this project has since deleted its own `_frw/`" — fixed to match Rule 15's live-clone
+  fallback wording.
 - Applied Rule 15/16 to the commit that fixed their own first-review findings (`dbbc48d`), logged
   in `docs/_project/review_log.md`. That round's fixes hadn't fully landed: `docs/dev-practices.md`
   still re-enumerated Rule 16's path list in its Framework Reviewer bullet (only the Project
