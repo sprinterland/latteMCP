@@ -323,14 +323,28 @@ and what must not change during a rewrite.
     project-specific facts; (b) *ambiguity* — is any
     new/changed rule or template file unclear, self-contradictory, or missing a cross-reference a
     reader would need; (c) *enhancement opportunities* — note anything generalizable worth
-    proposing as a future framework improvement. This rule doesn't loosen Rule 2 either: a
+    proposing as a future framework improvement, logged the same way Rule 17 logs any other one.
+    This rule doesn't loosen Rule 2 either: a
     fidelity or ambiguity finding that's itself ambiguous, hard to reverse, or touches
     security/architecture/business rules still gets asked about, not just logged and pushed past.
     Enhancement suggestions specifically are proposals only: per `docs/framework-maintenance.md`'s
     standing rule, no framework change — including one this reviewer itself suggests — is applied
     without asking the user first. Fix confirmed fidelity/ambiguity findings, or log a deferral,
     before the push proceeds. Log the run in `docs/project/review_log.md` as a **Framework
-    Reviewer** sub-entry the same way Rule 15 does, plus any enhancement suggestions raised (or
-    "none"). This sub-entry is always present in every push's log entry, even when this rule
-    didn't apply — its content then simply states "not run: push touched no framework paths"
-    instead of a command and outcome, so the log format never depends on whether this rule fired.
+    Reviewer** sub-entry the same way Rule 15 does, plus the `_frw/_data/change_requests.jsonl`
+    `id`(s) of any enhancement suggestions raised this round (or "none") — cite the id rather than
+    restate the suggestion's text, so the two logs don't drift apart. This sub-entry is always
+    present in every push's log entry, even when this rule didn't apply — its content then simply
+    states "not run: push touched no framework paths" instead of a command and outcome, so the log
+    format never depends on whether this rule fired.
+
+17. **Continuous framework-improvement log.** At any point during any activity — planning, Track
+    B coding, Track A discovery, or a Rule 15/16 review — if you notice a possible framework-level
+    enhancement, however minor, even one you're about to fix as part of the very task you're
+    doing, log it immediately to the shared `_frw/_data/change_requests.jsonl` (see
+    `docs/framework-maintenance.md`'s "Framework activity logs" section for the schema) before
+    moving on — don't wait for the task, or a push, to log it. This is an append-only record:
+    never delete an entry; mark it `resolved` (with how and when) instead of removing it. Like
+    Rule 16's enhancement suggestions, logging an idea here is a proposal only — per
+    `docs/framework-maintenance.md`'s standing rule, no framework change is applied without asking
+    the user first, whether or not it's already logged.

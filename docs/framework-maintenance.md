@@ -52,10 +52,10 @@ still has something permanent to cite if the shared clone/repo is ever unreachab
 machine, no network, repo moved) at review time:
 
 **Bootstrapped from / last synced at [`claude-project-framework`](https://github.com/sprinterland/claude-project-framework)
-commit `9512282`, version `26.08.23:18.23.266`** (2026-08-23 — `docs/_discovery/` and
-`docs/_project/` were renamed to `docs/discovery/` and `docs/project/`, and a `_data/` folder was
-added at the bundle root for `_frw`'s own framework-update notes, excluded from what gets copied
-into a bootstrapped project).
+commit `0808624`, version `26.08.23:18.59.204`** (2026-08-23 — added `_data/update_history.jsonl`,
+`_data/push_reviews.jsonl`, and `_data/change_requests.jsonl`, the three append-only logs described
+in "Framework activity logs" below, plus the Maintenance rule steps and `CLAUDE.md` Rule 17 that
+govern them).
 
 ## What's project-specific vs. framework, precisely
 
@@ -66,6 +66,35 @@ into a bootstrapped project).
   fact about this project's business domain, stack choices, or decisions. Nothing in `_frw`
   should ever need `docs/`'s content to make sense, and nothing in `docs/` should ever link into
   `_frw`.
+
+## Framework activity logs (`_data/`)
+
+`_frw/_data/` holds three append-only JSON-Lines logs of framework-maintenance activity — kept
+only in the shared `_frw` repo, never copied into a bootstrapped project (see "What's
+project-specific vs. framework, precisely" above). Each file is one JSON object per line; new
+entries are always appended, never rewritten or deleted — mark a stale entry `resolved` (or
+similar) instead of removing it.
+
+- **`update_history.jsonl`** — one record per completed framework update (Maintenance rule step 6
+  below): `id`, `timestamp`, `project` (which project's need triggered the update), `summary`,
+  `questions_asked` (the Rule 2 confirmations made while deciding it — `[]` if none needed),
+  `decisions_made` (Rule 4 judgment calls made along the way, with the reasoning — `[]` if none),
+  `final_summary`, `frw_commit`, `frw_version`, `status` (`completed`).
+- **`push_reviews.jsonl`** — one record per Rule 15/16 review run immediately before pushing
+  `_frw`'s own propagation commit (Maintenance rule step 4 below): `id`, `timestamp`, `project`,
+  `frw_commit`, `command`, `scope`, `outcome`, `enhancement_suggestions` (this entry's own
+  `change_requests.jsonl` ids, or `[]`), `status` (`completed`).
+- **`change_requests.jsonl`** — a continuous backlog of framework-enhancement ideas, logged the
+  moment they're noticed during *any* activity in *any* project — planning, coding, discovery,
+  review, even the task that's about to fix the very thing being logged (see `CLAUDE.md` Workflow
+  Rule 17): `id`, `timestamp`, `project`, `activity` (`planning`/`coding`/`discovery`/`review`/
+  etc.), `description`, `severity` (`minor`/`major`), `status` (`open`/`resolved`), `resolution`,
+  `resolved_at`.
+
+IDs are simple per-file incrementing counters (`UPD-0001`, `REV-0001`, `CR-0001`, ...), assigned
+by reading the last line of the file at append time; these logs are only ever written during a
+deliberate framework-maintenance step, never concurrently from multiple projects at once, so a
+counter race isn't a real risk in practice.
 
 ## Maintenance rule
 
@@ -83,6 +112,16 @@ never made unilaterally:
 3. Then propagate the equivalent generic version of the same change into the local `_frw` clone
    (including its `CLAUDE.md.template` if `CLAUDE.md` itself changed) so the template bundle
    stays current with the philosophy it's meant to hand off, bump its `VERSION` file to the
-   current timestamp (see "Versioning" above), and commit + push to `claude-project-framework` on
-   GitHub — every propagation is a version change and a push, no exceptions.
-4. Note the framework change in `docs/project/CHANGELOG.md` same as any other material change.
+   current timestamp (see "Versioning" above), and commit the propagation in the local `_frw`
+   clone — not pushed yet.
+4. Run the Rule 15/16 review already required before any push (`CLAUDE.md` Rules 15/16) — for a
+   framework-level change, this same pass also validates the propagated `_frw` copy (Rule 16's
+   fidelity lens) — then append its outcome to `_frw/_data/push_reviews.jsonl` (see "Framework
+   activity logs" above), before pushing either repo. Fix any findings, or log a deliberate
+   deferral, first.
+5. Push both this project's commit(s) and the `_frw` propagation commit to
+   `claude-project-framework` on GitHub — every propagation is a version change and a push, no
+   exceptions.
+6. Note the framework change in `docs/project/CHANGELOG.md` same as any other material change,
+   and append a record to `_frw/_data/update_history.jsonl` summarizing the update (see
+   "Framework activity logs" above).
