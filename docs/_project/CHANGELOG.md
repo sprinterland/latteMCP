@@ -7,6 +7,18 @@ current year only and linking older ones from the top.
 
 ## 2026-08-23
 
+- Added a new "Secondary Review Before Push" setting to `docs/dev-practices.md` (framework-level
+  change, applies to future projects too): before any `git push`, run `/code-review high` against
+  the outgoing commits as an independent secondary pass distinct from the authoring work, and fix
+  or explicitly log any findings first. Adopted for this project: **Yes, every push**,
+  self-enforced (no pre-push git hook — procedural, matching the existing recommend-don't-block
+  pattern). Added `CLAUDE.md` Workflow Rule 15 governing it, updated the "Development practices"
+  section and Documentation Structure diagram's `dev-practices.md` blurb to mention it, and added
+  a note to `PLAN.md` that completed-task entries in `docs/_project/completed_plan.md` should
+  record the review outcome. Mirrored the setting (unselected, `Selected: <fill in>`) into
+  `_frw/docs/dev-practices.md`, the same `CLAUDE.md` changes into `_frw/CLAUDE.md.template`, and
+  added it to `_frw/README.md`'s bootstrap step 6 checklist of settings to decide before real work
+  starts.
 - Restructured the repo root so only `CLAUDE.md` and `PLAN.md` remain there: moved
   `CHANGELOG.md` and `completed_plan.md` into `docs/_project/`, updating every cross-reference
   (`CLAUDE.md`'s Documentation Structure/rules 7/10, `docs/00-index.md`, `docs/_discovery/

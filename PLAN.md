@@ -20,7 +20,11 @@ behind the design choices reflected in the tasks below.
 tests before `Confirmed` for all work going forward — Phase 3 below follows it from the start.
 Per that file's transition note, `latteAPI`/`latteMCP`'s existing `Confirmed` status from Phase
 1/2 is not retroactively revoked; their open automated-test items below now also serve to satisfy
-the new stricter policy, not just close out a nice-to-have.
+the new stricter policy, not just close out a nice-to-have. That file also now requires a
+`/code-review high` secondary-reviewer pass before every `git push` (see "Secondary Review Before
+Push") — applies from this point forward regardless of phase; a completed task's entry in
+`docs/_project/completed_plan.md` should note the review outcome the same way it already notes
+manual-verification dates.
 
 ## Status
 

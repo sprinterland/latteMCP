@@ -2,10 +2,11 @@
 
 Configurable process decisions for how this project writes and verifies code — the process
 counterpart to `api-conventions.md` (which fixes API *contract* conventions). `CLAUDE.md`
-Workflow Rules 8, 9, and 14 read the settings below. Changing a setting here is a project process
-decision like any other — confirm it per Workflow Rule 2, update this file, then follow it — it
-does **not** require touching `CLAUDE.md` itself or `_frw/` (see `_frw/docs/dev-practices.md` for
-the full menu this project's choices were drawn from, kept generic for future projects).
+Workflow Rules 8, 9, 14, and 15 read the settings below. Changing a setting here is a project
+process decision like any other — confirm it per Workflow Rule 2, update this file, then follow
+it — it does **not** require touching `CLAUDE.md` itself or `_frw/` (see
+`_frw/docs/dev-practices.md` for the full menu this project's choices were drawn from, kept
+generic for future projects).
 
 ## Test-Writing Timing
 
@@ -44,6 +45,24 @@ sanity checks, but no longer substitutes for the automated run where tests exist
 
 Other option (not selected): No fixed requirement — manual smoke testing alone is acceptable,
 without also running an automated suite.
+
+## Secondary Review Before Push
+
+**Selected: Yes — `/code-review high` before every push** (adopted 2026-08-23)
+
+Before any `git push`, run `/code-review high` against the commits being pushed that aren't yet
+on the remote, as an independent secondary pass distinct from the authoring work already done —
+not a repeat of it. Findings must be fixed, or explicitly acknowledged and logged as a deliberate
+deferral (e.g. in the relevant `../PLAN.md`/`_project/completed_plan.md` entry), before the push
+proceeds. Applies to every push, on any branch — this project has no separate "protected branch"
+concept to carve out an exemption for.
+
+Self-enforced per `CLAUDE.md` Workflow Rule 15 — no technical block (e.g. no pre-push git hook).
+Consistent with this project's existing recommend-don't-block pattern (Track B rule 2 in
+`CLAUDE.md`): the discipline is procedural, not mechanically enforced.
+
+Other option (not selected): No dedicated secondary review before push — rely on whatever review
+happens at PR/merge time only.
 
 ## Transition Note
 

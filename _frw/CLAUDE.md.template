@@ -22,8 +22,9 @@ docs/
   api-conventions.md         — shared HTTP API conventions (JSON casing, error bodies, auth
                                 header, health payload) — see "API documentation" below
   dev-practices.md           — configurable process decisions (test-writing timing, whether
-                                automated tests gate `Confirmed`, local verification requirements)
-                                — see "Development practices" below
+                                automated tests gate `Confirmed`, local verification requirements,
+                                whether a secondary review gates every push) — see "Development
+                                practices" below
   architecture/
     overview.md               — system-wide component map, service boundaries, deployment topology
                                  (As-Is / To-Be — see "Migrations & Rewrites" below)
@@ -113,15 +114,17 @@ Every module that exposes an HTTP API:
 
 `docs/dev-practices.md` holds this project's configurable process decisions for *how* code gets
 written and verified — test-writing timing (test-after / TDD test-first / test-alongside),
-whether automated tests are required for a module to reach `Status: Confirmed`, and whether the
-automated test suite must be run locally before a task counts as done. Workflow Rules 8, 9, and
-14 below read this file rather than hard-coding one policy, so a project bootstrapped from
-`_frw/` can pick its own rigor level without editing this file. If `docs/dev-practices.md`
-doesn't exist yet, the defaults are: test-after, manual verification sufficient for `Confirmed`,
-no fixed local-run requirement (i.e. Rule 9's base text, unmodified). Changing a setting in
-`dev-practices.md` is an ordinary process decision — confirm it per Workflow Rule 2, update the
-file, then follow it; it does not require a `_frw/` update, since `_frw/docs/dev-practices.md`
-already documents the full menu of options generically.
+whether automated tests are required for a module to reach `Status: Confirmed`, whether the
+automated test suite must be run locally before a task counts as done, and whether a secondary
+review gates every push. Workflow Rules 8, 9, 14, and 15 below read this file rather than
+hard-coding one policy, so a project bootstrapped from `_frw/` can pick its own rigor level
+without editing this file. If `docs/dev-practices.md` doesn't exist yet, the defaults are:
+test-after, manual verification sufficient for `Confirmed`, no fixed local-run requirement (i.e.
+Rule 9's base text, unmodified), and Rule 15's own base text (secondary review before every
+push) in force unmodified. Changing a setting in `dev-practices.md` is an ordinary process
+decision — confirm it per Workflow Rule 2, update the file, then follow it; it does not require a
+`_frw/` update, since `_frw/docs/dev-practices.md` already documents the full menu of options
+generically.
 
 ### Seed / example data belongs in domain-model.md
 
@@ -267,3 +270,11 @@ and what must not change during a rewrite.
     governs the override to Rule 9 above. If the file doesn't exist yet (e.g. a project freshly
     bootstrapped from `_frw/` that hasn't filled it in), fall back to this file's defaults:
     test-after, manual verification sufficient for `Confirmed`, no fixed local-run requirement.
+15. Before any `git push`, run `/code-review high` as a secondary reviewer pass against the
+    commits being pushed that aren't yet on the remote — a check independent of the authoring
+    work already done, not a repeat of it. Fix its findings, or explicitly acknowledge and log
+    a deliberate deferral (e.g. in the relevant `plan.md`/`docs/_project/completed_plan.md`
+    entry), before the push proceeds. Governed by `docs/dev-practices.md`'s "Secondary Review
+    Before Push" setting; if that file doesn't set it, the default is this rule's own text as
+    written — `/code-review high`, every push, self-enforced (no technical block, e.g. no
+    pre-push git hook — same recommend-don't-block spirit as Track B rule 2 above).
