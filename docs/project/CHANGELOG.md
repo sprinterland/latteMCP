@@ -7,6 +7,51 @@ current year only and linking older ones from the top.
 
 ## 2026-08-23
 
+- Added three append-only JSON-Lines activity logs under `claude-project-framework`'s `_data/`
+  folder (framework-level change, applies to future projects too — user-requested, not proposed
+  by Claude): `update_history.jsonl` (one record per completed framework update),
+  `push_reviews.jsonl` (one record per Rule 15/16 review run immediately before an `_frw` push),
+  and `change_requests.jsonl` (a continuous backlog of framework-enhancement ideas, logged the
+  moment they're noticed during *any* activity in *any* project, per new `CLAUDE.md` Workflow
+  Rule 17 — not just during a Rule 16 review). Documented all three schemas in
+  `docs/framework-maintenance.md`'s new "Framework activity logs" section (mirrored into `_frw`'s
+  own copy) and restructured the Maintenance rule so the pre-push Rule 15/16 review happens
+  between the local propagation commit and the actual push, appending to `push_reviews.jsonl`
+  along the way; step 5 (was step 4) now also appends to `update_history.jsonl`. Added `CLAUDE.md`
+  Rule 17 (mirrored into `CLAUDE.md.template`, kept word-for-word identical per the usual
+  fidelity check) and updated Rule 16's enhancement-suggestions handling to cite
+  `change_requests.jsonl` `id`s from `review_log.md` instead of restating suggestion text, so the
+  two logs can't drift apart. Committed to both repos as `claude-project-framework` commit
+  `0808624` / latteMCP commit `dfebaec`, bumping `VERSION` to `26.08.23:18.59.204`.
+  - A follow-up `/code-review high` pass (8 finder agents) on that same addition — run before
+    pushing, per Rule 15/16 — found the design had real gaps, ironic given what it was building:
+    `change_requests.jsonl`'s read-last-line-then-increment ID scheme was justified as safe by
+    "never written concurrently," which Rule 17 itself directly contradicts (it fires from any
+    project at any time); the Maintenance rule's review and push were split into two steps with no
+    guidance for the amend-and-re-review case, letting a reviewed-clean commit sit unpushed
+    indefinitely; the Versioning section still said VERSION is bumped "as step 3... and commit +
+    push" after step 3 was rewritten (same commit) to commit-only; `review_log.md`'s live preamble
+    wasn't updated for Rule 16's new id-citation requirement; `CLAUDE.md`'s Standing Rule restated
+    the Maintenance rule's steps in prose — exactly the kind of restatement that just went stale;
+    and `_data/` kept its leading underscore right after `discovery/`/`project/` lost theirs for
+    "hidden/system" reasons, with no reconciling note. Fixed all six: `change_requests.jsonl` ids
+    are now self-generated (`CR-<epoch-ms>-<hex>`, no coordination needed) while
+    `update_history.jsonl`/`push_reviews.jsonl` keep plain counters (genuinely one-at-a-time,
+    written mid-Maintenance-rule); merged the review and push back into one Maintenance-rule step
+    with amend guidance; fixed the Versioning section, `review_log.md`'s preamble (both repos), and
+    `CLAUDE.md`'s Standing Rule (now points at `docs/framework-maintenance.md` as the sole source
+    of truth instead of restating it); and documented `_data/`'s underscore as meaning "excluded
+    from bootstrap copying," a different, still-live reason than the one the rename removed. Two
+    lower-severity findings — Rule 16(c)/17's circular cross-references, and a
+    previously-flagged-but-never-actually-asked question (`review_log.md`, 2026-08-23 14:42 entry)
+    about whether framework-level process changes need an ADR — were logged **open** in
+    `change_requests.jsonl` rather than resolved unilaterally. Fixes committed as
+    `claude-project-framework` commit `9cea998` / latteMCP commit `738ee4b`, bumping `VERSION` to
+    `26.08.23:19.09.808`. First real entries logged in all three `_data/*.jsonl` files for this
+    update per the newly-added process (see `_frw/_data/update_history.jsonl` id `UPD-0001`,
+    `push_reviews.jsonl` id `REV-0001`) — the folder-rename update earlier this same day predates
+    this logging system and wasn't backfilled, per the user's own framing that this update could be
+    the first record.
 - Renamed `docs/_discovery/` to `docs/discovery/` and `docs/_project/` to `docs/project/`
   (framework-level change, applies to future projects too), dropping the leading underscore from
   both docs subfolders so they read as ordinary content folders rather than hidden/system ones.

@@ -219,3 +219,56 @@ records the `_frw/_data/change_requests.jsonl` `id`(s) of any enhancement sugges
   fact. Ambiguity check — none found; the new `_data/` folder's purpose and copy-exclusion are
   documented in both `_frw/README.md` and this project's `docs/framework-maintenance.md`.
 - Enhancement suggestions: none this round.
+
+## 2026-08-23 19:09 — commits dfebaec → 738ee4b (Add CLAUDE.md Rule 17 and `_frw/_data/`'s three activity logs, then fix what review found)
+
+### Project Reviewer
+
+- Command: `/code-review high`, one invocation (8 finder agents: simplification, removed-behavior,
+  altitude, cross-file/external-repo tracer, reuse/duplication, efficiency, CLAUDE.md conventions,
+  line-by-line diff) covering the full diff of commit `dfebaec` (`CLAUDE.md`,
+  `docs/framework-maintenance.md`) and its `claude-project-framework` mirror `0808624`
+  (`CLAUDE.md.template`, `README.md`, `docs/framework-maintenance.md`, and the three new
+  `_data/*.jsonl` files).
+- Repo: latteMCP @ `738ee4b` (reviewed at `dfebaec`, fixes landed here); `claude-project-framework`
+  @ `9cea998` (reviewed at `0808624`, fixes landed here)
+- Module(s): n/a — docs/framework-process change, no module code touched
+- Framework version: `26.08.23:19.09.808` (live-read from the shared external `_frw` clone at
+  `/Users/sprn/claudework/newFrw/`, commit `9cea998` in `claude-project-framework`)
+- Outcome: not clean — 9 distinct findings surfaced across the 8 agents (after de-duplicating
+  overlapping reports of the same underlying issues): a collision-prone `change_requests.jsonl` ID
+  scheme whose own "never concurrent" justification was directly contradicted by the very rule
+  (17) it was written to support; a Maintenance-rule review/push split with no amend guidance and
+  no forced ordering; a `Versioning` section left saying "commit + push" after the step it
+  described was rewritten to commit-only in the same diff; `review_log.md`'s live preamble (this
+  file, the one you're reading) not updated for Rule 16's new id-citation requirement — missed in
+  both repos; `CLAUDE.md`'s Standing Rule restating Maintenance-rule steps in prose, which is
+  exactly the kind of restatement that had just gone stale; and `_data/` keeping its leading
+  underscore right after `discovery/`/`project/` lost theirs for "hidden/system" reasons, with no
+  reconciling note. Also flagged, not fixed (logged open in `change_requests.jsonl` instead, since
+  neither is a mechanical bug and the second is explicitly a question for the user): Rule 16(c) and
+  Rule 17 having overlapping, cross-referencing scope; and a 2026-08-23 14:42-entry question about
+  whether framework-level process changes need an ADR that was flagged then and never actually put
+  to the user across four subsequent framework pushes. Fixed the six mechanical/design findings in
+  commits `738ee4b`/`9cea998` — verified by re-reading every changed section, grepping both repos
+  for stale step-numbering and leftover old phrasing, `diff`-ing `framework-maintenance.md` and
+  `CLAUDE.md`/`CLAUDE.md.template` between the two repos for continued parity, and validating all
+  three `_data/*.jsonl` files parse as JSON — rather than a second full 8-agent pass, since the
+  first pass's findings were specific enough to verify directly against the fix.
+
+### Framework Reviewer
+
+- Command: same invocation as Project Reviewer above (this diff touches `CLAUDE.md` and
+  `docs/framework-maintenance.md` directly, and is itself framework-level end to end).
+- Repo: latteMCP @ `738ee4b`; `claude-project-framework` @ `9cea998`
+- Module(s): n/a — framework-level
+- Framework version: `26.08.23:19.09.808`
+- Outcome: fidelity check — confirmed `CLAUDE.md`'s "Reusable Framework Template" section and
+  Rules 15/16/17 are still word-for-word identical to `_frw`'s `CLAUDE.md.template` after both the
+  original addition and the fix-up. Ambiguity check — the 9 findings above are, precisely, ambiguity
+  and self-consistency gaps this lens exists to catch; see Project Reviewer outcome for the list.
+- Enhancement suggestions: `CR-1787501279766-q7r8` (Rule 16(c)/17 overlap, open),
+  `CR-1787501279766-s9t0` (ADR-for-framework-changes question, open) — the other seven findings
+  from this round were fixed rather than logged as open suggestions; see
+  `_frw/_data/change_requests.jsonl` `CR-1787501200100-c3d4` and the `CR-1787501279766-*` ids for
+  the full itemized resolution record.
