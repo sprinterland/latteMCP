@@ -4,13 +4,15 @@
 
 - `glossary.md` — shared vocabulary across all modules
 - `api-conventions.md` — shared HTTP API conventions (JSON casing, error bodies, auth header,
-  health payload, generated-OpenAPI requirement) — see ADR-0005
-- `dev-practices.md` — configurable process decisions: test-writing timing (TDD), whether
-  automated tests gate `Confirmed`, local verification requirements
+  health payload, generated-spec requirement) — delete this file if the project exposes no HTTP
+  API
+- `dev-practices.md` — configurable process decisions: test-writing timing, whether automated
+  tests gate `Confirmed`, local verification requirements — fill in before starting real work
 - `architecture/overview.md` — system-wide component map, service boundaries, deployment
 - `decisions/README.md` — index of all architecture decisions (ADRs)
 - `framework-maintenance.md` — how `_frw/` relates to this `docs/`, and the process for changing
-  the documentation philosophy itself (read rarely — only for a framework-level change)
+  the documentation philosophy itself (read rarely — only for a framework-level change; delete
+  if this project will never spin off its own `_frw/`)
 - `migrations.md` — docs-first process for fully replacing a module's implementation (read
   rarely — only during an active migration/rewrite)
 - `_discovery/coverage.md` — module-level rollup of reconstruction progress (Track A)
@@ -25,9 +27,7 @@ One row per `docs/modules/<name>/` folder. Add a row here whenever a module fold
 
 | Module | Path | Doc status | Notes |
 |---|---|---|---|
-| latteAPI | [`modules/latteAPI/`](modules/latteAPI/) | Confirmed | Business API — menu, orders, waitress login (ADR-0001); implemented and manually verified 2026-08-22, automated tests still pending |
-| latteMCP | [`modules/latteMCP/`](modules/latteMCP/) | Confirmed | MCP server wrapping latteAPI; see ADR-0002–0004; implemented and manually verified 2026-08-22, automated tests still pending |
-| latteMCPclient | [`modules/latteMCPclient/`](modules/latteMCPclient/) | Draft | Console demo client |
+| <module-name> | [`modules/<module-name>/`](modules/_module-template/) | Draft | <one-line purpose> |
 
 Doc status here should match `_discovery/coverage.md` while a module is still being
 reconstructed from existing code, and can be dropped from tracking once `Confirmed` and stable.
@@ -38,8 +38,7 @@ reconstructed from existing code, and can be dropped from tracking once `Confirm
 2. `modules/<name>/domain-model.md` — its data/vocabulary (and seed/example data, see `CLAUDE.md`)
 3. `modules/<name>/architecture.md` — how it's currently built
 4. `modules/<name>/interfaces/README.md` — contracts at its boundaries, one file per operation
-   (or a flat `modules/<name>/interfaces.md` for a module with no operations of its own — see
-   ADR-0005)
+   (or a flat `modules/<name>/interfaces.md` for a module with no operations of its own)
 5. `modules/<name>/test-spec.md` — how to verify it
 
 Then `../PLAN.md` for current status (`_project/completed_plan.md` for its finished-task archive)

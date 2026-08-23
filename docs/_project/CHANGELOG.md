@@ -5,6 +5,59 @@ log — only entries that change what a reader of `docs/` would believe about th
 scale, split into `CHANGELOG-<year>.md` once this file gets unwieldy, keeping this file as the
 current year only and linking older ones from the top.
 
+## 2026-08-23
+
+- Restructured the repo root so only `CLAUDE.md` and `PLAN.md` remain there: moved
+  `CHANGELOG.md` and `completed_plan.md` into `docs/_project/`, updating every cross-reference
+  (`CLAUDE.md`'s Documentation Structure/rules 7/10, `docs/00-index.md`, `docs/_discovery/
+  debt_log.md`, `PLAN.md`'s links to `completed_plan.md`).
+- Added a new `_frw/` at the repo root: a genericized, self-contained copy of the documentation
+  philosophy for bootstrapping future projects — `CLAUDE.md.template`, `PLAN.md.template`, a
+  `README.md` explaining how to use the bundle, and a `docs/` tree mirroring this project's
+  structure with every file reduced to placeholders/process text (no latteMCP-specific facts),
+  including a single `modules/_module-template/` in place of the three real modules. Added a new
+  "Reusable Framework Template (`_frw/`)" section to `CLAUDE.md` defining the project-vs-
+  framework split and the standing rule that any future *philosophy/framework*-level change
+  (as opposed to an ordinary project-specific doc change) requires asking the user first, then
+  propagating the approved change into both `CLAUDE.md` and `_frw/CLAUDE.md.template` together.
+- Renamed `_docs/` to `_frw/` (both the directory and every reference to it in `CLAUDE.md` and
+  `docs/_project/CHANGELOG.md`) to avoid confusion with the real `docs/` folder.
+- Added `docs/dev-practices.md`: a new configurable-process-decisions doc (test-writing timing,
+  whether automated tests gate `Confirmed`, local verification requirements), mirrored generically
+  at `_frw/docs/dev-practices.md` with the full menu of options and no selection made. Adopted for
+  this project: **TDD (test-first)**, **automated tests required for `Confirmed`**, and **local
+  test suite run required whenever tests exist for the touched area** — all stricter than the
+  test-after/manual-verification practice `latteAPI`/`latteMCP` (Phase 1/2) actually followed.
+  Per the file's transition note, their existing `Confirmed` status is not retroactively revoked;
+  Phase 3 (`latteMCPclient`) is the first module built under the new policy from the start (see
+  `PLAN.md`). Updated `CLAUDE.md`: added `dev-practices.md` to the Documentation Structure diagram
+  and a new "Development practices" subsection, amended Workflow Rule 9 to note the
+  `dev-practices.md` override, and added Workflow Rule 14 governing test-timing/local-verification
+  process. Mirrored all of these into `_frw/CLAUDE.md.template`, `_frw/docs/00-index.md`, and
+  `_frw/README.md`.
+- Shrunk `CLAUDE.md` from 372 to 269 lines (-28%) by extracting its three largest,
+  rarely-relevant-per-task sections into dedicated docs, since `CLAUDE.md` (unlike `docs/`) is
+  injected into every conversation's context regardless of what the task actually is, while
+  `docs/` files are already read selectively per Workflow Rule 1 — no information was removed,
+  only relocated to where it's read on demand instead of paid for on every turn:
+  - Track A's full per-operation process (topology scan, module ordering rationale, the loop
+    itself, batching guidance, ambiguity handling) moved into `docs/_discovery/discovery_plan.md`
+    (merging with — not duplicating — what that file already tracked); `CLAUDE.md`'s Track A
+    section is now a short pointer.
+  - The `_frw/` structure diagram, the project-vs-framework distinction, and the 4-step
+    maintenance procedure moved into new `docs/framework-maintenance.md`; `CLAUDE.md` keeps only
+    the one-paragraph summary and the standing "ask first" rule inline, since that part must stay
+    always-visible to be followed proactively.
+  - The full Migrations & Rewrites process moved into new `docs/migrations.md`; `CLAUDE.md` keeps
+    a two-sentence pointer.
+  Mirrored `docs/_discovery/discovery_plan.md`'s merge, `docs/framework-maintenance.md`, and
+  `docs/migrations.md` into `_frw/` (generic versions), added all three to both `00-index.md`
+  files' Cross-cutting list and `_frw/README.md`'s bundle listing, and resynced
+  `_frw/CLAUDE.md.template` — which now needs no genericization edits at all, since the two
+  remaining latteMCP-specific mentions were both inside the extracted framework-template section.
+  Further reduction (smarter per-task doc selection instead of reading whole module folders) is
+  a separate follow-up, not addressed by this change.
+
 ## 2026-08-22
 
 - Initial documentation structure created (v2: module-sharded, discovery-tracked).

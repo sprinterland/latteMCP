@@ -36,51 +36,24 @@ per candidate module. This produces a first-draft module list (→ `docs/00-inde
 route/handler/consumer/job-definition patterns, without reading any function bodies yet (→ the
 Operation Backlog below).
 
-This project's scan:
-
-- [x] Enumerate top-level packages/services from build manifests — `latteMCP.slnx` lists three
-      projects: `src/latteAPI`, `src/latteMCP`, `src/latteMCPclient`.
-- [x] Locate existing machine-readable specs — none exist (no OpenAPI/proto/GraphQL schema in
-      the repo).
-- [x] Inventory existing legacy docs — none existed before this documentation pass.
-- [x] Grep for route/handler/consumer/job-definition patterns — result at the time of this scan
-      (2026-08-22, before Phase 1/2): **no operations to index**. `src/latteAPI/Program.cs` was
-      still the unmodified weather-forecast template (no real endpoints), and
-      `src/latteMCP/Program.cs` / `src/latteMCPclient/Program.cs` were still unmodified
-      "Hello World" templates. The only pre-existing implementation was `latteAPI`'s domain
-      model/data files (`Models/`, `Data/`), which had no request-handling entry points of their
-      own to treat as operations. Since then, `latteAPI` (Phase 1) and `latteMCP` (Phase 2) have
-      both been implemented via Track B, each operation written from its pre-existing forward
-      spec in `docs/modules/*/` (not reverse-engineered) — see their `requirements.md`/
-      `interfaces/` for the now-`Confirmed` result. `latteMCPclient` remains unimplemented.
-- [x] Populate `docs/00-index.md` and `coverage.md` with the first-draft module list.
-
-Conclusion: this repo had essentially nothing for Track A to reconstruct at the time of this
-scan. The Operation Backlog below is intentionally near-empty — `latteAPI` and `latteMCP`'s
-operations were specified as forward requirements/interfaces in `docs/modules/*/` and then
-implemented from those specs (Track B's docs-first flow, `CLAUDE.md` rule 6), not
-reverse-engineered from pre-existing code, so neither generated rows here. `latteMCPclient`'s
-operations remain specified but unimplemented (Phase 3). Re-run Phase 0 only if code is ever
-found to have landed *ahead* of its doc for any of the three apps.
+- [ ] Enumerate top-level packages/services from build manifests.
+- [ ] Locate existing machine-readable specs (OpenAPI/proto/GraphQL schema) — use them instead of
+      reverse-engineering the same contract from code if found.
+- [ ] Inventory existing legacy docs per candidate module.
+- [ ] Grep for route/handler/consumer/job-definition patterns — signatures only, no function
+      bodies yet.
+- [ ] Populate `docs/00-index.md` and `coverage.md` with the first-draft module list.
 
 ## Module Ordering
 
 | Order | Module | Why this order |
 |---|---|---|
-| 1 | latteAPI | Owns the domain model and identity (ADR-0001); `latteMCP` and `latteMCPclient` both depend on it. |
-| 2 | latteMCP | Wraps `latteAPI`; `latteMCPclient` depends on it. |
-| 3 | latteMCPclient | Depends on both of the above; nothing depends on it. |
+| 1 | <module> | <reason> |
 
 ## Operation Backlog
 
 Grain: one HTTP endpoint / queue consumer / scheduled job / CLI command / significant internal
 library entry point = one operation = one row.
-
-Empty by design (see Phase 0 conclusion above) — no implemented operations exist yet to
-reconstruct. Populate this table only if an operation is ever implemented *without* first being
-specified in the relevant module's `requirements.md`/`interfaces/` (or flat `interfaces.md` for
-a module with no operations of its own — see ADR-0005), i.e. code arrives ahead of its doc
-rather than the other way around.
 
 | Op ID | Module | Type | Entry point (file:line) | Complexity | Batch | Status | Confidence | Notes / open questions |
 |---|---|---|---|---|---|---|---|---|

@@ -1,15 +1,15 @@
 # Completed Plan Tasks
 
 Archive of tasks checked off in `PLAN.md` and moved out of it to keep that file scoped to
-active/near-term work only (see rule 12 in `CLAUDE.md`). Entries are grouped by the phase heading
-they were completed under, in the order they were finished. This file is a historical record —
-don't re-open or re-edit an entry here; if a completed item needs revisiting, add a new task in
-`PLAN.md` instead and link back to the relevant entry below.
+active/near-term work only (see rule 12 in `../../CLAUDE.md`). Entries are grouped by the phase
+heading they were completed under, in the order they were finished. This file is a historical
+record — don't re-open or re-edit an entry here; if a completed item needs revisiting, add a new
+task in `../../PLAN.md` instead and link back to the relevant entry below.
 
 ## Phase 1 — `latteAPI` (completed 2026-08-22, except automated tests — see `PLAN.md`)
 
 Implements: API-REQ-001 through API-REQ-006 (see
-[`docs/modules/latteAPI/requirements.md`](docs/modules/latteAPI/requirements.md)).
+[`docs/modules/latteAPI/requirements.md`](../modules/latteAPI/requirements.md)).
 
 - [x] Register `OrderStore` in DI as a singleton.
 - [x] `GET /health` (API-REQ-006).
@@ -33,7 +33,7 @@ The one remaining Phase 1 item (automated tests for `test-spec.md`) is still ope
 ## Phase 2 — `latteMCP` (completed 2026-08-22, except automated tests — see `PLAN.md`)
 
 Implements: MCP-REQ-001 through MCP-REQ-005 (see
-[`docs/modules/latteMCP/requirements.md`](docs/modules/latteMCP/requirements.md)).
+[`docs/modules/latteMCP/requirements.md`](../modules/latteMCP/requirements.md)).
 
 - [x] Typed `HttpClient` to `latteAPI` (`LatteApiClient`), base URL from `LatteApi:BaseUrl` in
       `appsettings.Development.json`.

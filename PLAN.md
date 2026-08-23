@@ -16,6 +16,12 @@ been deferred to `docs/_discovery/debt_log.md` since those gaps are tracked here
 `docs/00-index.md` for the module map and `docs/decisions/` (ADR-0001–0004) for the reasoning
 behind the design choices reflected in the tasks below.
 
+`docs/dev-practices.md` (adopted 2026-08-23) now requires TDD (test-first) and passing automated
+tests before `Confirmed` for all work going forward — Phase 3 below follows it from the start.
+Per that file's transition note, `latteAPI`/`latteMCP`'s existing `Confirmed` status from Phase
+1/2 is not retroactively revoked; their open automated-test items below now also serve to satisfy
+the new stricter policy, not just close out a nice-to-have.
+
 ## Status
 
 - Last updated: 2026-08-22
@@ -33,7 +39,7 @@ _Nothing yet — Phase 3 below is next up._
 Implements: API-REQ-001 through API-REQ-006 (see
 [`docs/modules/latteAPI/requirements.md`](docs/modules/latteAPI/requirements.md)). All tasks but
 the last were completed 2026-08-22 and moved to
-[`completed_plan.md`](completed_plan.md#phase-1--latteapi-completed-2026-08-22-except-automated-tests--see-planmd).
+[`docs/_project/completed_plan.md`](docs/_project/completed_plan.md#phase-1--latteapi-completed-2026-08-22-except-automated-tests--see-planmd).
 
 - [ ] Write automated tests for `docs/modules/latteAPI/test-spec.md` (API-TEST-001–012); those
       entries stay `Draft` until then per `CLAUDE.md` rule 8.
@@ -47,7 +53,7 @@ via automated tests (not yet done — the one open item above).
 Implements: MCP-REQ-001 through MCP-REQ-005 (see
 [`docs/modules/latteMCP/requirements.md`](docs/modules/latteMCP/requirements.md)). All tasks but
 the last were completed 2026-08-22 and moved to
-[`completed_plan.md`](completed_plan.md#phase-2--lattemcp-completed-2026-08-22-except-automated-tests--see-planmd).
+[`docs/_project/completed_plan.md`](docs/_project/completed_plan.md#phase-2--lattemcp-completed-2026-08-22-except-automated-tests--see-planmd).
 
 - [ ] Write automated tests for `docs/modules/latteMCP/test-spec.md` (MCP-TEST-001–009); those
       entries stay `Draft` until then per `CLAUDE.md` rule 8.
@@ -60,16 +66,23 @@ via automated tests (not yet done — the one open item above).
 
 Implements: CLIENT-REQ-001 through CLIENT-REQ-004 (see
 [`docs/modules/latteMCPclient/requirements.md`](docs/modules/latteMCPclient/requirements.md)).
+Follows `docs/dev-practices.md` (TDD): write each task's automated test from
+`docs/modules/latteMCPclient/test-spec.md` first, confirm it fails for the right reason, then
+implement.
 
-- [ ] Interactive credential prompt (password not echoed) → `POST /login` on `latteMCP`.
-- [ ] Open MCP connection with the token attached to every request.
-- [ ] List tools.
-- [ ] Scripted demo: menu → place order → get order → list orders.
+- [ ] Interactive credential prompt (password not echoed) → `POST /login` on `latteMCP`
+      (CLIENT-TEST-001/002 first).
+- [ ] Open MCP connection with the token attached to every request (CLIENT-TEST-003 first).
+- [ ] List tools (CLIENT-TEST-004 first).
+- [ ] Scripted demo: menu → place order → get order → list orders (CLIENT-TEST-005 first).
 - [ ] Remove the "Hello, World!" placeholder.
 - [ ] Bring `docs/modules/latteMCPclient/*` from `Draft` to `Confirmed` once implementation
-      matches spec.
+      matches spec and its automated tests pass (required for `Confirmed` per
+      `docs/dev-practices.md`).
 
-**Exit criteria:** see `docs/modules/latteMCPclient/requirements.md`.
+**Exit criteria:** see `docs/modules/latteMCPclient/requirements.md`, plus
+`docs/modules/latteMCPclient/test-spec.md` entries passing via automated tests (required for
+`Confirmed` under `docs/dev-practices.md`, unlike Phase 1/2 which predate that policy).
 
 ## Open Questions
 
