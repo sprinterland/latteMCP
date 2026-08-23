@@ -13,10 +13,11 @@ past review needs revisiting, add a new entry and link back to it.
 Each sub-entry records: the command run and its scope (see `CLAUDE.md` Rule 15/16 for the exact,
 current scope of each reviewer — not restated here, to avoid a second copy that can drift out of
 sync), the repo and commit(s) being pushed, the module(s) the push touched (or "n/a —
-framework-level" for the Framework Reviewer), the `_frw/VERSION` value at run time (format in
-`docs/framework-maintenance.md`'s "Versioning" section; read live from the shared external `_frw/`
-clone if reachable, or the static "bootstrapped from" version recorded in this project's own
-`docs/framework-maintenance.md` otherwise), and the outcome (a description of what was found and
+framework-level" for the Framework Reviewer), the value of `_frw`'s `VERSION` file at run time
+(format in `docs/framework-maintenance.md`'s "Versioning" section; read live from the shared
+external `_frw` clone if reachable, or the static "bootstrapped from" version recorded in this
+project's own `docs/framework-maintenance.md` otherwise), and the outcome (a description of what
+was found and
 what happened to it, not a strict tally — a full multi-agent review run's findings often overlap
 across agents, so a precise "N found, M fixed" count is more likely to go stale/wrong than useful;
 say what was fixed and what was deferred, in words). The Framework Reviewer sub-entry also

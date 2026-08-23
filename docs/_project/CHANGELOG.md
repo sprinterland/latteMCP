@@ -7,6 +7,30 @@ current year only and linking older ones from the top.
 
 ## 2026-08-23
 
+- Flattened `_frw`'s internal `_frw/` wrapper folder up to the `claude-project-framework` repo's
+  own root (framework-level change, applies to future projects too): that repo's root now **is**
+  the bundle (`README.md`, `VERSION`, `CLAUDE.md.template`, `PLAN.md.template`, `docs/` all live
+  directly at its root) instead of being nested one level down inside a `_frw/` subfolder —
+  redundant now that the repo is entirely dedicated to being the framework bundle, with no
+  surrounding project `docs/` to distinguish it from the way there was when this same content
+  lived inside a project repo. Moved every file with `git mv` (commit `a644991` in
+  `claude-project-framework`, bumping `VERSION` to `26.08.23:17.49.988`) and deleted the now-empty
+  `_frw/` folder. Re-evaluated and fixed every literal `_frw/<path>` slash-notation reference
+  across both repos, since none of those paths exist any more (nothing lives under a `_frw/`
+  subfolder anywhere): `CLAUDE.md`'s "Reusable Framework Template" section and Rules 15/16,
+  `docs/framework-maintenance.md` (full rewrite — the "What `_frw` is" tree diagram un-nested, the
+  local-clone note updated, the "Bootstrapped from / last synced" fact bumped to commit `a644991`),
+  `docs/dev-practices.md`, `docs/00-index.md`, and `docs/_project/review_log.md`'s live format
+  description (not its past dated entries, which are historical record of what was true when
+  written and were left untouched per this file's own "don't edit a past entry" convention).
+  Mirrored the same fixes into the framework bundle's own copies of these files
+  (`claude-project-framework`'s `README.md`, `CLAUDE.md.template`, `docs/framework-maintenance.md`,
+  `docs/00-index.md`, `docs/_project/review_log.md`, `docs/dev-practices.md`) — confirmed
+  `CLAUDE.md`'s "Reusable Framework Template" section and Rules 15/16 stay word-for-word identical
+  to `_frw`'s `CLAUDE.md.template` after the edits. Kept `_frw` itself as the informal name this
+  project's docs use for the shared framework repo — that naming convention is a project-doc
+  choice, unaffected by the framework repo's own internal file layout; only the slash-path
+  notation implying a subfolder was retired.
 - Moved `_frw/` out of this repo entirely (framework-level change, applies to future projects
   too): it now lives in its own public GitHub repo,
   [`sprinterland/claude-project-framework`](https://github.com/sprinterland/claude-project-framework)

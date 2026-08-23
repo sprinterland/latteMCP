@@ -56,7 +56,7 @@ docs/
 Only `CLAUDE.md` and `PLAN.md` live at the project root — everything else that describes or logs
 the project belongs under `docs/`. `docs/_project/` holds files that are a running log *of this
 specific project* (`CHANGELOG.md`, `completed_plan.md`) rather than reusable framework content —
-see "Reusable framework template (`_frw/`)" below for the distinction this split is for.
+see "Reusable framework template (`_frw`)" below for the distinction this split is for.
 
 Add one `docs/modules/<module-name>/` folder per bounded context / service / major subsystem,
 named to match the actual code module or service directory where possible. This is what lets
@@ -119,13 +119,13 @@ written and verified — test-writing timing (test-after / TDD test-first / test
 whether automated tests are required for a module to reach `Status: Confirmed`, whether the
 automated test suite must be run locally before a task counts as done, and whether the two-
 reviewer gate (project + framework) runs before every push. Workflow Rules 9, 14, 15, and 16
-below read this file rather than hard-coding one policy, so a project bootstrapped from `_frw/`
+below read this file rather than hard-coding one policy, so a project bootstrapped from `_frw`
 can pick its own rigor level without editing this file. If `docs/dev-practices.md` doesn't exist
 yet, the defaults are: test-after, manual verification sufficient for `Confirmed`, no fixed
 local-run requirement (i.e. Rule 9's base text, unmodified), and Rules 15/16's own base text
 (both reviewers, every push where applicable) in force unmodified. Changing a setting in
 `dev-practices.md` is an ordinary process decision — confirm it per Workflow Rule 2, update the
-file, then follow it; it does not require a `_frw/` update, since `_frw/docs/dev-practices.md`
+file, then follow it; it does not require a `_frw` update, since `_frw`'s own `docs/dev-practices.md`
 already documents the full menu of options
 generically.
 
@@ -152,18 +152,20 @@ not per-module) since a single decision often affects multiple modules — each 
 modules it affects instead. Tests, code comments, and commit messages should reference these IDs
 so any piece of the system can be traced back to the requirement or decision that justifies it.
 
-## Reusable Framework Template (`_frw/`)
+## Reusable Framework Template (`_frw`)
 
-`_frw/` is a genericized, self-contained bootstrap kit for starting a different project with this
-same documentation philosophy — `docs/` stays this project's real content, `_frw/` stays generic
-(structure/placeholders only, no project facts). It lives **outside this repo**, in a shared
-external repo that multiple projects bootstrap from and propagate framework-level changes into —
-it is not vendored into any single project's own repo. See `docs/framework-maintenance.md` for the
-full structure, the concrete location, and the exact project-vs-framework split.
+`_frw` is this project's name for a genericized, self-contained bootstrap kit for starting a
+different project with this same documentation philosophy — `docs/` stays this project's real
+content, `_frw` stays generic (structure/placeholders only, no project facts). It lives **outside
+this repo**, in its own shared external repo that multiple projects bootstrap from and propagate
+framework-level changes into — it is not vendored into any single project's own repo, and nothing
+in it lives under a literal `_frw/` subfolder (that repo's root **is** the bundle). See
+`docs/framework-maintenance.md` for the full structure, the concrete location, and the exact
+project-vs-framework split.
 
 **Standing rule:** a framework-level change (something meant to apply to future projects too, not
 just a fact about this one) is never made unilaterally — ask the user first, then apply it to
-`CLAUDE.md`/`docs/` and propagate the generic version into the shared `_frw/` together, and log it
+`CLAUDE.md`/`docs/` and propagate the generic version into the shared `_frw` together, and log it
 in `docs/_project/CHANGELOG.md`. See `docs/framework-maintenance.md` for the full procedure.
 
 ## Two Concurrent Tracks: Discovery and Development
@@ -273,7 +275,7 @@ and what must not change during a rewrite.
     every task — test-writing timing (test-after / TDD test-first / test-alongside) and whether
     the automated test suite must be run locally before a task counts as done. That file also
     governs the override to Rule 9 above. If the file doesn't exist yet (e.g. a project freshly
-    bootstrapped from `_frw/` that hasn't filled it in), fall back to this file's defaults:
+    bootstrapped from `_frw` that hasn't filled it in), fall back to this file's defaults:
     test-after, manual verification sufficient for `Confirmed`, no fixed local-run requirement.
 15. **Project Reviewer.** Before any `git push`, run `/code-review high` scoped to everything in
     the push *except* what Rule 16 claims below — by construction, this is every file Rule 16
@@ -286,10 +288,10 @@ and what must not change during a rewrite.
     every push. Fix its findings, or explicitly acknowledge and log a deliberate deferral (e.g. in
     the relevant `PLAN.md`/`docs/_project/completed_plan.md` entry), before the push proceeds. Log
     the run in `docs/_project/review_log.md` as a **Project Reviewer** sub-entry — always present
-    — with the command, repo/commit, module(s) touched, and the current `_frw/VERSION` value (the
-    `YY.MM.DD:HH.MM.FFF` format is documented in `docs/framework-maintenance.md`'s "Versioning"
-    section, not in `_frw/VERSION` itself, which is just the bare value; read live from the shared
-    external `_frw/` — see `docs/framework-maintenance.md` for its location — falling back to the
+    — with the command, repo/commit, module(s) touched, and the current value of `_frw`'s `VERSION`
+    file (the `YY.MM.DD:HH.MM.FFF` format is documented in `docs/framework-maintenance.md`'s
+    "Versioning" section, not in that file itself, which is just the bare value; read live from
+    the shared external `_frw` clone — see `docs/framework-maintenance.md` for its location — falling back to the
     static "bootstrapped from" version recorded in this project's own
     `docs/framework-maintenance.md` if that shared location isn't reachable). Governed by
     `docs/dev-practices.md`'s "Secondary Review Before Push" setting; if that file doesn't set it,
@@ -302,12 +304,12 @@ and what must not change during a rewrite.
     `docs/framework-maintenance.md`, or `docs/migrations.md` — or that changes
     `docs/dev-practices.md`'s menu/structure itself (its "Secondary Review Before Push" section is
     this two-reviewer policy's own canonical description, so a structural change there can itself
-    be a framework-level change needing propagation into the shared `_frw/` — see
-    `docs/framework-maintenance.md`) — also run `/code-review high` scoped to those paths. `_frw/`
-    itself lives outside this repo (see "Reusable Framework Template" above) — a push from this
-    repo never touches it directly, so it falls outside this rule's scope; propagating a change
-    into it is a separate edit made directly in the shared `_frw/` location, reviewed there on its
-    own terms. Merely flipping one of
+    be a framework-level change needing propagation into the shared `_frw` — see
+    `docs/framework-maintenance.md`) — also run `/code-review high` scoped to those paths. `_frw`
+    itself lives outside this repo, in its own repo (see "Reusable Framework Template" above) — a
+    push from this repo never touches it directly, so it falls outside this rule's scope;
+    propagating a change into it is a separate edit made directly in the shared `_frw` repo,
+    reviewed there on its own terms. Merely flipping one of
     `docs/dev-practices.md`'s `Selected:` values (e.g. TDD to test-after) stays an ordinary,
     Rule-15-only change per the "Development practices" section above — it doesn't by itself
     trigger this rule, since it changes this project's choice, not the menu of choices or the
@@ -316,8 +318,8 @@ and what must not change during a rewrite.
     framework-focused change like this one); invoke separately when the push is mostly ordinary
     project work with only an incidental framework-path touch, so the framework lens gets its own
     focused pass rather than being buried in an unrelated diff. The lens: (a) *framework/project
-    fidelity* — does `_frw/CLAUDE.md.template` (in the shared external location) still match
-    `CLAUDE.md`'s genericizable content, does every file under `_frw/` stay free of
+    fidelity* — does `_frw`'s `CLAUDE.md.template` (in the shared external repo) still match
+    `CLAUDE.md`'s genericizable content, does every file in `_frw` stay free of
     project-specific facts; (b) *ambiguity* — is any
     new/changed rule or template file unclear, self-contradictory, or missing a cross-reference a
     reader would need; (c) *enhancement opportunities* — note anything generalizable worth

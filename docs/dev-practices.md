@@ -4,8 +4,8 @@ Configurable process decisions for how this project writes and verifies code —
 counterpart to `api-conventions.md` (which fixes API *contract* conventions). `CLAUDE.md`
 Workflow Rules 9, 14, 15, and 16 read the settings below. Changing a setting here is a project
 process decision like any other — confirm it per Workflow Rule 2, update this file, then follow
-it — it does **not** require touching `CLAUDE.md` itself or the shared `_frw/` (see
-`_frw/docs/dev-practices.md`, in the external framework clone/repo described in
+it — it does **not** require touching `CLAUDE.md` itself or the shared `_frw` (see
+`_frw`'s own `docs/dev-practices.md`, in the external framework clone/repo described in
 `docs/framework-maintenance.md`, for the full menu this project's choices were drawn from, kept
 generic for future projects).
 
@@ -17,8 +17,8 @@ Write the failing automated test from the relevant `test-spec.md` entry before w
 implementation that makes it pass. A task is not done until: the test exists, it initially fails
 for the right reason (not a compile error), and the implementation makes it pass.
 
-Other options (not selected, documented for reference — see `_frw/docs/dev-practices.md` for full
-descriptions):
+Other options (not selected, documented for reference — see `_frw`'s `docs/dev-practices.md` for
+full descriptions):
 - Test-after — implement first, backfill automated tests afterward as a tracked follow-up.
 - Test-alongside — implementation and its tests written in the same task, no strict ordering.
 
@@ -70,8 +70,8 @@ already done, and of each other:
 Findings must be fixed, or explicitly acknowledged and logged as a deliberate deferral (e.g. in
 the relevant `../PLAN.md`/`_project/completed_plan.md` entry), before the push proceeds. Both
 runs are logged in `docs/_project/review_log.md` — command, repo/commit, module(s) touched, and
-the `_frw/VERSION` value at run time (format in `docs/framework-maintenance.md`'s "Versioning"
-section) — for later investigation. Applies to every push, on any branch — this project has no
+the value of `_frw`'s `VERSION` file at run time (format in `docs/framework-maintenance.md`'s
+"Versioning" section) — for later investigation. Applies to every push, on any branch — this project has no
 separate "protected branch" concept to carve out an exemption for.
 
 Self-enforced per `CLAUDE.md` Workflow Rules 15–16 — no technical block (e.g. no pre-push git

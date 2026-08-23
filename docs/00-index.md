@@ -10,7 +10,7 @@
   gate (project + framework) runs before every push
 - `architecture/overview.md` — system-wide component map, service boundaries, deployment
 - `decisions/README.md` — index of all architecture decisions (ADRs)
-- `framework-maintenance.md` — how `_frw/` relates to this `docs/`, and the process for changing
+- `framework-maintenance.md` — how `_frw` relates to this `docs/`, and the process for changing
   the documentation philosophy itself (read rarely — only for a framework-level change)
 - `migrations.md` — docs-first process for fully replacing a module's implementation (read
   rarely — only during an active migration/rewrite)
