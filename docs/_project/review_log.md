@@ -153,3 +153,34 @@ records any enhancement suggestions raised (or "none").
   latteMCP-specific fact. Ambiguity check — none found beyond the dev-practices.md/review_log.md
   gaps already listed under Project Reviewer above (same review pass, same fixes).
 - Enhancement suggestions: none this round.
+
+## 2026-08-23 17:55 — commit a83a01c (Flatten `_frw`'s internal `_frw/` wrapper up to the framework repo's own root)
+
+### Project Reviewer
+
+- Command: `/code-review high`, one invocation covering the full diff (`CLAUDE.md`,
+  `docs/00-index.md`, `docs/_project/CHANGELOG.md`, `docs/dev-practices.md`,
+  `docs/framework-maintenance.md`, and `docs/_project/review_log.md`'s live format description).
+- Repo: latteMCP @ `a83a01c`
+- Module(s): n/a — docs/framework-process change, no module code touched
+- Framework version: `26.08.23:17.49.988` (live-read from the shared external `_frw` clone at
+  `/Users/sprn/claudework/newFrw/`, commit `a644991` in `claude-project-framework`)
+- Outcome: clean — a thorough multi-angle pass (line-by-line, removed-behavior audit, cross-file/
+  cross-repo tracing, and external verification against the actual `claude-project-framework` repo
+  contents) found no correctness bugs, no dropped invariants, and no broken cross-references. Two
+  purely cosmetic candidates (minor line-wrap width inconsistencies in `CLAUDE.md` and
+  `docs/dev-practices.md`) were considered and judged not worth a finding.
+
+### Framework Reviewer
+
+- Command: same invocation as Project Reviewer above, re-read through the Rule 16 lens (this push
+  touches `CLAUDE.md` and `docs/framework-maintenance.md`, and the two scopes substantially
+  overlap for a framework-focused change like this one).
+- Repo: latteMCP @ `a83a01c`
+- Module(s): n/a — framework-level
+- Framework version: `26.08.23:17.49.988`
+- Outcome: fidelity check — re-confirmed `CLAUDE.md`'s "Reusable Framework Template" section and
+  Rules 15/16 are still word-for-word identical to `_frw`'s `CLAUDE.md.template` after this
+  round's terminology cleanup; confirmed no file in `_frw` carries any latteMCP-specific fact.
+  Ambiguity check — none found.
+- Enhancement suggestions: none this round.
