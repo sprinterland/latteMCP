@@ -55,9 +55,9 @@ still has something permanent to cite if the shared clone/repo is ever unreachab
 machine, no network, repo moved) at review time:
 
 **Bootstrapped from / last synced at [`claude-project-framework`](https://github.com/sprinterland/claude-project-framework)
-commit `1c44c0d`, version `26.08.23:23.20.557`** (2026-08-23 — added a `moderate` severity tier
-and a fixed-enum `affected_entities` field to `_data/change_requests.jsonl`'s schema, requested
-directly by the user in latteMCP).
+commit `7a7b227`, version `26.08.24:00.06.658`** (2026-08-24 — added a minor-propagation fast lane
+to the Maintenance rule's step 1-2 approval, requested directly by the user in latteMCP; see
+FRW-ADR-0009).
 This line records only the current sync as a static fact, same as the rest of this file's
 principle of pointing rather than restating — the full history of every prior sync already lives
 in `docs/project/CHANGELOG.md` and `_frw/_data/update_history.jsonl`, not here.
@@ -146,16 +146,40 @@ the underlying documentation *philosophy/framework itself* (something meant to a
 projects too, not just a fact about this one) — and per standing instruction, that decision is
 never made unilaterally:
 
-1. When a change looks like a framework-level change (not just a project fact), stop and ask the
-   user whether to make it, before touching either `CLAUDE.md` or the shared `_frw`.
-2. Once approved, draft a written plan for the change — its scope, the files it will touch (in
-   this project and/or the shared `_frw` clone), and an outline of the content/edits — and get
-   the user's sign-off on that plan before making any edits. This applies to every framework-level
-   change, large or small; a one-line plan for a one-line change still satisfies it. Plan Mode is
-   the natural way to do this in an interactive session. Only once the plan is approved does the
-   rest of this rule proceed.
+1. When a change looks like a framework-level change (not just a project fact), classify it
+   against the criteria below before touching either `CLAUDE.md` or the shared `_frw` — every
+   framework-level change still needs the user's approval before any edits begin; what differs is
+   how much ceremony that approval takes.
+
+   **Minor propagation** — all four must hold, or it's a full framework change instead:
+   - confined to a single file — an edit applied identically to a project doc and its mirrored
+     `_frw` copy still counts as one file for this purpose, as does a lone `_frw`-only file with
+     no project-side counterpart (e.g. one `_design/` doc); touching any additional file with
+     different content (e.g. a separate lookup/reference copy elsewhere in `_frw`) does not
+   - a wording clarification, a single field/value addition, or a comparably small self-contained
+     edit
+   - introduces no new rule, section, or file, and does not change an existing rule's meaning
+   - carries no architectural, security, or business-rule implication of its own
+
+   The fast lane is for genuinely small edits, not a way to avoid asking — if any criterion is
+   doubtful, default to a full framework change.
+
+2. Get the user's approval, scaled to the classification above:
+
+   - **Full framework change:** stop and ask the user whether to make it. Once approved, draft a
+     written plan — scope, files touched, an outline of the content/edits — and get sign-off on
+     that plan before making any edits. Plan Mode is the natural way to do this in an interactive
+     session.
+   - **Minor propagation:** combine the ask and the plan into one message — show the user the
+     exact proposed edit (the diff itself, inline) and ask for a single yes/no. No separate plan
+     document or Plan Mode round-trip is required; the diff *is* the plan.
+
+   Only once approved (either path) does the rest of this rule proceed — steps 3-6 are unchanged
+   by which path step 2 took. (FRW-ADR-0008, FRW-ADR-0009)
 3. Apply it to this project's own files first (`CLAUDE.md`, and `docs/` if the
-   change affects process there too), same as any other confirmed decision (Workflow Rule 6).
+   change affects process there too), same as any other confirmed decision (Workflow Rule 6). A
+   no-op when the change is confined entirely to `_frw`-internal files (e.g. `_design/`) with no
+   project-side counterpart to apply.
 4. Then propagate the equivalent generic version of the same change into the local `_frw` clone
    (including its `CLAUDE.md.template` if `CLAUDE.md` itself changed) so the template bundle
    stays current with the philosophy it's meant to hand off, bump its `VERSION` file to the
