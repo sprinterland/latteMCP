@@ -272,3 +272,35 @@ records the `_frw/_data/change_requests.jsonl` `id`(s) of any enhancement sugges
   from this round were fixed rather than logged as open suggestions; see
   `_frw/_data/change_requests.jsonl` `CR-1787501200100-c3d4` and the `CR-1787501279766-*` ids for
   the full itemized resolution record.
+
+## 2026-08-23 19:14 — commit range 738ee4b → HEAD (Resolve ADR-for-framework-changes question; define append-only "resolved" semantics)
+
+### Project Reviewer
+
+- Command: manual self-review (re-read every changed section, `diff`-checked `CLAUDE.md` against
+  `CLAUDE.md.template` and `docs/framework-maintenance.md` between both repos for continued
+  parity, validated all three `_data/*.jsonl` files still parse as JSON after the append) — no
+  fresh multi-agent `/code-review` pass, since this round is a small, direct user-confirmed
+  decision (Rule 11 carve-out) plus one narrowly-scoped mechanical fix (the append-only "resolved"
+  definition), not new unreviewed design surface.
+- Repo: latteMCP @ HEAD; `claude-project-framework` @ `461bd5e`
+- Module(s): n/a — docs/framework-process change, no module code touched
+- Framework version: `26.08.23:19.14.972`
+- Outcome: clean — CLAUDE.md/CLAUDE.md.template Rule 11 differ only in the expected
+  project-specific confirmation-date parenthetical; `change_requests.jsonl`'s
+  `CR-1787501279766-s9t0` resolved via a new appended line (same id) rather than an in-place
+  edit, as a live test of the mechanism just defined; all three `_data/*.jsonl` files remain
+  valid JSON Lines.
+
+### Framework Reviewer
+
+- Command: same self-review as Project Reviewer above (this diff touches `CLAUDE.md` and
+  `docs/framework-maintenance.md` directly).
+- Repo: latteMCP @ HEAD; `claude-project-framework` @ `461bd5e`
+- Module(s): n/a — framework-level
+- Framework version: `26.08.23:19.14.972`
+- Outcome: fidelity check — confirmed the Rule 11 carve-out is word-for-word identical between
+  `CLAUDE.md` and `CLAUDE.md.template` apart from the one project-specific parenthetical; confirmed
+  the append-only "resolved" definition is identical in both repos'
+  `docs/framework-maintenance.md`. Ambiguity check — none found.
+- Enhancement suggestions: none this round.

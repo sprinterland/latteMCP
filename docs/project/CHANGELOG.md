@@ -7,6 +7,22 @@ current year only and linking older ones from the top.
 
 ## 2026-08-23
 
+- Resolved the ADR-for-framework-changes question flagged (but never actually asked) in
+  `review_log.md`'s 2026-08-23 14:42 entry: asked the user directly — no, a framework-level
+  process change does **not** get its own ADR; `docs/framework-maintenance.md`,
+  `docs/project/CHANGELOG.md`, and `docs/project/review_log.md` already fully capture what
+  changed, why, and how it was reviewed, so a fourth record would just duplicate that. Encoded as
+  a carve-out in `CLAUDE.md`/`CLAUDE.md.template` Rule 11 (mirrored, word-for-word identical
+  except the project-specific confirmation-date parenthetical, per the usual fidelity check).
+  Also fixed an unresolvable instruction the original Rule 17 review had flagged (Simplification
+  finding #2) and the first fix-up round missed: `docs/framework-maintenance.md` said to "mark a
+  stale entry resolved" while also declaring the three `_data/*.jsonl` logs append-only/never-
+  rewritten. Defined the mechanism: "resolved" means appending a **new** line with the same `id`
+  and updated `status`/`resolution`/`resolved_at`, never editing the original line — a reader
+  takes the latest line per `id`. Resolved `change_requests.jsonl`'s own
+  `CR-1787501279766-s9t0` entry (the ADR question above) using exactly this mechanism, as a live
+  test of the new rule. Committed to both repos as `claude-project-framework` commit `461bd5e` /
+  latteMCP commit (this entry's own), bumping `VERSION` to `26.08.23:19.14.972`.
 - Added three append-only JSON-Lines activity logs under `claude-project-framework`'s `_data/`
   folder (framework-level change, applies to future projects too — user-requested, not proposed
   by Claude): `update_history.jsonl` (one record per completed framework update),

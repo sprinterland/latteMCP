@@ -53,12 +53,14 @@ still has something permanent to cite if the shared clone/repo is ever unreachab
 machine, no network, repo moved) at review time:
 
 **Bootstrapped from / last synced at [`claude-project-framework`](https://github.com/sprinterland/claude-project-framework)
-commit `9cea998`, version `26.08.23:19.09.808`** (2026-08-23 — added `_data/update_history.jsonl`,
+commit `461bd5e`, version `26.08.23:19.14.972`** (2026-08-23 — added `_data/update_history.jsonl`,
 `_data/push_reviews.jsonl`, and `_data/change_requests.jsonl` (the three append-only logs
 described in "Framework activity logs" below) and the Maintenance rule steps/`CLAUDE.md` Rule 17
 that govern them, then fixed several design gaps a Rule 15/16 review of that same addition found
-— a collision-prone ID scheme, a split review/push step, and a few docs that fell out of sync
-with themselves in the same diff — see `change_requests.jsonl` for the itemized list).
+— a collision-prone ID scheme, a split review/push step, a few docs that fell out of sync with
+themselves in the same diff, and an unresolvable "resolved" semantics for an append-only log —
+and resolved a long-open governance question: framework-level process changes don't get their
+own ADR (CLAUDE.md Rule 11); see `change_requests.jsonl` for the itemized list).
 
 ## What's project-specific vs. framework, precisely
 
@@ -79,7 +81,12 @@ earlier this file's history (dropping their leading underscore because they're o
 bootstrapped content), `_data/` deliberately keeps its underscore — here it marks "excluded from
 what gets copied into a project," not "hidden," which is a different, still-live reason to stand
 out from `docs/`. Each log file is one JSON object per line; new entries are always appended,
-never rewritten or deleted — mark a stale entry `resolved` (or similar) instead of removing it.
+never rewritten or deleted in place. "Marking an entry resolved" (e.g. a `change_requests.jsonl`
+item, once decided or fixed) means **appending a new line with the same `id`**, the updated
+`status`/`resolution`/`resolved_at`, and the rest of the fields unchanged — not editing the
+original line. A reader reconstructing current state takes, per `id`, the line with the latest
+`timestamp`/`resolved_at`; every earlier line for that `id` stays in the file as the historical
+record of how the entry got there.
 
 - **`update_history.jsonl`** — one record per completed framework update (Maintenance rule step 5
   below): `id`, `timestamp`, `project` (which project's need triggered the update), `summary`,

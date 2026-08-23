@@ -264,7 +264,12 @@ and what must not change during a rewrite.
     `docs/project/CHANGELOG.md`) or `PLAN.md`. Reference the config key name only.
 11. New significant decisions get a new ADR in `docs/decisions/`, added to `docs/decisions/
     README.md`; never edit or delete a past one's decision/consequences — supersede it with a new
-    ADR that references it.
+    ADR that references it. This is for project-level decisions (architecture, business rules,
+    tech stack). A framework-level process change (see "Reusable Framework Template" below) does
+    **not** get a separate ADR — `docs/framework-maintenance.md`, `docs/project/CHANGELOG.md`, and
+    `docs/project/review_log.md` already fully capture what changed, why, and how it was reviewed;
+    a fourth record would just duplicate that (confirmed by the user 2026-08-23, after this
+    question had sat open — flagged but never actually asked — across several framework changes).
 12. Keep `PLAN.md` scoped to active work only. If multiple teams work different modules in
     parallel, a module MAY keep its own `docs/modules/<module>/plan.md` for module-local work;
     root `PLAN.md` then tracks only cross-module or org-level initiatives.
