@@ -7,6 +7,27 @@ current year only and linking older ones from the top.
 
 ## 2026-08-23
 
+- Applied Rule 15's own first secondary-reviewer pass (`/code-review high`) to the two unpushed
+  commits below before pushing, and fixed what it found: `CLAUDE.md`/`_frw/CLAUDE.md.template`
+  listed Rule 8 among the rules governed by `dev-practices.md` even though Rule 8 never
+  references that file (corrected to "Rules 9, 14, and 15" in `CLAUDE.md`, `docs/dev-practices.md`,
+  `_frw/docs/dev-practices.md`, and `_frw/README.md`); `_frw/docs/dev-practices.md`'s new
+  Secondary Review setting had labeled **No** as the default when Rule 15 actually defaults to
+  **Yes** (swapped); both `00-index.md` files were missing the new setting from their
+  `dev-practices.md` summary bullet (added); `_frw/docs/modules/_module-template/interfaces/
+  README.md` linked `CLAUDE.md.template` instead of the post-bootstrap `CLAUDE.md` filename
+  (fixed); the CHANGELOG's own "Shrunk `CLAUDE.md`..." entry below misstated the line counts as
+  372→269/-28% when the actual figures are 296→269/-9% (corrected); `docs/_discovery/
+  discovery_plan.md` and its `_frw/` counterpart had silently dropped the "document dependencies
+  just enough to unblock, come back for full depth later" instruction when Track A guidance was
+  extracted from `CLAUDE.md`, replacing it with an unrelated `debt_log.md` criterion instead of
+  alongside it (restored, keeping both conditions); and `CLAUDE.md`/`_frw/CLAUDE.md.template` used
+  lowercase `plan.md` in ~10 prose references to the root plan file while every other doc in the
+  tree (and the actual filename) uses `PLAN.md` (corrected, leaving the deliberately-lowercase
+  `docs/modules/<module>/plan.md` module-local reference untouched). Also added one line to Rule
+  15 clarifying it doesn't override Rule 2 — a review finding that's itself ambiguous, hard to
+  reverse, or touches security/architecture/business rules still gets asked about, not logged and
+  pushed past.
 - Added a new "Secondary Review Before Push" setting to `docs/dev-practices.md` (framework-level
   change, applies to future projects too): before any `git push`, run `/code-review high` against
   the outgoing commits as an independent secondary pass distinct from the authoring work, and fix
@@ -47,7 +68,7 @@ current year only and linking older ones from the top.
   `dev-practices.md` override, and added Workflow Rule 14 governing test-timing/local-verification
   process. Mirrored all of these into `_frw/CLAUDE.md.template`, `_frw/docs/00-index.md`, and
   `_frw/README.md`.
-- Shrunk `CLAUDE.md` from 372 to 269 lines (-28%) by extracting its three largest,
+- Shrunk `CLAUDE.md` from 296 to 269 lines (-9%) by extracting its three largest,
   rarely-relevant-per-task sections into dedicated docs, since `CLAUDE.md` (unlike `docs/`) is
   injected into every conversation's context regardless of what the task actually is, while
   `docs/` files are already read selectively per Workflow Rule 1 — no information was removed,

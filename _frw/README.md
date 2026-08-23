@@ -28,7 +28,7 @@ governing how this bundle relates to a real project's `docs/` and stays in sync 
 6. Fill in `docs/dev-practices.md` — pick a setting for each category (test-writing timing,
    whether automated tests gate `Confirmed`, local verification requirements, whether a
    secondary review gates every push) before real implementation work starts, since `CLAUDE.md`
-   Workflow Rules 8/9/14/15 read it from the first task onward. It's the one config file worth
+   Workflow Rules 9/14/15 read it from the first task onward. It's the one config file worth
    deciding early rather than leaving to "fill in later," since defaulting silently (test-after,
    `Confirmed` without tests, secondary review required on every push) is itself a choice.
 7. Read `CLAUDE.md` end to end before starting work — it is the actual rulebook, not this file.

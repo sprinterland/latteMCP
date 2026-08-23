@@ -3,7 +3,7 @@
 Configurable process decisions for how this project writes and verifies code — the process
 counterpart to `api-conventions.md` (which fixes API *contract* conventions, and can be deleted
 if the project has no HTTP API; this file cannot be deleted — every project makes these choices
-implicitly even if it never writes them down). `CLAUDE.md` Workflow Rules 8, 9, 14, and 15 read
+implicitly even if it never writes them down). `CLAUDE.md` Workflow Rules 9, 14, and 15 read
 the settings below.
 
 **How to use this file:** for each setting, delete the options you didn't pick and keep only the
@@ -54,13 +54,14 @@ Selected: _\<fill in\>_
 
 Selected: _\<fill in\>_
 
-- **Yes — `/code-review <level>` before every push** (recommended default: `high`) — before any
-  `git push`, run the code-review skill against the commits being pushed that aren't yet on the
-  remote, as an independent secondary pass distinct from the authoring work already done. Its
-  findings must be fixed, or explicitly acknowledged and logged as a deliberate deferral (e.g. in
-  the relevant `plan.md`/`completed_plan.md` entry), before the push proceeds.
-- **No** (default assumed by `CLAUDE.md` Workflow Rule 15 if this file is absent or unset) — no
-  dedicated secondary review before push; rely on whatever review happens at PR/merge time only.
+- **Yes — `/code-review <level>` before every push** (default assumed by `CLAUDE.md` Workflow
+  Rule 15 if this file is absent or unset; recommended level: `high`) — before any `git push`,
+  run the code-review skill against the commits being pushed that aren't yet on the remote, as an
+  independent secondary pass distinct from the authoring work already done. Its findings must be
+  fixed, or explicitly acknowledged and logged as a deliberate deferral (e.g. in the relevant
+  `plan.md`/`completed_plan.md` entry), before the push proceeds.
+- **No** — no dedicated secondary review before push; rely on whatever review happens at PR/merge
+  time only.
 
 Enforcement, either way, is procedural by default (the person/Claude follows the rule) — no
 pre-push git hook is set up automatically. A project wanting a mechanical guarantee can add a

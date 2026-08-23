@@ -7,7 +7,7 @@ the project's secret store / config.
 
 If this module exposes no operations of its own (a pure caller of other modules), delete this
 `interfaces/` folder and use a single flat `interfaces.md` instead — see
-`../../../../CLAUDE.md.template`'s "API documentation" section for the rule this follows.
+`../../../../CLAUDE.md`'s "API documentation" section for the rule this follows.
 
 **Generated schema:** `<URL pattern once implemented, e.g. GET /openapi/v1.json>` on a running
 instance is the source of truth for exact request/response *shape*. The files below explain what

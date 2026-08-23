@@ -7,7 +7,7 @@ to ask before deciding, and — for an existing codebase — how reconstructing 
 documentation runs *alongside* ongoing feature development, rather than blocking it.
 
 The project must be fully recreatable — including on a different technology stack — by reading
-`docs/`, `plan.md`, and this file alone, without needing to ask further questions about intent
+`docs/`, `PLAN.md`, and this file alone, without needing to ask further questions about intent
 or business behavior. This structure is designed to scale to a large, multi-module commercial
 codebase, and to work whether the project starts from nothing or from years of existing code.
 
@@ -15,7 +15,7 @@ codebase, and to work whether the project starts from nothing or from years of e
 
 ```
 CLAUDE.md
-plan.md                     — current, active work only (cross-module or org-level)
+PLAN.md                     — current, active work only (cross-module or org-level)
 docs/
   00-index.md                — map of all modules and cross-cutting docs; read this first
   glossary.md                — vocabulary shared across all modules (single source, avoids drift)
@@ -38,7 +38,7 @@ docs/
   _project/
     CHANGELOG.md                — dated log of material changes to requirements/architecture/
                                    decisions
-    completed_plan.md           — archive of tasks checked off in `plan.md` (see rule 12 below)
+    completed_plan.md           — archive of tasks checked off in `PLAN.md` (see rule 12 below)
   modules/
     <module-name>/
       requirements.md          — business rules, functional & non-functional reqs (tech-agnostic)
@@ -51,7 +51,7 @@ docs/
       test-spec.md              — Given/When/Then acceptance criteria per requirement
 ```
 
-Only `CLAUDE.md` and `plan.md` live at the project root — everything else that describes or logs
+Only `CLAUDE.md` and `PLAN.md` live at the project root — everything else that describes or logs
 the project belongs under `docs/`. `docs/_project/` holds files that are a running log *of this
 specific project* (`CHANGELOG.md`, `completed_plan.md`) rather than reusable framework content —
 see "Reusable framework template (`_frw/`)" below for the distinction this split is for.
@@ -116,7 +116,7 @@ Every module that exposes an HTTP API:
 written and verified — test-writing timing (test-after / TDD test-first / test-alongside),
 whether automated tests are required for a module to reach `Status: Confirmed`, whether the
 automated test suite must be run locally before a task counts as done, and whether a secondary
-review gates every push. Workflow Rules 8, 9, 14, and 15 below read this file rather than
+review gates every push. Workflow Rules 9, 14, and 15 below read this file rather than
 hard-coding one policy, so a project bootstrapped from `_frw/` can pick its own rigor level
 without editing this file. If `docs/dev-practices.md` doesn't exist yet, the defaults are:
 test-after, manual verification sufficient for `Confirmed`, no fixed local-run requirement (i.e.
@@ -219,7 +219,7 @@ and what must not change during a rewrite.
 ## Workflow Rules
 
 1. At the start of any task, read `docs/00-index.md`, then the relevant module folder(s), then
-   `plan.md`. For an existing codebase with incomplete docs, check `docs/_discovery/coverage.md`
+   `PLAN.md`. For an existing codebase with incomplete docs, check `docs/_discovery/coverage.md`
    and `debt_log.md` first to see what's already reconstructed or previously flagged.
 2. Before a decision that is ambiguous, controversial, hard to reverse, or touches architecture,
    security, or business rules, ask whether the approach is acceptable — batch related questions,
@@ -249,18 +249,18 @@ and what must not change during a rewrite.
    be reached on the strength of manual verification alone and does not imply Rule 8 is satisfied
    — `test-spec.md`'s individual entries stay `Draft` under Rule 8 until real automated tests
    exist for them, independent of the rest of the module's status. Track that gap as a follow-up
-   in `plan.md`, not as a blocker to reaching `Confirmed` elsewhere in the module. **This default
+   in `PLAN.md`, not as a blocker to reaching `Confirmed` elsewhere in the module. **This default
    can be overridden by `docs/dev-practices.md`** — if its "Automated Tests Gate `Confirmed`
    Status" setting is `Yes`, this carve-out does not apply and `Confirmed` requires real passing
    automated tests first.
 10. Never write secrets, API keys, passwords, or tokens into any file under `docs/` (including
-    `docs/_project/CHANGELOG.md`) or `plan.md`. Reference the config key name only.
+    `docs/_project/CHANGELOG.md`) or `PLAN.md`. Reference the config key name only.
 11. New significant decisions get a new ADR in `docs/decisions/`, added to `docs/decisions/
     README.md`; never edit or delete a past one's decision/consequences — supersede it with a new
     ADR that references it.
-12. Keep `plan.md` scoped to active work only. If multiple teams work different modules in
+12. Keep `PLAN.md` scoped to active work only. If multiple teams work different modules in
     parallel, a module MAY keep its own `docs/modules/<module>/plan.md` for module-local work;
-    root `plan.md` then tracks only cross-module or org-level initiatives.
+    root `PLAN.md` then tracks only cross-module or org-level initiatives.
 13. When a task touches a module below `Confirmed`, follow the Track B contract above: flag it,
     let the developer decide whether to pause, but document whatever is added or changed
     regardless of that decision.
@@ -273,8 +273,11 @@ and what must not change during a rewrite.
 15. Before any `git push`, run `/code-review high` as a secondary reviewer pass against the
     commits being pushed that aren't yet on the remote — a check independent of the authoring
     work already done, not a repeat of it. Fix its findings, or explicitly acknowledge and log
-    a deliberate deferral (e.g. in the relevant `plan.md`/`docs/_project/completed_plan.md`
+    a deliberate deferral (e.g. in the relevant `PLAN.md`/`docs/_project/completed_plan.md`
     entry), before the push proceeds. Governed by `docs/dev-practices.md`'s "Secondary Review
     Before Push" setting; if that file doesn't set it, the default is this rule's own text as
     written — `/code-review high`, every push, self-enforced (no technical block, e.g. no
-    pre-push git hook — same recommend-don't-block spirit as Track B rule 2 above).
+    pre-push git hook — same recommend-don't-block spirit as Track B rule 2 above). This rule
+    doesn't loosen Rule 2: a finding that's itself ambiguous, hard to reverse, or touches
+    security/architecture/business rules still gets asked about, not just logged and pushed
+    past.

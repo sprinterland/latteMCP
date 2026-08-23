@@ -7,7 +7,8 @@
   health payload, generated-spec requirement) — delete this file if the project exposes no HTTP
   API
 - `dev-practices.md` — configurable process decisions: test-writing timing, whether automated
-  tests gate `Confirmed`, local verification requirements — fill in before starting real work
+  tests gate `Confirmed`, local verification requirements, whether a secondary review gates every
+  push — fill in before starting real work
 - `architecture/overview.md` — system-wide component map, service boundaries, deployment
 - `decisions/README.md` — index of all architecture decisions (ADRs)
 - `framework-maintenance.md` — how `_frw/` relates to this `docs/`, and the process for changing

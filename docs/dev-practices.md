@@ -2,7 +2,7 @@
 
 Configurable process decisions for how this project writes and verifies code — the process
 counterpart to `api-conventions.md` (which fixes API *contract* conventions). `CLAUDE.md`
-Workflow Rules 8, 9, 14, and 15 read the settings below. Changing a setting here is a project
+Workflow Rules 9, 14, and 15 read the settings below. Changing a setting here is a project
 process decision like any other — confirm it per Workflow Rule 2, update this file, then follow
 it — it does **not** require touching `CLAUDE.md` itself or `_frw/` (see
 `_frw/docs/dev-practices.md` for the full menu this project's choices were drawn from, kept

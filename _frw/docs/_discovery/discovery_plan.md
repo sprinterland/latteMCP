@@ -20,10 +20,11 @@ isn't resolved) is exactly the size that fits one focused iteration.
 
 Order modules before starting deep work: foundational/shared modules (auth, core domain entities
 other modules depend on) generally go first, since later modules' docs will reference them —
-unless a specific module needs to be replanned first for business reasons, or `debt_log.md` has
-accumulated several deferred flags against a module (a sign it's being actively touched by
-feature work and worth prioritizing above the default ordering). Record the chosen order and
-reasoning in the Module Ordering table below.
+unless a specific module needs to be replanned first for business reasons — in which case
+document its direct dependencies just enough to unblock it and come back for their full depth
+later — or `debt_log.md` has accumulated several deferred flags against a module (a sign it's
+being actively touched by feature work and worth prioritizing above the default ordering).
+Record the chosen order and reasoning in the Module Ordering table below.
 
 ## Phase 0 — Repo Topology Scan (one-time, cheap, metadata only)
 
