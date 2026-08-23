@@ -401,3 +401,55 @@ records the `_frw/_data/change_requests.jsonl` `id`(s) of any enhancement sugges
   Enhancement-opportunity check — none additional noticed this round.
 - Enhancement suggestions: none this round (the round's own subject, `CR-1787505166518-a99b`, is
   now resolved rather than newly suggested).
+
+## 2026-08-23 22:53 — latteMCP: pending commit (this entry's own commit) / commit `6d367dd` → `a8c3a28` (claude-project-framework) — Reconcile ADR-0005's real-captured-samples mandate with Rule 10
+
+### Project Reviewer
+
+- Command: `/code-review high` (2 background finder agents: correctness/cross-file, cleanup/
+  altitude/conventions), triggered by reviewing `docs/modules/latteAPI/interfaces/` and
+  `docs/modules/latteMCP/interfaces/` against `CLAUDE.md`/`api-conventions.md`/ADR-0005 and
+  finding a real secret leaked in two sample files.
+- Repo: latteMCP @ HEAD (pending commit); `claude-project-framework` @ `a8c3a28`
+- Module(s): `latteAPI` (`interfaces/post-auth-login.md`), `latteMCP`
+  (`interfaces/post-login.md`); cross-cutting `docs/api-conventions.md`, `CLAUDE.md`
+- Framework version: `26.08.23:22.41.679`
+- Outcome: not clean, but every finding landed on the `claude-project-framework` side of the diff
+  (see Framework Reviewer below) — none on latteMCP's own module content. The credential
+  redaction and the two accuracy corrections (`api-conventions.md`'s `401`/`WWW-Authenticate`
+  note; `post-login.md`'s `Content-Type` passthrough claim) were verified directly against
+  `src/latteAPI/Program.cs` and `src/latteMCP/Program.cs:76` before being written, and the
+  reviewer raised no issue with either.
+
+### Framework Reviewer
+
+- Command: same review as Project Reviewer above (full overlap — this push's substance is the
+  `CLAUDE.md`/`CLAUDE.md.template` exception itself, not an incidental touch).
+- Repo: latteMCP @ HEAD (pending commit); `claude-project-framework` @ `a8c3a28` (fix amended into
+  `6d367dd`, review-log entries added in `a8c3a28`)
+- Module(s): n/a — framework-level
+- Framework version: `26.08.23:22.41.679`
+- Outcome: not clean — 4 findings, all fixed before push.
+  1. Fidelity: confirmed `CLAUDE.md.template`'s new exception clause matches `CLAUDE.md`'s
+     verbatim except for the expected project-vs-generic substitution (`Waitresses` vs.
+     `<ConfigKeyName>`) — no issue.
+  2. Process-completeness (Maintenance rule step 6): no `update_history.jsonl` entry existed for
+     the propagation commit — fixed by appending `UPD-0004`.
+  3. Process-completeness (Maintenance rule step 5): no `push_reviews.jsonl` entry reviewed the
+     propagation commit itself (the only new entry, `REV-0004`, documented an earlier,
+     already-pushed commit) — fixed by appending `REV-0005` (this entry's `claude-project-framework`
+     counterpart).
+  4. Altitude: the new exception and the pre-existing "Seed / Example Data" secrets carve-out
+     solved the same Rule 10 conflict with two unlinked strategies, and the redaction example said
+     the literal words "config key" instead of naming one — fixed by cross-referencing both
+     carve-outs and correcting the example to name an actual/placeholder key.
+  Separately, `CR-1787513864537-a3b8` was left `status:"open"` in the propagation commit despite
+  being the finding that commit fixed — appended a `resolved` line. Also noted, not fixed: a
+  pre-existing, unrelated `push_reviews.jsonl` id gap (no `REV-0003` anywhere in history) —
+  renumbering a published append-only log would misrepresent history worse than the gap does, so
+  it was logged instead as `CR-1787514778001-f4e2` for a future session to decide.
+- Enhancement suggestions: `CR-1787514778001-f4e2` (the `REV-0003` gap, this round); plus two
+  lower-priority findings from the interfaces-file review that motivated this whole round, not
+  acted on — `CR-1787513864547-86c1` (ADR-0005/`CLAUDE.md` doesn't say whether an MCP tool surface
+  is exempt from the OpenAPI mandate) and `CR-1787513864557-2d8f` (no shared-conventions home for
+  the repeated MCP tool error-message format, unlike the HTTP side's `api-conventions.md`).

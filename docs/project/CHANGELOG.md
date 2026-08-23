@@ -406,3 +406,33 @@ current year only and linking older ones from the top.
   covers that case. This project's own docs already conformed to the corrected pattern, so no
   `docs/modules/*` edits were needed here, only this entry and the `framework-maintenance.md` sync
   pointer. Logged and resolved as `CR-1787505166518-a99b` in `_frw/_data/change_requests.jsonl`.
+- Fixed a real secret leaked in docs: `docs/modules/latteAPI/interfaces/post-auth-login.md` and
+  `docs/modules/latteMCP/interfaces/post-login.md` embedded the literal working password
+  `carla-2026` in their "Sample Requests & Responses" sections — a real seeded account from
+  `src/latteAPI/appsettings.Development.json`, not an illustrative value, directly violating Rule
+  10 and contradicting `domain-model.md`'s own dummy-account carve-out for the same rule. Found
+  during a review of the interfaces files against the framework's design docs. Redacted the
+  password field in both samples, keeping the rest of each sample real.
+- Framework fix: ADR-0005's "real captured samples, not illustrative pseudo-examples" mandate
+  directly conflicted with Rule 10 for this exact case — a real successful login response
+  necessarily contains a real working password, and neither ADR-0005 nor `CLAUDE.md`'s API
+  documentation section said which rule wins. Added an explicit exception to `CLAUDE.md`'s API
+  documentation section (redact just the secret field, name the actual config key rather than the
+  literal words "config key", keep everything else in the sample real) and cross-referenced it
+  with the pre-existing analogous "Seed / Example Data" secrets carve-out so the same conflict
+  isn't solved twice with two unlinked strategies. Propagated into `claude-project-framework`'s
+  `CLAUDE.md.template` (commit `67df260`, amended to `6d367dd` after a Rule 15/16 review found and
+  fixed 4 process gaps — see `docs/project/review_log.md`'s entry below). Resolved
+  `CR-1787513864537-a3b8`.
+- While reviewing the interfaces files for the above, also fixed two accuracy gaps verified
+  directly against source: `docs/api-conventions.md`'s `401` error-body row claimed every `401`
+  includes a `WWW-Authenticate: Bearer` header, which only holds for JWT-middleware-challenged
+  endpoints, not `POST /auth/login`'s handler-returned `401` (`Results.Unauthorized()` in
+  `src/latteAPI/Program.cs`) — clarified the distinction. `docs/modules/latteMCP/interfaces/post-login.md`
+  claimed a strict "as-is" passthrough of `latteAPI`'s response including `Content-Type`, but
+  `src/latteMCP/Program.cs:76` falls back to a hardcoded `application/json` when `latteAPI`'s
+  response has none (e.g. its empty-bodied `401`) — corrected the prose to describe the real
+  fallback instead of an inaccurate strict-passthrough claim. Two lower-priority findings from the
+  same review (MCP-tool-vs-OpenAPI scope ambiguity in ADR-0005/`CLAUDE.md`; no shared-conventions
+  home for the repeated MCP tool error-message format) were logged as `CR-1787513864547-86c1` and
+  `CR-1787513864557-2d8f` but not acted on this round.

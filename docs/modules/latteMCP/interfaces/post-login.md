@@ -11,8 +11,12 @@
 
 ## Response
 
-`latteAPI`'s `POST /auth/login` response, returned as-is: same status code, body, and
-`Content-Type` — see `../../latteAPI/interfaces/post-auth-login.md` for the authoritative shape.
+`latteAPI`'s `POST /auth/login` response, returned as-is: same status code and body — see
+`../../latteAPI/interfaces/post-auth-login.md` for the authoritative shape. `Content-Type` is
+copied from `latteAPI`'s response when present, but falls back to `application/json` when it
+isn't (e.g. `latteAPI`'s empty-bodied `401`, which carries no `Content-Type` at all) — see the
+"Failure — wrong password" sample below, which has a `Content-Type` header `latteAPI`'s own
+equivalent response does not.
 
 ## Errors
 
@@ -23,8 +27,11 @@
 
 ## Sample Requests & Responses
 
-Captured 2026-08-22 against a local `dotnet run` instance. Credentials shown are dev-only example
-values, not real ones — see `../../latteAPI/domain-model.md`'s "Seed / Example Data" section.
+Captured 2026-08-22 against a local `dotnet run` instance. `password` is redacted below per
+CLAUDE.md Rule 10 — the real request used a working seeded account's actual password, which must
+not appear in `docs/`; see `../../latteAPI/domain-model.md`'s "Seed / Example Data" section for a
+fabricated illustrative account shape instead. Status, headers, and the response body are
+otherwise real and unmodified.
 
 ### Success
 
@@ -32,7 +39,7 @@ values, not real ones — see `../../latteAPI/domain-model.md`'s "Seed / Example
 POST /login HTTP/1.1
 Content-Type: application/json
 
-{"username":"carla","password":"carla-2026"}
+{"username":"carla","password":"<redacted — see Waitresses config key>"}
 ```
 
 ```http

@@ -107,7 +107,17 @@ Every module that exposes an HTTP API:
   request/response pairs (status, headers, body) — not illustrative pseudo-examples. Add or
   refresh this whenever the operation is touched (Track B) or newly drafted (Track A); it matters
   most while an entry is still `Draft` or low-confidence, since a real sample is evidence a
-  reader can check, often faster to produce than getting the prose exactly right.
+  reader can check, often faster to produce than getting the prose exactly right. Exception: if
+  the real request/response for this operation would itself put a secret value in the sample
+  (e.g. a login endpoint's request body carries a real working password), Rule 10 wins — redact
+  just that field, naming the actual config key it comes from rather than the literal words
+  "config key" (e.g. `"password": "<redacted — see the Waitresses config key>"`), with an inline
+  note that it was redacted, and keep everything else in the sample (status, headers, the rest of
+  the body, the response) real and unmodified. Don't fall back to a fully illustrative example
+  just because one field needs redacting. This is the same Rule 10 override as the "Seed /
+  Example Data" carve-out below (a dummy row in place of a real one, when an entity mixes secret
+  and non-secret fields) — the mechanism differs because a per-operation sample and a seed-data
+  table serve different purposes, but the governing rule is the same one.
 - Relies on `docs/api-conventions.md` for anything that would otherwise repeat on every
   operation file — JSON casing, the error-response body shape, the auth header format, the
   health-check payload shape. An operation file only documents what's specific to it.
@@ -137,11 +147,13 @@ section with the actual current values, kept in sync with the code that defines 
 alone isn't enough to recreate the module: a rewrite needs real business data to seed, and code
 is otherwise the only place it lives.
 
-This applies to ordinary business data, never to secrets (rule 10 below still governs those).
-Where an entity mixes the two — e.g. an account record with both a non-secret identifier and a
-secret credential — the seed-data section may include one clearly-labeled dummy row illustrating
-the *shape* (field names, format) without using or resembling any real value; actual secret
-values still never appear in `docs/`, referenced by config key name only.
+This applies to ordinary business data, never to secrets (rule 10 below still governs those; see
+also the "Sample Requests & Responses" exception above for the analogous case of a captured API
+sample rather than a seed-data table). Where an entity mixes the two — e.g. an account record
+with both a non-secret identifier and a secret credential — the seed-data section may include one
+clearly-labeled dummy row illustrating the *shape* (field names, format) without using or
+resembling any real value; actual secret values still never appear in `docs/`, referenced by
+config key name only.
 
 ### ID namespacing
 

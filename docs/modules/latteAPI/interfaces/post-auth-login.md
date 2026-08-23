@@ -21,8 +21,11 @@ by comparing responses.
 
 ## Sample Requests & Responses
 
-Captured 2026-08-22 against a local `dotnet run` instance. Credentials shown are dev-only
-example values, not real ones — see `../domain-model.md`'s "Seed / Example Data" section.
+Captured 2026-08-22 against a local `dotnet run` instance. `password` is redacted below per
+CLAUDE.md Rule 10 — the real request used a working seeded account's actual password, which must
+not appear in `docs/`; see `../domain-model.md`'s "Seed / Example Data" section for a fabricated
+illustrative account shape instead. Status, headers, and the response body are otherwise real and
+unmodified.
 
 ### Success
 
@@ -30,7 +33,7 @@ example values, not real ones — see `../domain-model.md`'s "Seed / Example Dat
 POST /auth/login HTTP/1.1
 Content-Type: application/json
 
-{"username":"carla","password":"carla-2026"}
+{"username":"carla","password":"<redacted — see Waitresses config key>"}
 ```
 
 ```http
