@@ -58,13 +58,13 @@ already done, and of each other:
    touches except what the Framework Reviewer claims (see Rule 15 for the exact, exhaustive-by-
    construction scope — it's "everything else," not a fixed allowlist, so nothing new added to
    `docs/` can fall between the two reviewers). Always runs.
-2. **Framework Reviewer** (`CLAUDE.md` Rule 16) — `/code-review high` scoped to `CLAUDE.md`,
-   `_frw/**`, `docs/framework-maintenance.md`, `docs/migrations.md`, and `docs/dev-practices.md`
-   itself (see Rule 16 for why), checking framework/template fidelity, ambiguity, and noting
-   enhancement opportunities (proposals only — never applied without asking first, per
-   `docs/framework-maintenance.md`). May reuse the Project Reviewer's same invocation when the two
-   scopes substantially overlap in one push. Runs only when the push touches those paths;
-   otherwise its `review_log.md` sub-entry is still present, stating "not run" and why.
+2. **Framework Reviewer** (`CLAUDE.md` Rule 16) — `/code-review high` scoped to the paths Rule 16
+   names (not restated here, to avoid a second copy that can drift out of sync), checking
+   framework/template fidelity, ambiguity, and noting enhancement opportunities (proposals only —
+   never applied without asking first, per `docs/framework-maintenance.md`). May reuse the
+   Project Reviewer's same invocation when the two scopes substantially overlap in one push. Runs
+   only when the push touches those paths; otherwise its `review_log.md` sub-entry is still
+   present, stating "not run" and why.
 
 Findings must be fixed, or explicitly acknowledged and logged as a deliberate deferral (e.g. in
 the relevant `../PLAN.md`/`_project/completed_plan.md` entry), before the push proceeds. Both

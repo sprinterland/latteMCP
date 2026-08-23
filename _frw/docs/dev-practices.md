@@ -60,13 +60,12 @@ Selected: _\<fill in\>_
   1. **Project Reviewer** (Rule 15) — the code-review skill scoped to everything the push touches
      except what the Framework Reviewer claims (see Rule 15 — it's "everything else," not a fixed
      allowlist, so nothing new added to `docs/` can fall between the two reviewers). Always runs.
-  2. **Framework Reviewer** (Rule 16) — the code-review skill scoped to `CLAUDE.md`, `_frw/**`,
-     `docs/framework-maintenance.md`, `docs/migrations.md`, and `dev-practices.md` itself (see
-     Rule 16 for why), checking framework/template fidelity, ambiguity, and noting enhancement
-     opportunities (proposals only — never applied without asking first). May reuse the Project
-     Reviewer's same invocation when the two scopes substantially overlap in one push. Runs only
-     when the push touches those paths; otherwise its `review_log.md` sub-entry is still present,
-     stating "not run" and why.
+  2. **Framework Reviewer** (Rule 16) — the code-review skill scoped to the paths Rule 16 names
+     (not restated here, to avoid a second copy that can drift out of sync), checking
+     framework/template fidelity, ambiguity, and noting enhancement opportunities (proposals
+     only — never applied without asking first). May reuse the Project Reviewer's same invocation
+     when the two scopes substantially overlap in one push. Runs only when the push touches those
+     paths; otherwise its `review_log.md` sub-entry is still present, stating "not run" and why.
 
   Findings from either must be fixed, or explicitly acknowledged and logged as a deliberate
   deferral (e.g. in the relevant `PLAN.md`/`completed_plan.md` entry), before the push proceeds.

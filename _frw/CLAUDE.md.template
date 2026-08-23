@@ -286,7 +286,9 @@ and what must not change during a rewrite.
     the run in `docs/_project/review_log.md` as a **Project Reviewer** sub-entry — always present
     — with the command, repo/commit, module(s) touched, and the current `_frw/VERSION` value (the
     `YY.MM.DD:HH.MM.FFF` format is documented in `docs/framework-maintenance.md`'s "Versioning"
-    section, not in `_frw/VERSION` itself, which is just the bare value). Governed by
+    section, not in `_frw/VERSION` itself, which is just the bare value; a project that has since
+    deleted its own `_frw/` cites the static "bootstrapped from" version recorded in its
+    `docs/framework-maintenance.md` instead — see that file's "Versioning" section). Governed by
     `docs/dev-practices.md`'s "Secondary Review Before Push" setting; if that file doesn't set it,
     the default is this rule's own text as written — `/code-review high`, every push,
     self-enforced (no technical block, e.g. no pre-push git hook — same recommend-don't-block
@@ -294,12 +296,16 @@ and what must not change during a rewrite.
     ambiguous, hard to reverse, or touches security/architecture/business rules still gets asked
     about, not just logged and pushed past.
 16. **Framework Reviewer.** Before any `git push` that touches `CLAUDE.md`, anything under
-    `_frw/`, `docs/framework-maintenance.md`, `docs/migrations.md`, or `docs/dev-practices.md`
-    (its "Secondary Review Before Push" section is this two-reviewer policy's own canonical
-    description, so a change there can itself be a framework-level change needing `_frw/`
-    propagation — see `docs/framework-maintenance.md`), also run `/code-review high` scoped to
-    those paths — reusing Rule 15's own invocation output, re-read through the lens below, when
-    the two scopes substantially overlap in the same push (as they typically do for a
+    `_frw/`, `docs/framework-maintenance.md`, or `docs/migrations.md` — or that changes
+    `docs/dev-practices.md`'s menu/structure itself (its "Secondary Review Before Push" section is
+    this two-reviewer policy's own canonical description, so a structural change there can itself
+    be a framework-level change needing `_frw/` propagation — see `docs/framework-maintenance.md`)
+    — also run `/code-review high` scoped to those paths. Merely flipping one of
+    `docs/dev-practices.md`'s `Selected:` values (e.g. TDD to test-after) stays an ordinary,
+    Rule-15-only change per the "Development practices" section above — it doesn't by itself
+    trigger this rule, since it changes this project's choice, not the menu of choices or the
+    policy's own description. Reuse Rule 15's own invocation output, re-read through the lens
+    below, when the two scopes substantially overlap in the same push (as they typically do for a
     framework-focused change like this one); invoke separately when the push is mostly ordinary
     project work with only an incidental framework-path touch, so the framework lens gets its own
     focused pass rather than being buried in an unrelated diff. The lens: (a) *framework/project

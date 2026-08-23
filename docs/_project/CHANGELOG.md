@@ -7,6 +7,29 @@ current year only and linking older ones from the top.
 
 ## 2026-08-23
 
+- Applied Rule 15/16 to the commit that fixed their own first-review findings (`dbbc48d`), logged
+  in `docs/_project/review_log.md`. That round's fixes hadn't fully landed: `docs/dev-practices.md`
+  still re-enumerated Rule 16's path list in its Framework Reviewer bullet (only the Project
+  Reviewer bullet had been de-duplicated), which also meant the prior CHANGELOG entry's claim of
+  removing that duplication was inaccurate at the time — completed now, mirrored in
+  `_frw/docs/dev-practices.md`. Also fixed: Rule 16 listed `docs/dev-practices.md` as an
+  unconditional trigger, contradicting `CLAUDE.md`'s own framing that flipping a `Selected:` value
+  is an ordinary change needing no `_frw/` involvement — narrowed to trigger only on a structural
+  change to that file's policy description, not a plain setting toggle. Added the VERSION-fallback
+  guidance (for a project that bootstrapped from this framework and later deleted its own `_frw/`)
+  to `CLAUDE.md` Rule 15 itself, matching what the `_frw/` template already had. Fixed a dangling
+  unmatched `)` in `docs/framework-maintenance.md`'s Versioning section (and its `_frw/` mirror)
+  left over from an earlier edit. Bumped `_frw/VERSION` to `26.08.23:14.54.273` — the prior
+  round's fixes had touched `_frw/` without bumping it, the exact drift the bump rule exists to
+  prevent. Corrected the prior round's own `review_log.md` entry, which had internal
+  inconsistencies (a wrong sub-agent count, a findings/fixed tally that didn't match its own
+  enumerated list, and a self-contradictory claim of both reusing and separately re-running a
+  review) — replaced the unverifiable precise counts with a plain description of what was found
+  and fixed, and updated the entry field description to do the same going forward. Also revisited
+  (rather than re-affirmed) the open "should this be an ADR" question from the prior round: the
+  original "follows precedent" reasoning had overlooked that ADR-0005 was itself a documentation/
+  process convention, so this is left as a genuinely open question the user may want to weigh in
+  on, not a settled one.
 - Applied the freshly-split Rule 15/16 review to the commit that created them (`8e46a87`), logged
   in `docs/_project/review_log.md`'s first real entry. Fixed what it found: Rule 15/16's scope
   was redefined from two separately-enumerated allowlists (which already disagreed with each
