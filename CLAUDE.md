@@ -164,9 +164,9 @@ in it lives under a literal `_frw/` subfolder (that repo's root **is** the bundl
 project-vs-framework split.
 
 **Standing rule:** a framework-level change (something meant to apply to future projects too, not
-just a fact about this one) is never made unilaterally — ask the user first, then apply it to
-`CLAUDE.md`/`docs/` and propagate the generic version into the shared `_frw` together, and log it
-in `docs/project/CHANGELOG.md`. See `docs/framework-maintenance.md` for the full procedure.
+just a fact about this one) is never made unilaterally — ask the user first, then follow
+`docs/framework-maintenance.md`'s Maintenance rule end to end (that file, not this paraphrase, is
+the source of truth for the exact steps — they've changed shape before and will again).
 
 ## Two Concurrent Tracks: Discovery and Development
 

@@ -44,18 +44,21 @@ than a vague "recent."
 
 Bump it (regenerate the timestamp, overwrite the file) as step 3 of the Maintenance rule below,
 every time `_frw` actually changes — never on an ordinary `docs/`/`CLAUDE.md` change that doesn't
-propagate — and commit + push the bump to `claude-project-framework` on GitHub. Because `_frw` is
-a shared external repo rather than a per-project copy, this project's review log normally reads
-its `VERSION` file live from the local clone (kept up to date with `git pull`) at review time.
+propagate — and commit the bump locally as part of that step; step 4 below reviews and pushes it.
+Because `_frw` is a shared external repo rather than a per-project copy, this project's review log
+normally reads its `VERSION` file live from the local clone (kept up to date with `git pull`) at
+review time.
 Record the version this project last synced against as a static fact here too, so `review_log.md`
 still has something permanent to cite if the shared clone/repo is ever unreachable (different
 machine, no network, repo moved) at review time:
 
 **Bootstrapped from / last synced at [`claude-project-framework`](https://github.com/sprinterland/claude-project-framework)
-commit `0808624`, version `26.08.23:18.59.204`** (2026-08-23 — added `_data/update_history.jsonl`,
-`_data/push_reviews.jsonl`, and `_data/change_requests.jsonl`, the three append-only logs described
-in "Framework activity logs" below, plus the Maintenance rule steps and `CLAUDE.md` Rule 17 that
-govern them).
+commit `9cea998`, version `26.08.23:19.09.808`** (2026-08-23 — added `_data/update_history.jsonl`,
+`_data/push_reviews.jsonl`, and `_data/change_requests.jsonl` (the three append-only logs
+described in "Framework activity logs" below) and the Maintenance rule steps/`CLAUDE.md` Rule 17
+that govern them, then fixed several design gaps a Rule 15/16 review of that same addition found
+— a collision-prone ID scheme, a split review/push step, and a few docs that fell out of sync
+with themselves in the same diff — see `change_requests.jsonl` for the itemized list).
 
 ## What's project-specific vs. framework, precisely
 
@@ -71,19 +74,26 @@ govern them).
 
 `_frw/_data/` holds three append-only JSON-Lines logs of framework-maintenance activity — kept
 only in the shared `_frw` repo, never copied into a bootstrapped project (see "What's
-project-specific vs. framework, precisely" above). Each file is one JSON object per line; new
-entries are always appended, never rewritten or deleted — mark a stale entry `resolved` (or
-similar) instead of removing it.
+project-specific vs. framework, precisely" above). Unlike `discovery/` and `project/`'s rename
+earlier this file's history (dropping their leading underscore because they're ordinary
+bootstrapped content), `_data/` deliberately keeps its underscore — here it marks "excluded from
+what gets copied into a project," not "hidden," which is a different, still-live reason to stand
+out from `docs/`. Each log file is one JSON object per line; new entries are always appended,
+never rewritten or deleted — mark a stale entry `resolved` (or similar) instead of removing it.
 
-- **`update_history.jsonl`** — one record per completed framework update (Maintenance rule step 6
+- **`update_history.jsonl`** — one record per completed framework update (Maintenance rule step 5
   below): `id`, `timestamp`, `project` (which project's need triggered the update), `summary`,
   `questions_asked` (the Rule 2 confirmations made while deciding it — `[]` if none needed),
   `decisions_made` (Rule 4 judgment calls made along the way, with the reasoning — `[]` if none),
-  `final_summary`, `frw_commit`, `frw_version`, `status` (`completed`).
+  `final_summary`, `frw_commit`, `frw_version`, `changelog_ref` (the `docs/project/CHANGELOG.md`
+  entry this summarizes, e.g. `"2026-08-23 — Add _data/ activity logs..."` — a pointer, so the two
+  don't need to say the same thing twice), `status` (`completed`).
 - **`push_reviews.jsonl`** — one record per Rule 15/16 review run immediately before pushing
   `_frw`'s own propagation commit (Maintenance rule step 4 below): `id`, `timestamp`, `project`,
-  `frw_commit`, `command`, `scope`, `outcome`, `enhancement_suggestions` (this entry's own
-  `change_requests.jsonl` ids, or `[]`), `status` (`completed`).
+  `frw_commit`, `command`, `scope`, `outcome`, `review_log_ref` (the `docs/project/review_log.md`
+  entry heading this corresponds to — a pointer, not a restatement, for the same reason as
+  `changelog_ref` above), `enhancement_suggestions` (this entry's own `change_requests.jsonl` ids,
+  or `[]`), `status` (`completed`).
 - **`change_requests.jsonl`** — a continuous backlog of framework-enhancement ideas, logged the
   moment they're noticed during *any* activity in *any* project — planning, coding, discovery,
   review, even the task that's about to fix the very thing being logged (see `CLAUDE.md` Workflow
@@ -91,10 +101,22 @@ similar) instead of removing it.
   etc.), `description`, `severity` (`minor`/`major`), `status` (`open`/`resolved`), `resolution`,
   `resolved_at`.
 
-IDs are simple per-file incrementing counters (`UPD-0001`, `REV-0001`, `CR-0001`, ...), assigned
-by reading the last line of the file at append time; these logs are only ever written during a
-deliberate framework-maintenance step, never concurrently from multiple projects at once, so a
-counter race isn't a real risk in practice.
+`change_requests.jsonl` is written far more often than the other two, and — per `CLAUDE.md` Rule
+17 — from *any* project at *any* time, not only during a deliberate, one-at-a-time maintenance
+step the way `update_history.jsonl`/`push_reviews.jsonl` are; two sessions in two different
+projects could plausibly append within the same minute. So its IDs are **not** a read-last-line,
+increment-by-one counter (which two concurrent writers could race and collide on) — each entry
+self-generates its own `id` as `CR-<unix-epoch-milliseconds>-<4 random hex chars>` (e.g.
+`CR-1755972123456-a1b2`), needing no coordination with any other writer. `update_history.jsonl`
+and `push_reviews.jsonl` genuinely are one-at-a-time (each only gets written mid-way through the
+Maintenance rule below, which is itself a serial procedure), so a plain per-file counter
+(`UPD-0001`, `REV-0001`, ...) is fine for those two.
+
+Logging to `change_requests.jsonl` per Rule 17 means appending to the local `_frw` clone, not an
+immediate standalone commit+push to `claude-project-framework` — an ordinary Track A/B task in a
+downstream project shouldn't itself trigger ad-hoc pushes to the shared repo outside the Rule
+15/16 review gate. The entry rides along next time `_frw`'s local clone is committed (a
+Maintenance-rule propagation, most often), or a periodic sync commit if none happens for a while.
 
 ## Maintenance rule
 
@@ -116,12 +138,14 @@ never made unilaterally:
    clone — not pushed yet.
 4. Run the Rule 15/16 review already required before any push (`CLAUDE.md` Rules 15/16) — for a
    framework-level change, this same pass also validates the propagated `_frw` copy (Rule 16's
-   fidelity lens) — then append its outcome to `_frw/_data/push_reviews.jsonl` (see "Framework
-   activity logs" above), before pushing either repo. Fix any findings, or log a deliberate
-   deferral, first.
-5. Push both this project's commit(s) and the `_frw` propagation commit to
-   `claude-project-framework` on GitHub — every propagation is a version change and a push, no
-   exceptions.
-6. Note the framework change in `docs/project/CHANGELOG.md` same as any other material change,
+   fidelity lens). If it finds a problem with the propagation commit itself, fix it and amend
+   that commit (safe — it's still local and unpushed, cited nowhere yet) and re-run the review;
+   otherwise fix findings elsewhere or log a deliberate deferral, same as any push. Once clean,
+   append the outcome to `_frw/_data/push_reviews.jsonl` (see "Framework activity logs" above) and
+   push both this project's commit(s) and the `_frw` propagation commit to
+   `claude-project-framework` on GitHub in the same sitting — every propagation is a version
+   change and a push, no exceptions, and a reviewed propagation commit shouldn't sit local and
+   unpushed once it's clean.
+5. Note the framework change in `docs/project/CHANGELOG.md` same as any other material change,
    and append a record to `_frw/_data/update_history.jsonl` summarizing the update (see
    "Framework activity logs" above).

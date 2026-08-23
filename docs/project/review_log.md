@@ -21,7 +21,8 @@ was found and
 what happened to it, not a strict tally — a full multi-agent review run's findings often overlap
 across agents, so a precise "N found, M fixed" count is more likely to go stale/wrong than useful;
 say what was fixed and what was deferred, in words). The Framework Reviewer sub-entry also
-records any enhancement suggestions raised (or "none").
+records the `_frw/_data/change_requests.jsonl` `id`(s) of any enhancement suggestions raised (or
+"none") — the id, not the suggestion's text, per `CLAUDE.md` Rule 16.
 
 <!-- Entries are added going forward from 2026-08-23 (when Rule 15/16 logging started) — no
      retroactive entries were fabricated for reviews that ran before this file existed. -->
