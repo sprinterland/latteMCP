@@ -6,8 +6,8 @@
 - `api-conventions.md` — shared HTTP API conventions (JSON casing, error bodies, auth header,
   health payload, generated-OpenAPI requirement) — see ADR-0005
 - `dev-practices.md` — configurable process decisions: test-writing timing (TDD), whether
-  automated tests gate `Confirmed`, local verification requirements, whether a secondary review
-  gates every push
+  automated tests gate `Confirmed`, local verification requirements, whether the two-reviewer
+  gate (project + framework) runs before every push
 - `architecture/overview.md` — system-wide component map, service boundaries, deployment
 - `decisions/README.md` — index of all architecture decisions (ADRs)
 - `framework-maintenance.md` — how `_frw/` relates to this `docs/`, and the process for changing

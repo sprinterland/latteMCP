@@ -57,18 +57,22 @@ Selected: _\<fill in\>_
 - **Yes — two-reviewer gate before every push** (default assumed by `CLAUDE.md` Workflow Rules
   15–16 if this file is absent or unset; recommended level: `high`) — before any `git push`, two
   independent reviewer passes run:
-  1. **Project Reviewer** (Rule 15) — the code-review skill scoped to project-specific changes
-     (module docs, ADRs, requirement/test traceability, discovery/debt logs, `plan.md`, source
-     code). Always runs.
+  1. **Project Reviewer** (Rule 15) — the code-review skill scoped to everything the push touches
+     except what the Framework Reviewer claims (see Rule 15 — it's "everything else," not a fixed
+     allowlist, so nothing new added to `docs/` can fall between the two reviewers). Always runs.
   2. **Framework Reviewer** (Rule 16) — the code-review skill scoped to `CLAUDE.md`, `_frw/**`,
-     `docs/framework-maintenance.md`, `docs/migrations.md`, checking framework/template fidelity,
-     ambiguity, and noting enhancement opportunities (proposals only — never applied without
-     asking first). Runs only when the push touches those paths.
+     `docs/framework-maintenance.md`, `docs/migrations.md`, and `dev-practices.md` itself (see
+     Rule 16 for why), checking framework/template fidelity, ambiguity, and noting enhancement
+     opportunities (proposals only — never applied without asking first). May reuse the Project
+     Reviewer's same invocation when the two scopes substantially overlap in one push. Runs only
+     when the push touches those paths; otherwise its `review_log.md` sub-entry is still present,
+     stating "not run" and why.
 
   Findings from either must be fixed, or explicitly acknowledged and logged as a deliberate
-  deferral (e.g. in the relevant `plan.md`/`completed_plan.md` entry), before the push proceeds.
+  deferral (e.g. in the relevant `PLAN.md`/`completed_plan.md` entry), before the push proceeds.
   Both runs are logged in `docs/_project/review_log.md` (command, repo/commit, module(s) touched,
-  `_frw/VERSION` at run time — see that file's "Versioning" section).
+  `_frw/VERSION` at run time — format documented in `framework-maintenance.md`'s "Versioning"
+  section, not in `_frw/VERSION` itself, which is just the bare value).
 - **No** — no dedicated secondary review before push; rely on whatever review happens at PR/merge
   time only.
 

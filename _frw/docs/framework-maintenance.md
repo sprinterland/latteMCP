@@ -26,8 +26,10 @@ _frw/
 
 ## Versioning
 
-`_frw/VERSION` holds a single line: the bundle's version, stamped `YY.MM.DD:HH.MM.FFF` (2-digit
-year, month, day, 24h hour, minute, milliseconds — the moment the bundle was last changed, not a
+`_frw/VERSION` holds a single line: the bundle's version, stamped `YY.MM.DD:HH.MM.FFF` — in
+field order, 2-digit year, month, day, then a 24h hour, minute, and milliseconds (the second `MM`
+is minute, not a repeat of the month field three groups earlier) — the moment the bundle was last
+changed, not a
 semantic version; there's no meaningful "major/minor" axis for a doc-template bundle, only "as of
 when"). It exists so anything that references "the framework version" — most concretely, each
 `docs/_project/review_log.md` entry's Framework Reviewer sub-entry (see `CLAUDE.md` Workflow Rule

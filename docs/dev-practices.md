@@ -54,20 +54,24 @@ reviewers 2026-08-23)
 Before any `git push`, two independent reviewer passes run — independent of the authoring work
 already done, and of each other:
 
-1. **Project Reviewer** (`CLAUDE.md` Rule 15) — `/code-review high` scoped to project-specific
-   changes (module docs, ADRs, requirement/test traceability, discovery/debt logs, `PLAN.md`,
-   source code). Always runs.
+1. **Project Reviewer** (`CLAUDE.md` Rule 15) — `/code-review high` scoped to everything the push
+   touches except what the Framework Reviewer claims (see Rule 15 for the exact, exhaustive-by-
+   construction scope — it's "everything else," not a fixed allowlist, so nothing new added to
+   `docs/` can fall between the two reviewers). Always runs.
 2. **Framework Reviewer** (`CLAUDE.md` Rule 16) — `/code-review high` scoped to `CLAUDE.md`,
-   `_frw/**`, `docs/framework-maintenance.md`, `docs/migrations.md`, checking framework/template
-   fidelity, ambiguity, and noting enhancement opportunities (proposals only — never applied
-   without asking first, per `docs/framework-maintenance.md`). Runs only when the push touches
-   those paths; otherwise skipped and the skip is noted in the log.
+   `_frw/**`, `docs/framework-maintenance.md`, `docs/migrations.md`, and `docs/dev-practices.md`
+   itself (see Rule 16 for why), checking framework/template fidelity, ambiguity, and noting
+   enhancement opportunities (proposals only — never applied without asking first, per
+   `docs/framework-maintenance.md`). May reuse the Project Reviewer's same invocation when the two
+   scopes substantially overlap in one push. Runs only when the push touches those paths;
+   otherwise its `review_log.md` sub-entry is still present, stating "not run" and why.
 
 Findings must be fixed, or explicitly acknowledged and logged as a deliberate deferral (e.g. in
 the relevant `../PLAN.md`/`_project/completed_plan.md` entry), before the push proceeds. Both
 runs are logged in `docs/_project/review_log.md` — command, repo/commit, module(s) touched, and
-the `_frw/VERSION` value at run time — for later investigation. Applies to every push, on any
-branch — this project has no separate "protected branch" concept to carve out an exemption for.
+the `_frw/VERSION` value at run time (format in `docs/framework-maintenance.md`'s "Versioning"
+section) — for later investigation. Applies to every push, on any branch — this project has no
+separate "protected branch" concept to carve out an exemption for.
 
 Self-enforced per `CLAUDE.md` Workflow Rules 15–16 — no technical block (e.g. no pre-push git
 hook). Consistent with this project's existing recommend-don't-block pattern (Track B rule 2 in

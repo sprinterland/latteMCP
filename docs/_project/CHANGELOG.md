@@ -7,6 +7,30 @@ current year only and linking older ones from the top.
 
 ## 2026-08-23
 
+- Applied the freshly-split Rule 15/16 review to the commit that created them (`8e46a87`), logged
+  in `docs/_project/review_log.md`'s first real entry. Fixed what it found: Rule 15/16's scope
+  was redefined from two separately-enumerated allowlists (which already disagreed with each
+  other and would have left future top-level docs like a hypothetical `docs/security.md`
+  unreviewed by either reviewer) to a complementary split — Rule 16 keeps its explicit path list,
+  Rule 15 is now "everything else in the push," exhaustive by construction; added
+  `docs/dev-practices.md` to Rule 16's trigger list (its own canonical description of this
+  policy, so a change there can itself need `_frw/` propagation); gave Rule 16 the same "doesn't
+  loosen Rule 2" disclaimer Rule 15 already had; added a reuse clause letting Rule 16 read Rule
+  15's own invocation instead of mandating a second full pass when scopes overlap; fixed Rule
+  15's pointer to a nonexistent "header" in `_frw/VERSION` (the format lives in
+  `docs/framework-maintenance.md`'s "Versioning" section, repeated in `_frw/docs/dev-practices.md`
+  with the same bug); resolved a contradiction over whether a skipped Framework Reviewer gets its
+  own `review_log.md` sub-entry (it does now, always, stating "not run" and why); fixed leftover
+  singular "a secondary review gates every push" wording in `CLAUDE.md`'s diagram and both
+  `00-index.md` files that the original split commit missed; fixed a one-space diagram-column
+  misalignment; clarified the `YY.MM.DD:HH.MM.FFF` format's two `MM` tokens (month vs. minute);
+  fixed lowercase `plan.md` reintroduced in `_frw/docs/dev-practices.md`'s and
+  `_frw/docs/_project/review_log.md`'s new text; and removed duplicated scope-path enumeration
+  from `docs/dev-practices.md` and both `review_log.md` files in favor of pointing at `CLAUDE.md`
+  Rule 15/16 as the single source of truth. Three lower-stakes findings were logged as enhancement
+  suggestions rather than applied (see `review_log.md`'s Framework Reviewer sub-entry for that
+  commit): `_frw/VERSION`'s millisecond precision, whether this kind of change should get an ADR,
+  and whether `dev-practices.md` should support a partial (project-only) reviewer selection.
 - Added `_frw/VERSION` (format `YY.MM.DD:HH.MM.FFF`, a last-changed timestamp rather than a
   semantic version — documented in `docs/framework-maintenance.md`'s new "Versioning" section)
   and split the single secondary-reviewer gate into two (framework-level change, applies to
