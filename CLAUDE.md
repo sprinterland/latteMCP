@@ -39,6 +39,8 @@ docs/
     CHANGELOG.md                — dated log of material changes to requirements/architecture/
                                    decisions
     completed_plan.md           — archive of tasks checked off in `PLAN.md` (see rule 12 below)
+    review_log.md                — per-push log of Rule 15/16 secondary-review runs (command,
+                                   repo/commit, module(s), framework version) — see rule 15/16
   modules/
     <module-name>/
       requirements.md          — business rules, functional & non-functional reqs (tech-agnostic)
@@ -115,15 +117,16 @@ Every module that exposes an HTTP API:
 `docs/dev-practices.md` holds this project's configurable process decisions for *how* code gets
 written and verified — test-writing timing (test-after / TDD test-first / test-alongside),
 whether automated tests are required for a module to reach `Status: Confirmed`, whether the
-automated test suite must be run locally before a task counts as done, and whether a secondary
-review gates every push. Workflow Rules 9, 14, and 15 below read this file rather than
-hard-coding one policy, so a project bootstrapped from `_frw/` can pick its own rigor level
-without editing this file. If `docs/dev-practices.md` doesn't exist yet, the defaults are:
-test-after, manual verification sufficient for `Confirmed`, no fixed local-run requirement (i.e.
-Rule 9's base text, unmodified), and Rule 15's own base text (secondary review before every
-push) in force unmodified. Changing a setting in `dev-practices.md` is an ordinary process
-decision — confirm it per Workflow Rule 2, update the file, then follow it; it does not require a
-`_frw/` update, since `_frw/docs/dev-practices.md` already documents the full menu of options
+automated test suite must be run locally before a task counts as done, and whether the two-
+reviewer gate (project + framework) runs before every push. Workflow Rules 9, 14, 15, and 16
+below read this file rather than hard-coding one policy, so a project bootstrapped from `_frw/`
+can pick its own rigor level without editing this file. If `docs/dev-practices.md` doesn't exist
+yet, the defaults are: test-after, manual verification sufficient for `Confirmed`, no fixed
+local-run requirement (i.e. Rule 9's base text, unmodified), and Rules 15/16's own base text
+(both reviewers, every push where applicable) in force unmodified. Changing a setting in
+`dev-practices.md` is an ordinary process decision — confirm it per Workflow Rule 2, update the
+file, then follow it; it does not require a `_frw/` update, since `_frw/docs/dev-practices.md`
+already documents the full menu of options
 generically.
 
 ### Seed / example data belongs in domain-model.md
@@ -270,14 +273,34 @@ and what must not change during a rewrite.
     governs the override to Rule 9 above. If the file doesn't exist yet (e.g. a project freshly
     bootstrapped from `_frw/` that hasn't filled it in), fall back to this file's defaults:
     test-after, manual verification sufficient for `Confirmed`, no fixed local-run requirement.
-15. Before any `git push`, run `/code-review high` as a secondary reviewer pass against the
-    commits being pushed that aren't yet on the remote — a check independent of the authoring
-    work already done, not a repeat of it. Fix its findings, or explicitly acknowledge and log
-    a deliberate deferral (e.g. in the relevant `PLAN.md`/`docs/_project/completed_plan.md`
-    entry), before the push proceeds. Governed by `docs/dev-practices.md`'s "Secondary Review
-    Before Push" setting; if that file doesn't set it, the default is this rule's own text as
-    written — `/code-review high`, every push, self-enforced (no technical block, e.g. no
-    pre-push git hook — same recommend-don't-block spirit as Track B rule 2 above). This rule
-    doesn't loosen Rule 2: a finding that's itself ambiguous, hard to reverse, or touches
-    security/architecture/business rules still gets asked about, not just logged and pushed
-    past.
+15. **Project Reviewer.** Before any `git push`, run `/code-review high` scoped to this push's
+    project-specific changes — `docs/modules/**`, `docs/decisions/**` (ADRs), requirement/test-ID
+    traceability, `docs/_discovery/**`, `docs/_project/**`, `docs/00-index.md`,
+    `docs/dev-practices.md`, `docs/api-conventions.md`, `docs/glossary.md`,
+    `docs/architecture/overview.md`, `PLAN.md`, and application source code — as a check
+    independent of the authoring work already done, not a repeat of it. Fix its findings, or
+    explicitly acknowledge and log a deliberate deferral (e.g. in the relevant
+    `PLAN.md`/`docs/_project/completed_plan.md` entry), before the push proceeds. Log the run in
+    `docs/_project/review_log.md` (command, repo/commit, module(s) touched, and the current
+    `_frw/VERSION` value — see that file's header for the exact format). Always runs, on every
+    push. Governed by `docs/dev-practices.md`'s "Secondary Review Before Push" setting; if that
+    file doesn't set it, the default is this rule's own text as written — `/code-review high`,
+    every push, self-enforced (no technical block, e.g. no pre-push git hook — same
+    recommend-don't-block spirit as Track B rule 2 above). This rule doesn't loosen Rule 2: a
+    finding that's itself ambiguous, hard to reverse, or touches security/architecture/business
+    rules still gets asked about, not just logged and pushed past.
+16. **Framework Reviewer.** Before any `git push` that touches `CLAUDE.md`, anything under
+    `_frw/`, `docs/framework-maintenance.md`, or `docs/migrations.md`, also run `/code-review
+    high` scoped to those same paths — but read the result through a different lens than Rule 15:
+    (a) *framework/project fidelity* — does `_frw/CLAUDE.md.template` still match `CLAUDE.md`'s
+    genericizable content, does every file under `_frw/` stay free of project-specific facts; (b)
+    *ambiguity* — is any new/changed rule or template file unclear, self-contradictory, or missing
+    a cross-reference a reader would need; (c) *enhancement opportunities* — note anything
+    generalizable worth proposing as a future framework improvement. Enhancement suggestions are
+    proposals only: per `docs/framework-maintenance.md`'s standing rule, no framework change —
+    including one this reviewer itself suggests — is applied without asking the user first. Fix
+    confirmed fidelity/ambiguity findings, or log a deferral, before the push proceeds. Log the
+    run in `docs/_project/review_log.md` the same way Rule 15 does, plus any enhancement
+    suggestions raised (or note "none"). If the push touches none of the paths above, this rule
+    doesn't apply — only Rule 15 runs, and its `review_log.md` entry notes the Framework Reviewer
+    was skipped and why.

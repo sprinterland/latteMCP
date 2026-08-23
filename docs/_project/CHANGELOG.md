@@ -7,6 +7,24 @@ current year only and linking older ones from the top.
 
 ## 2026-08-23
 
+- Added `_frw/VERSION` (format `YY.MM.DD:HH.MM.FFF`, a last-changed timestamp rather than a
+  semantic version — documented in `docs/framework-maintenance.md`'s new "Versioning" section)
+  and split the single secondary-reviewer gate into two (framework-level change, applies to
+  future projects too): `CLAUDE.md` Rule 15 (**Project Reviewer** — `/code-review high` scoped to
+  module docs, ADRs, traceability, discovery/debt logs, `PLAN.md`, and source code; always runs)
+  and new Rule 16 (**Framework Reviewer** — `/code-review high` scoped to `CLAUDE.md`, `_frw/**`,
+  `docs/framework-maintenance.md`, `docs/migrations.md`; checks framework/template fidelity and
+  ambiguity, and raises enhancement suggestions as proposals only, never auto-applied; runs only
+  when the push touches those paths). Added `docs/_project/review_log.md` (and its `_frw/`
+  template) so every reviewer run is logged separately with its command/scope, repo/commit,
+  module(s) touched, and the `_frw/VERSION` value at run time, for later investigation. Updated
+  `docs/dev-practices.md`'s "Secondary Review Before Push" setting to describe the two-reviewer
+  gate (still **Yes**, adopted 2026-08-23, split 2026-08-23), mirrored generically into
+  `_frw/docs/dev-practices.md`, and updated `CLAUDE.md`'s Documentation Structure diagram,
+  "Development practices" section, `docs/00-index.md`/`_frw/docs/00-index.md`, and
+  `_frw/README.md` (bundle listing plus a new bootstrap step recording the framework version a
+  new project started from, since `_frw/VERSION` itself won't survive that project deleting its
+  `_frw/` copy) accordingly.
 - Applied Rule 15's own first secondary-reviewer pass (`/code-review high`) to the two unpushed
   commits below before pushing, and fixed what it found: `CLAUDE.md`/`_frw/CLAUDE.md.template`
   listed Rule 8 among the rules governed by `dev-practices.md` even though Rule 8 never

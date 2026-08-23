@@ -2,7 +2,7 @@
 
 Configurable process decisions for how this project writes and verifies code — the process
 counterpart to `api-conventions.md` (which fixes API *contract* conventions). `CLAUDE.md`
-Workflow Rules 9, 14, and 15 read the settings below. Changing a setting here is a project
+Workflow Rules 9, 14, 15, and 16 read the settings below. Changing a setting here is a project
 process decision like any other — confirm it per Workflow Rule 2, update this file, then follow
 it — it does **not** require touching `CLAUDE.md` itself or `_frw/` (see
 `_frw/docs/dev-practices.md` for the full menu this project's choices were drawn from, kept
@@ -48,17 +48,29 @@ without also running an automated suite.
 
 ## Secondary Review Before Push
 
-**Selected: Yes — `/code-review high` before every push** (adopted 2026-08-23)
+**Selected: Yes — two-reviewer gate before every push** (adopted 2026-08-23; split into two
+reviewers 2026-08-23)
 
-Before any `git push`, run `/code-review high` against the commits being pushed that aren't yet
-on the remote, as an independent secondary pass distinct from the authoring work already done —
-not a repeat of it. Findings must be fixed, or explicitly acknowledged and logged as a deliberate
-deferral (e.g. in the relevant `../PLAN.md`/`_project/completed_plan.md` entry), before the push
-proceeds. Applies to every push, on any branch — this project has no separate "protected branch"
-concept to carve out an exemption for.
+Before any `git push`, two independent reviewer passes run — independent of the authoring work
+already done, and of each other:
 
-Self-enforced per `CLAUDE.md` Workflow Rule 15 — no technical block (e.g. no pre-push git hook).
-Consistent with this project's existing recommend-don't-block pattern (Track B rule 2 in
+1. **Project Reviewer** (`CLAUDE.md` Rule 15) — `/code-review high` scoped to project-specific
+   changes (module docs, ADRs, requirement/test traceability, discovery/debt logs, `PLAN.md`,
+   source code). Always runs.
+2. **Framework Reviewer** (`CLAUDE.md` Rule 16) — `/code-review high` scoped to `CLAUDE.md`,
+   `_frw/**`, `docs/framework-maintenance.md`, `docs/migrations.md`, checking framework/template
+   fidelity, ambiguity, and noting enhancement opportunities (proposals only — never applied
+   without asking first, per `docs/framework-maintenance.md`). Runs only when the push touches
+   those paths; otherwise skipped and the skip is noted in the log.
+
+Findings must be fixed, or explicitly acknowledged and logged as a deliberate deferral (e.g. in
+the relevant `../PLAN.md`/`_project/completed_plan.md` entry), before the push proceeds. Both
+runs are logged in `docs/_project/review_log.md` — command, repo/commit, module(s) touched, and
+the `_frw/VERSION` value at run time — for later investigation. Applies to every push, on any
+branch — this project has no separate "protected branch" concept to carve out an exemption for.
+
+Self-enforced per `CLAUDE.md` Workflow Rules 15–16 — no technical block (e.g. no pre-push git
+hook). Consistent with this project's existing recommend-don't-block pattern (Track B rule 2 in
 `CLAUDE.md`): the discipline is procedural, not mechanically enforced.
 
 Other option (not selected): No dedicated secondary review before push — rely on whatever review

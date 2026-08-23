@@ -11,7 +11,11 @@ governing how this bundle relates to a real project's `docs/` and stays in sync 
 
 ## To bootstrap a new project with this kit
 
-1. Copy this whole `_frw/` directory into the new project's repo root.
+1. Copy this whole `_frw/` directory into the new project's repo root. Before deleting it in
+   step 3, note the value in `VERSION` and record it as a static fact in the new project's
+   `docs/framework-maintenance.md` (e.g. "Bootstrapped from `_frw/` version 26.08.23:14.28.879")
+   — once `_frw/` is gone, that note is the only lasting record of which framework revision this
+   project started from, and `docs/_project/review_log.md`'s Framework Reviewer entries cite it.
 2. Rename `CLAUDE.md.template` → `CLAUDE.md` and `PLAN.md.template` → `PLAN.md`, both at the new
    project's root (not inside `docs/`).
 3. Move the contents of this bundle's `docs/` subfolder up to the new project's own `docs/` at
@@ -26,11 +30,12 @@ governing how this bundle relates to a real project's `docs/` and stays in sync 
    shape; leave `docs/decisions/`, `docs/_discovery/`, and `docs/_project/` empty until there's a
    real decision, a real discovery pass, or a real dated change to log in each.
 6. Fill in `docs/dev-practices.md` — pick a setting for each category (test-writing timing,
-   whether automated tests gate `Confirmed`, local verification requirements, whether a
-   secondary review gates every push) before real implementation work starts, since `CLAUDE.md`
-   Workflow Rules 9/14/15 read it from the first task onward. It's the one config file worth
-   deciding early rather than leaving to "fill in later," since defaulting silently (test-after,
-   `Confirmed` without tests, secondary review required on every push) is itself a choice.
+   whether automated tests gate `Confirmed`, local verification requirements, whether the
+   two-reviewer gate runs before every push) before real implementation work starts, since
+   `CLAUDE.md` Workflow Rules 9/14/15/16 read it from the first task onward. It's the one config
+   file worth deciding early rather than leaving to "fill in later," since defaulting silently
+   (test-after, `Confirmed` without tests, two-reviewer gate required on every push) is itself a
+   choice.
 7. Read `CLAUDE.md` end to end before starting work — it is the actual rulebook, not this file.
 
 ## What's in this bundle
@@ -38,6 +43,7 @@ governing how this bundle relates to a real project's `docs/` and stays in sync 
 ```
 _frw/
   README.md              — this file
+  VERSION                 — this bundle's version, YY.MM.DD:HH.MM.FFF (see framework-maintenance.md)
   CLAUDE.md.template      — the philosophy/process rulebook; copy to <new-project>/CLAUDE.md
   PLAN.md.template        — minimal starter plan; copy to <new-project>/PLAN.md
   docs/                   — template docs tree; copy contents to <new-project>/docs/
@@ -55,6 +61,7 @@ _frw/
     _discovery/debt_log.md
     _project/CHANGELOG.md
     _project/completed_plan.md
+    _project/review_log.md
     modules/_module-template/
       requirements.md
       domain-model.md

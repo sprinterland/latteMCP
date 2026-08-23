@@ -19,6 +19,8 @@
 - `_discovery/debt_log.md` — flags raised (and knowingly deferred) during feature work (Track B)
 - `_project/CHANGELOG.md` — dated log of material changes to requirements/architecture/decisions
 - `_project/completed_plan.md` — archive of tasks checked off in `../PLAN.md`
+- `_project/review_log.md` — per-push log of Rule 15/16 secondary-review runs (command, repo,
+  module(s), framework version)
 
 ## Modules
 

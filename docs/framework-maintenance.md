@@ -13,12 +13,30 @@ contains:
 ```
 _frw/
   README.md              — how to use this bundle to bootstrap a new project
+  VERSION                 — this bundle's version (see "Versioning" below)
   CLAUDE.md.template      — copy of `../CLAUDE.md` (already tech/project-agnostic)
   PLAN.md.template        — minimal starter plan.md
   docs/                   — mirrors this project's docs/ tree, but every file is a template:
                             process and structure only, no project-specific facts. `modules/`
                             holds one `_module-template/` folder instead of real modules.
 ```
+
+## Versioning
+
+`_frw/VERSION` holds a single line: the bundle's version, stamped `YY.MM.DD:HH.MM.FFF` (2-digit
+year, month, day, 24h hour, minute, milliseconds — the moment the bundle was last changed, not a
+semantic version; there's no meaningful "major/minor" axis for a doc-template bundle, only "as of
+when"). It exists so anything that references "the framework version" — most concretely, each
+`docs/_project/review_log.md` entry's Framework Reviewer sub-entry (see `CLAUDE.md` Workflow Rule
+16) — can cite a precise, unambiguous point in `_frw/`'s history rather than a vague "recent."
+
+Bump it (regenerate the timestamp, overwrite the file) as step 3 of the Maintenance rule below,
+every time `_frw/` actually changes — never on an ordinary `docs/`/`CLAUDE.md` change that doesn't
+propagate. A project that bootstraps from this bundle and then deletes its own `_frw/` copy (the
+normal case per `_frw/README.md` step 3) has no live `VERSION` file to read afterward; that
+project should instead record the version it started from as a static fact in its own
+`docs/framework-maintenance.md` at bootstrap time, so its own review log has something permanent
+to cite even without keeping `_frw/` around.
 
 ## What's project-specific vs. framework, precisely
 
@@ -45,5 +63,6 @@ never made unilaterally:
    change affects process there too), same as any other confirmed decision (Workflow Rule 6).
 3. Then propagate the equivalent generic version of the same change into `_frw/` (including
    `_frw/CLAUDE.md.template` if `CLAUDE.md` itself changed) so the template bundle stays current
-   with the philosophy it's meant to hand off.
+   with the philosophy it's meant to hand off, and bump `_frw/VERSION` to the current timestamp
+   (see "Versioning" above) — every propagation is a version change, no exceptions.
 4. Note the framework change in `docs/_project/CHANGELOG.md` same as any other material change.

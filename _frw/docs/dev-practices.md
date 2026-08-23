@@ -3,7 +3,7 @@
 Configurable process decisions for how this project writes and verifies code — the process
 counterpart to `api-conventions.md` (which fixes API *contract* conventions, and can be deleted
 if the project has no HTTP API; this file cannot be deleted — every project makes these choices
-implicitly even if it never writes them down). `CLAUDE.md` Workflow Rules 9, 14, and 15 read
+implicitly even if it never writes them down). `CLAUDE.md` Workflow Rules 9, 14, 15, and 16 read
 the settings below.
 
 **How to use this file:** for each setting, delete the options you didn't pick and keep only the
@@ -54,12 +54,21 @@ Selected: _\<fill in\>_
 
 Selected: _\<fill in\>_
 
-- **Yes — `/code-review <level>` before every push** (default assumed by `CLAUDE.md` Workflow
-  Rule 15 if this file is absent or unset; recommended level: `high`) — before any `git push`,
-  run the code-review skill against the commits being pushed that aren't yet on the remote, as an
-  independent secondary pass distinct from the authoring work already done. Its findings must be
-  fixed, or explicitly acknowledged and logged as a deliberate deferral (e.g. in the relevant
-  `plan.md`/`completed_plan.md` entry), before the push proceeds.
+- **Yes — two-reviewer gate before every push** (default assumed by `CLAUDE.md` Workflow Rules
+  15–16 if this file is absent or unset; recommended level: `high`) — before any `git push`, two
+  independent reviewer passes run:
+  1. **Project Reviewer** (Rule 15) — the code-review skill scoped to project-specific changes
+     (module docs, ADRs, requirement/test traceability, discovery/debt logs, `plan.md`, source
+     code). Always runs.
+  2. **Framework Reviewer** (Rule 16) — the code-review skill scoped to `CLAUDE.md`, `_frw/**`,
+     `docs/framework-maintenance.md`, `docs/migrations.md`, checking framework/template fidelity,
+     ambiguity, and noting enhancement opportunities (proposals only — never applied without
+     asking first). Runs only when the push touches those paths.
+
+  Findings from either must be fixed, or explicitly acknowledged and logged as a deliberate
+  deferral (e.g. in the relevant `plan.md`/`completed_plan.md` entry), before the push proceeds.
+  Both runs are logged in `docs/_project/review_log.md` (command, repo/commit, module(s) touched,
+  `_frw/VERSION` at run time — see that file's "Versioning" section).
 - **No** — no dedicated secondary review before push; rely on whatever review happens at PR/merge
   time only.
 
