@@ -14,12 +14,12 @@
   the documentation philosophy itself (read rarely — only for a framework-level change)
 - `migrations.md` — docs-first process for fully replacing a module's implementation (read
   rarely — only during an active migration/rewrite)
-- `_discovery/coverage.md` — module-level rollup of reconstruction progress (Track A)
-- `_discovery/discovery_plan.md` — operation-level backlog driving the rollup above
-- `_discovery/debt_log.md` — flags raised (and knowingly deferred) during feature work (Track B)
-- `_project/CHANGELOG.md` — dated log of material changes to requirements/architecture/decisions
-- `_project/completed_plan.md` — archive of tasks checked off in `../PLAN.md`
-- `_project/review_log.md` — per-push log of Rule 15/16 secondary-review runs (command, repo,
+- `discovery/coverage.md` — module-level rollup of reconstruction progress (Track A)
+- `discovery/discovery_plan.md` — operation-level backlog driving the rollup above
+- `discovery/debt_log.md` — flags raised (and knowingly deferred) during feature work (Track B)
+- `project/CHANGELOG.md` — dated log of material changes to requirements/architecture/decisions
+- `project/completed_plan.md` — archive of tasks checked off in `../PLAN.md`
+- `project/review_log.md` — per-push log of Rule 15/16 secondary-review runs (command, repo,
   module(s), framework version)
 
 ## Modules
@@ -32,7 +32,7 @@ One row per `docs/modules/<name>/` folder. Add a row here whenever a module fold
 | latteMCP | [`modules/latteMCP/`](modules/latteMCP/) | Confirmed | MCP server wrapping latteAPI; see ADR-0002–0004; implemented and manually verified 2026-08-22, automated tests still pending |
 | latteMCPclient | [`modules/latteMCPclient/`](modules/latteMCPclient/) | Draft | Console demo client |
 
-Doc status here should match `_discovery/coverage.md` while a module is still being
+Doc status here should match `discovery/coverage.md` while a module is still being
 reconstructed from existing code, and can be dropped from tracking once `Confirmed` and stable.
 
 ## Reading order for a new module
@@ -45,8 +45,8 @@ reconstructed from existing code, and can be dropped from tracking once `Confirm
    ADR-0005)
 5. `modules/<name>/test-spec.md` — how to verify it
 
-Then `../PLAN.md` for current status (`_project/completed_plan.md` for its finished-task archive)
-and `_project/CHANGELOG.md` for history.
+Then `../PLAN.md` for current status (`project/completed_plan.md` for its finished-task archive)
+and `project/CHANGELOG.md` for history.
 
 See `../CLAUDE.md` for the rules governing how this documentation set is maintained, including
 the process for reconstructing docs from an existing codebase.

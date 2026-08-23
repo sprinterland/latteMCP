@@ -7,6 +7,25 @@ current year only and linking older ones from the top.
 
 ## 2026-08-23
 
+- Renamed `docs/_discovery/` to `docs/discovery/` and `docs/_project/` to `docs/project/`
+  (framework-level change, applies to future projects too), dropping the leading underscore from
+  both docs subfolders so they read as ordinary content folders rather than hidden/system ones.
+  Added `_data/` at the `claude-project-framework` bundle's root (a new top-level folder, sibling
+  to `docs/`, not nested inside it) to hold `_frw`'s own framework-update notes — per the "What's
+  project-specific vs. framework, precisely" section, explicitly excluded from what gets copied
+  into a bootstrapped project (see `README.md`'s bootstrap step 2 and "What's in this bundle"
+  tree). Renamed the two folders with `git mv` in both this repo and `claude-project-framework`
+  (commit `9512282` in `claude-project-framework`, bumping `VERSION` to `26.08.23:18.23.266`), and
+  updated every forward-looking reference across both repos to the new paths: `CLAUDE.md` /
+  `CLAUDE.md.template` (Documentation Structure tree, Rules 2/6/7/10/15), `PLAN.md` /
+  `PLAN.md.template`, `docs/00-index.md`, `docs/dev-practices.md`, `docs/framework-maintenance.md`
+  (including the "Bootstrapped from / last synced" fact, bumped to commit `9512282`),
+  `docs/decisions/0005-api-docs-openapi-per-operation-samples.md`, `docs/discovery/debt_log.md`,
+  and `claude-project-framework`'s own `README.md`. Left this file's, `review_log.md`'s, and
+  `completed_plan.md`'s own past dated entries untouched (in both repos) — they're historical
+  record of what was true when written, per this file's own "don't edit a past entry" convention;
+  only the physical file rename (`git mv`) applies retroactively, not the path text inside old
+  entries.
 - Flattened `_frw`'s internal `_frw/` wrapper folder up to the `claude-project-framework` repo's
   own root (framework-level change, applies to future projects too): that repo's root now **is**
   the bundle (`README.md`, `VERSION`, `CLAUDE.md.template`, `PLAN.md.template`, `docs/` all live

@@ -31,11 +31,11 @@ docs/
   decisions/
     README.md                 — index table of all ADRs (id, title, status, modules affected)
     0001-<title>.md            — one ADR per significant decision, globally numbered
-  _discovery/
+  discovery/
     coverage.md                — module-level rollup of reconstruction progress
     discovery_plan.md           — operation-level backlog that drives the rollup above
     debt_log.md                 — flags raised (and knowingly deferred) during feature work
-  _project/
+  project/
     CHANGELOG.md                — dated log of material changes to requirements/architecture/
                                    decisions
     completed_plan.md           — archive of tasks checked off in `PLAN.md` (see rule 12 below)
@@ -54,7 +54,7 @@ docs/
 ```
 
 Only `CLAUDE.md` and `PLAN.md` live at the project root — everything else that describes or logs
-the project belongs under `docs/`. `docs/_project/` holds files that are a running log *of this
+the project belongs under `docs/`. `docs/project/` holds files that are a running log *of this
 specific project* (`CHANGELOG.md`, `completed_plan.md`) rather than reusable framework content —
 see "Reusable framework template (`_frw`)" below for the distinction this split is for.
 
@@ -166,7 +166,7 @@ project-vs-framework split.
 **Standing rule:** a framework-level change (something meant to apply to future projects too, not
 just a fact about this one) is never made unilaterally — ask the user first, then apply it to
 `CLAUDE.md`/`docs/` and propagate the generic version into the shared `_frw` together, and log it
-in `docs/_project/CHANGELOG.md`. See `docs/framework-maintenance.md` for the full procedure.
+in `docs/project/CHANGELOG.md`. See `docs/framework-maintenance.md` for the full procedure.
 
 ## Two Concurrent Tracks: Discovery and Development
 
@@ -183,9 +183,9 @@ either gets documented or gets explicitly logged as deferred — never silently 
 Dedicated, opportunistic reconstruction of documentation for modules nobody is actively changing
 right now, in small bounded units — never a whole repo, or even a whole file, in one pass — so
 each iteration fits comfortably in context and progress is resumable across many short sessions.
-See `docs/_discovery/discovery_plan.md` for the full process (topology scan, module ordering, the
+See `docs/discovery/discovery_plan.md` for the full process (topology scan, module ordering, the
 per-operation loop, batching guidance, and how to flag ambiguity instead of guessing) and
-`docs/_discovery/coverage.md` for the module-level rollup it drives.
+`docs/discovery/coverage.md` for the module-level rollup it drives.
 
 ### Track B — Development (features & fixes)
 
@@ -193,7 +193,7 @@ This is what happens most of the time: a task requires touching code in some mod
 regardless of that module's documentation status. The contract:
 
 1. Before touching code in a module/operation, check its status in `docs/00-index.md`,
-   `docs/_discovery/coverage.md`, or the module's own docs.
+   `docs/discovery/coverage.md`, or the module's own docs.
 2. If the relevant docs are missing, still `Draft`, or contradict what the code actually does,
    say so and recommend completing/confirming that documentation first. This is a
    recommendation, not a block — the developer may decide to proceed anyway, and that decision
@@ -207,7 +207,7 @@ regardless of that module's documentation status. The contract:
    unrelated gap elsewhere in the module — resolve that contradiction as part of the change.
    Don't leave a document that's provably wrong about the thing you just edited.
 5. If the developer declines to resolve the flag from step 2, log it in
-   `docs/_discovery/debt_log.md` (what's missing/mismatched, why deferred) and bump that
+   `docs/discovery/debt_log.md` (what's missing/mismatched, why deferred) and bump that
    module/operation's priority in `discovery_plan.md` so Track A picks it up sooner. Skip the
    log entirely if the developer instead brings the docs to `Confirmed` as part of the same
    task — there's nothing left to defer.
@@ -226,7 +226,7 @@ and what must not change during a rewrite.
 ## Workflow Rules
 
 1. At the start of any task, read `docs/00-index.md`, then the relevant module folder(s), then
-   `PLAN.md`. For an existing codebase with incomplete docs, check `docs/_discovery/coverage.md`
+   `PLAN.md`. For an existing codebase with incomplete docs, check `docs/discovery/coverage.md`
    and `debt_log.md` first to see what's already reconstructed or previously flagged.
 2. Before a decision that is ambiguous, controversial, hard to reverse, or touches architecture,
    security, or business rules, ask whether the approach is acceptable — batch related questions,
@@ -248,7 +248,7 @@ and what must not change during a rewrite.
    the doc should keep that distinction visible rather than launder one into the other.
 6. Once a decision is confirmed, update the relevant doc(s) first, then implement.
 7. If implementation reveals a doc was wrong, fix the doc before moving on — docs and code must
-   never be allowed to drift apart. Log material changes in `docs/_project/CHANGELOG.md`.
+   never be allowed to drift apart. Log material changes in `docs/project/CHANGELOG.md`.
 8. Every acceptance criterion in a module's `test-spec.md` maps to at least one automated test,
    written from the spec — not reverse-engineered from existing code (except during the
    discovery pass itself, where the direction is necessarily code → doc).
@@ -261,7 +261,7 @@ and what must not change during a rewrite.
    Status" setting is `Yes`, this carve-out does not apply and `Confirmed` requires real passing
    automated tests first.
 10. Never write secrets, API keys, passwords, or tokens into any file under `docs/` (including
-    `docs/_project/CHANGELOG.md`) or `PLAN.md`. Reference the config key name only.
+    `docs/project/CHANGELOG.md`) or `PLAN.md`. Reference the config key name only.
 11. New significant decisions get a new ADR in `docs/decisions/`, added to `docs/decisions/
     README.md`; never edit or delete a past one's decision/consequences — supersede it with a new
     ADR that references it.
@@ -282,12 +282,12 @@ and what must not change during a rewrite.
     doesn't cover, so nothing new added to `docs/` (a future `docs/security.md`, another
     cross-cutting top-level doc, a new module) can fall through a gap between the two reviewers'
     scopes the way an incomplete allowlist could. In practice this means `docs/modules/**`,
-    `docs/decisions/**` (ADRs), requirement/test-ID traceability, `docs/_discovery/**`,
-    `docs/_project/**`, every other file under `docs/`, `PLAN.md`, and application source code —
+    `docs/decisions/**` (ADRs), requirement/test-ID traceability, `docs/discovery/**`,
+    `docs/project/**`, every other file under `docs/`, `PLAN.md`, and application source code —
     as a check independent of the authoring work already done, not a repeat of it. Always runs, on
     every push. Fix its findings, or explicitly acknowledge and log a deliberate deferral (e.g. in
-    the relevant `PLAN.md`/`docs/_project/completed_plan.md` entry), before the push proceeds. Log
-    the run in `docs/_project/review_log.md` as a **Project Reviewer** sub-entry — always present
+    the relevant `PLAN.md`/`docs/project/completed_plan.md` entry), before the push proceeds. Log
+    the run in `docs/project/review_log.md` as a **Project Reviewer** sub-entry — always present
     — with the command, repo/commit, module(s) touched, and the current value of `_frw`'s `VERSION`
     file (the `YY.MM.DD:HH.MM.FFF` format is documented in `docs/framework-maintenance.md`'s
     "Versioning" section, not in that file itself, which is just the bare value; read live from
@@ -329,7 +329,7 @@ and what must not change during a rewrite.
     Enhancement suggestions specifically are proposals only: per `docs/framework-maintenance.md`'s
     standing rule, no framework change — including one this reviewer itself suggests — is applied
     without asking the user first. Fix confirmed fidelity/ambiguity findings, or log a deferral,
-    before the push proceeds. Log the run in `docs/_project/review_log.md` as a **Framework
+    before the push proceeds. Log the run in `docs/project/review_log.md` as a **Framework
     Reviewer** sub-entry the same way Rule 15 does, plus any enhancement suggestions raised (or
     "none"). This sub-entry is always present in every push's log entry, even when this rule
     didn't apply — its content then simply states "not run: push touched no framework paths"

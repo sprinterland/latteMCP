@@ -19,7 +19,7 @@ the moment implementation reveals a gap that isn't resolved in the same task.
 When an item is logged here, bump the priority/order of its module or operation row in
 `discovery_plan.md` so the dedicated discovery track (Track A) picks it up sooner than it
 otherwise would have. Remove a row once it's resolved — docs brought to `Confirmed` and matching
-the code — and note the resolution in `../_project/CHANGELOG.md`.
+the code — and note the resolution in `../project/CHANGELOG.md`.
 
 This table is also a signal on its own: a module accumulating many rows here is being actively
 worked but chronically under-documented, and is a good candidate to prioritize even above

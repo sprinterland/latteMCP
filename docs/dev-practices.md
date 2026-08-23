@@ -68,8 +68,8 @@ already done, and of each other:
    present, stating "not run" and why.
 
 Findings must be fixed, or explicitly acknowledged and logged as a deliberate deferral (e.g. in
-the relevant `../PLAN.md`/`_project/completed_plan.md` entry), before the push proceeds. Both
-runs are logged in `docs/_project/review_log.md` — command, repo/commit, module(s) touched, and
+the relevant `../PLAN.md`/`project/completed_plan.md` entry), before the push proceeds. Both
+runs are logged in `docs/project/review_log.md` — command, repo/commit, module(s) touched, and
 the value of `_frw`'s `VERSION` file at run time (format in `docs/framework-maintenance.md`'s
 "Versioning" section) — for later investigation. Applies to every push, on any branch — this project has no
 separate "protected branch" concept to carve out an exemption for.
@@ -85,7 +85,7 @@ happens at PR/merge time only.
 
 This policy was adopted 2026-08-23, after `latteAPI` and `latteMCP` had already reached
 `Confirmed` under the previous (test-after, manual-verification-sufficient) practice — see Phase
-1/Phase 2 in `_project/completed_plan.md`. Per the "coverage only ever moves forward" principle
+1/Phase 2 in `project/completed_plan.md`. Per the "coverage only ever moves forward" principle
 in `CLAUDE.md`'s "Two Concurrent Tracks" section, their existing `Confirmed` status is **not**
 retroactively revoked by this change — a policy change is not the same as Track B touching their
 code. Their still-open automated-test follow-up (tracked in `../PLAN.md`) now exists to satisfy

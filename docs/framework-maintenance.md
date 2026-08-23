@@ -24,6 +24,8 @@ README.md              — how to use this bundle to bootstrap a new project
 VERSION                 — this bundle's version (see "Versioning" below)
 CLAUDE.md.template      — a tech/project-agnostic copy of a project's `CLAUDE.md`
 PLAN.md.template        — minimal starter plan.md
+_data/                  — `_frw`'s own framework-update notes; never copied into a bootstrapped
+                          project (unlike everything else above, which is)
 docs/                   — mirrors a project's docs/ tree, but every file is a template: process
                           and structure only, no project-specific facts. `modules/` holds one
                           `_module-template/` folder instead of real modules.
@@ -36,7 +38,7 @@ in field order, 2-digit year, month, day, then a 24h hour, minute, and milliseco
 `MM` is minute, not a repeat of the month field three groups earlier) — the moment the bundle was
 last changed, not a semantic version; there's no meaningful "major/minor" axis for a doc-template
 bundle, only "as of when." It exists so anything that references "the framework version" — most
-concretely, each `docs/_project/review_log.md` entry's Framework Reviewer sub-entry (see
+concretely, each `docs/project/review_log.md` entry's Framework Reviewer sub-entry (see
 `CLAUDE.md` Workflow Rule 16) — can cite a precise, unambiguous point in `_frw`'s history rather
 than a vague "recent."
 
@@ -50,9 +52,10 @@ still has something permanent to cite if the shared clone/repo is ever unreachab
 machine, no network, repo moved) at review time:
 
 **Bootstrapped from / last synced at [`claude-project-framework`](https://github.com/sprinterland/claude-project-framework)
-commit `a644991`, version `26.08.23:17.49.988`** (2026-08-23 — `_frw`'s internal `_frw/` wrapper
-folder was flattened up to that repo's own root, so nothing in it lives under a `_frw/` subfolder
-any more).
+commit `9512282`, version `26.08.23:18.23.266`** (2026-08-23 — `docs/_discovery/` and
+`docs/_project/` were renamed to `docs/discovery/` and `docs/project/`, and a `_data/` folder was
+added at the bundle root for `_frw`'s own framework-update notes, excluded from what gets copied
+into a bootstrapped project).
 
 ## What's project-specific vs. framework, precisely
 
@@ -82,4 +85,4 @@ never made unilaterally:
    stays current with the philosophy it's meant to hand off, bump its `VERSION` file to the
    current timestamp (see "Versioning" above), and commit + push to `claude-project-framework` on
    GitHub — every propagation is a version change and a push, no exceptions.
-4. Note the framework change in `docs/_project/CHANGELOG.md` same as any other material change.
+4. Note the framework change in `docs/project/CHANGELOG.md` same as any other material change.

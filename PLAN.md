@@ -5,14 +5,14 @@ Scope: active/near-term, cross-module or org-level work only. Anything settled b
 `docs/modules/<module>/plan.md` — see rule 12 in `CLAUDE.md`.
 
 Work against a module whose docs are below `Confirmed` is allowed — see "Track B — Development"
-in `CLAUDE.md`. When that happens, note it here (or link the `docs/_discovery/debt_log.md`
+in `CLAUDE.md`. When that happens, note it here (or link the `docs/discovery/debt_log.md`
 entry) so it's visible that this task is proceeding ahead of full documentation on purpose, not
 just falling through the cracks.
 
 Note: `latteMCPclient` is currently `Draft`. `latteAPI` reached `Confirmed` on 2026-08-22 (Phase 1
 implementation, Track B) and `latteMCP` reached `Confirmed` on 2026-08-22 (Phase 2 implementation,
 Track B) — each has one remaining gap (automated tests, see Phase 1/Phase 2 below); nothing has
-been deferred to `docs/_discovery/debt_log.md` since those gaps are tracked here instead. See
+been deferred to `docs/discovery/debt_log.md` since those gaps are tracked here instead. See
 `docs/00-index.md` for the module map and `docs/decisions/` (ADR-0001–0004) for the reasoning
 behind the design choices reflected in the tasks below.
 
@@ -25,7 +25,7 @@ two-reviewer gate before every `git push` — Project Reviewer always, Framework
 `CLAUDE.md`/framework docs (`docs/framework-maintenance.md`, `docs/migrations.md`) are touched
 (see "Secondary Review Before Push") — applies
 from this point forward regardless of phase; each run is logged in
-`docs/_project/review_log.md`, and a completed task's entry in `docs/_project/completed_plan.md`
+`docs/project/review_log.md`, and a completed task's entry in `docs/project/completed_plan.md`
 should note the review outcome the same way it already notes manual-verification dates.
 
 ## Status
@@ -45,7 +45,7 @@ _Nothing yet — Phase 3 below is next up._
 Implements: API-REQ-001 through API-REQ-006 (see
 [`docs/modules/latteAPI/requirements.md`](docs/modules/latteAPI/requirements.md)). All tasks but
 the last were completed 2026-08-22 and moved to
-[`docs/_project/completed_plan.md`](docs/_project/completed_plan.md#phase-1--latteapi-completed-2026-08-22-except-automated-tests--see-planmd).
+[`docs/project/completed_plan.md`](docs/project/completed_plan.md#phase-1--latteapi-completed-2026-08-22-except-automated-tests--see-planmd).
 
 - [ ] Write automated tests for `docs/modules/latteAPI/test-spec.md` (API-TEST-001–012); those
       entries stay `Draft` until then per `CLAUDE.md` rule 8.
@@ -59,7 +59,7 @@ via automated tests (not yet done — the one open item above).
 Implements: MCP-REQ-001 through MCP-REQ-005 (see
 [`docs/modules/latteMCP/requirements.md`](docs/modules/latteMCP/requirements.md)). All tasks but
 the last were completed 2026-08-22 and moved to
-[`docs/_project/completed_plan.md`](docs/_project/completed_plan.md#phase-2--lattemcp-completed-2026-08-22-except-automated-tests--see-planmd).
+[`docs/project/completed_plan.md`](docs/project/completed_plan.md#phase-2--lattemcp-completed-2026-08-22-except-automated-tests--see-planmd).
 
 - [ ] Write automated tests for `docs/modules/latteMCP/test-spec.md` (MCP-TEST-001–009); those
       entries stay `Draft` until then per `CLAUDE.md` rule 8.

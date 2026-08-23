@@ -5,7 +5,7 @@
 - Modules affected: system-wide (documentation process — applies to any module with an HTTP API;
   `latteAPI` is the first to adopt it, `latteMCP` follows since it also exposes HTTP endpoints)
 - Context: Two things surfaced while working on `latteAPI`. First,
-  `docs/_discovery/latteAPI-reimplementation-audit.md` (a since-removed one-off exercise: delete
+  `docs/discovery/latteAPI-reimplementation-audit.md` (a since-removed one-off exercise: delete
   the module, rebuild it from `docs/` alone) found that a single hand-written `interfaces.md`
   left real gaps a generated spec would have closed automatically — e.g. the `GET /health`
   response shape and the error-response body shape were both under-specified enough that two
