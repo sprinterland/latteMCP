@@ -68,9 +68,9 @@ this project has actually pulled in, and still has something permanent to cite i
 clone/repo is ever unreachable (different machine, no network, repo moved) at review time:
 
 **Bootstrapped from / last synced at [`claude-project-framework`](https://github.com/sprinterland/claude-project-framework)
-commit `95c2c27`, version `26.08.24:17.26.719`** (2026-08-24 — restricted this project's writes
-into `_frw` to `_data/` only and added the `sync-framework-updates` inbound-sync skill, requested
-directly by the user in latteMCP; see FRW-ADR-0011).
+commit `2e1ca85`, version `26.08.24:20.29.178`** (2026-08-24 — clarified FRW-ADR-0011's
+session-boundary wording for the multi-working-directory case and added an immediate-after-push
+Inbound-sync trigger, requested directly by the user in latteMCP; see FRW-ADR-0012).
 This line records only the current sync as a static fact, same as the rest of this file's
 principle of pointing rather than restating — the full history of every prior sync already lives
 in `docs/project/CHANGELOG.md` and `_frw/_data/update_history.jsonl`, not here.
@@ -162,12 +162,15 @@ the underlying documentation *philosophy/framework itself* (something meant to a
 projects too, not just a fact about this one) — and per standing instruction, that decision is
 never made unilaterally.
 
-Since FRW-ADR-0011, this project's own session has exactly one write path into the shared `_frw`
-repo — `_data/change_requests.jsonl` — and no others. The rule below is three separate flows, not
-one procedure: **Outbound** is the only thing a task in this project ever does; **Framework
-propagation** happens only inside `_frw`'s own repo and is never something this project's session
-runs; **Inbound sync** is how this project later receives whatever framework propagation decided,
-whether or not this project was the one that proposed it.
+Since FRW-ADR-0011, an ordinary task in this project has exactly one write path into the shared
+`_frw` repo — `_data/change_requests.jsonl` — and no others. The rule below is three separate
+flows, not one procedure: **Outbound** is the only thing an ordinary task in this project ever
+does; **Framework propagation** is a distinct, separately-approved procedure scoped to `_frw`'s
+own working directory — never blended into or triggered as a side effect of a project task, even
+when it runs within the same conversation as one (FRW-ADR-0012 clarifies this for the case where
+one conversation has both `_frw` and a project open as separate working directories); **Inbound
+sync** is how this project later receives whatever framework propagation decided, whether or not
+this project was the one that proposed it, or ran it.
 
 ### Outbound: proposing a framework change (from this project)
 
@@ -183,9 +186,12 @@ project-doc edit, not a write to `_frw`, and doesn't require any of this rule's 
 
 ### Framework propagation (inside `_frw`'s own repo only)
 
-Turns an accepted framework-level idea into an actual bundle change. Runs only as a session whose
-working directory is the shared `_frw` repo itself — most often triaging the `change_requests.jsonl`
-backlog above — **never** as part of a task in this or any other downstream project:
+Turns an accepted framework-level idea into an actual bundle change. Its own commands run with a
+working directory that is the shared `_frw` repo itself — most often triaging the
+`change_requests.jsonl` backlog above, but, per FRW-ADR-0012, this can equally be `_frw` opened as
+an additional working directory within a conversation that also has a downstream project's task
+open, provided propagation is entered only through this flow's own classify/approve steps below,
+**never** blended into or triggered as a side effect of that project's own task:
 
 1. Classify the change against the criteria below before touching anything — every framework-level
    change still needs the user's approval before any edits begin; what differs is how much
@@ -202,7 +208,10 @@ backlog above — **never** as part of a task in this or any other downstream pr
    The fast lane is for genuinely small edits, not a way to avoid asking — if any criterion is
    doubtful, default to a full framework change.
 
-2. Get the user's approval, scaled to the classification above:
+2. Get the user's approval, scaled to the classification above. If this flow is being entered
+   from within a conversation that also has a downstream project's task open (the FRW-ADR-0012
+   same-conversation case), say so explicitly as part of the ask below — name it as a separate
+   `_frw` propagation, distinct from the project task, not just another step of that task:
 
    - **Full framework change:** stop and ask the user whether to make it. Once approved, draft a
      written plan — scope, files touched, an outline of the content/edits — and get sign-off on
@@ -231,7 +240,12 @@ The counterpart to framework propagation no longer touching a project's files di
 way this project's own `CLAUDE.md`/`docs/`/`.claude/skills/` learn about a framework change,
 whether or not this project was the one that proposed it. Runs on demand or periodically, via the
 `sync-framework-updates` skill (`.claude/skills/sync-framework-updates/`, copied into this
-project):
+project). It can also run immediately after this same conversation completes a Framework-
+propagation push (the FRW-ADR-0012 same-session case above): check whether that push touched
+`copy_me/` (e.g. `git show --stat <sha>`, or diff against the recorded "last synced" commit) and,
+if so, tell the user and ask whether to sync now rather than waiting for the next on-demand or
+periodic run; a push that touched no `copy_me/` files needs no sync. This doesn't change the write
+path above — inbound sync stays read-only against `_frw` either way:
 
 1. `git pull` the local `_frw` clone; compare its current `VERSION`/commit against this project's
    own recorded "Bootstrapped from / last synced at" line (below). If unchanged, stop — nothing to

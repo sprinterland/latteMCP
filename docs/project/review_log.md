@@ -691,3 +691,85 @@ Mode).
   fidelity gaps (a skill's own procedure drifting from the doc flow it claims to mirror); no new
   enhancement opportunities beyond what was already fixed in place.
 - Enhancement suggestions: none.
+
+## 2026-08-24 20:38 — latteMCP: pending commit (this entry's own commit) / commit `2e1ca85` (claude-project-framework) — Clarify FRW-ADR-0011's session-boundary wording for the multi-working-directory case (`FRW-ADR-0012`)
+
+Resolving a proposed proactive inbound-sync trigger (`CR-1787588514684-954f`) surfaced a deeper
+ambiguity in `FRW-ADR-0011`'s absolute session-separation wording (it never addressed this tool's
+multi-working-directory single-session case). This escalated mid-task from a minor propagation to
+a **Full framework change** (Plan Mode) once two independent `/code-review high` Framework
+Reviewer passes flagged the same contradiction on two different wording attempts.
+
+### Project Reviewer
+
+- Command: `/code-review high`, run iteratively against the `_frw` clone across six rounds as
+  findings surfaced (fix/amend/re-run each time), then once more against latteMCP's own merge diff.
+- Repo: `claude-project-framework` @ `a9ba107` → `1741372` → `72f5b92` → `5d12718` → `2e1ca85`
+  (pushed); latteMCP (this commit, pending).
+- Module(s): n/a — framework-level (new `FRW-ADR-0012`, `FRW-ADR-0011` superseded-note,
+  `framework-maintenance.md` reworded, plus five more files carrying the same claim).
+- Framework version: `26.08.24:20.29.178`
+- Outcome: not clean until the sixth `_frw`-side round; see `_frw/_data/push_reviews.jsonl`
+  `REV-0012` for the full per-round detail. Findings and fixes, summarized:
+  1. Round 1: the natural Inbound-sync trigger wording ("after this project's own outbound push")
+     contradicted `FRW-ADR-0011`'s absolute "never as part of a task in this or any other
+     downstream project" language — reverted, escalated to a full framework change instead of a
+     second inline patch attempt.
+  2. Round 2 (first `FRW-ADR-0012` draft): the reworded clause still described propagation as
+     something that "can happen in the very same session as a task in this project," which read as
+     sanctioning the exact scenario `FRW-ADR-0011` forbade, plus an unresolved "here" pronoun
+     reference and a "write boundary" term not used anywhere else in the file's vocabulary.
+  3. Round 3: the same stale absolute wording this ADR was clarifying was found duplicated,
+     unfixed, in four more files — `propagate-framework-change/SKILL.md`, `_design/requirements.md`
+     (`FRW-REQ-009`), `_design/architecture.md`, `_design/domain-model.md`'s glossary — updated all
+     four. Also fixed two accuracy issues inside `FRW-ADR-0012` itself: the quoted phrase was
+     misattributed to `FRW-ADR-0011`'s own Decision text (it's actually the implementing doc's
+     wording, not the ADR's); and the "unenforceable by Claude itself" rationale for rejecting a
+     stricter alternative didn't hold, since working-directory info is visible in a session's own
+     environment context — reworded to the real reason (a self-report is no stronger a signal than
+     the check the ADR settles on, so it buys no extra safety for the added friction).
+  4. Round 4: `FRW-ADR-0011`'s own new Superseded note repeated the same misattribution as finding
+     3; `FRW-ADR-0012`'s Decision condition (a) read "entered *after* the classify/approve step,"
+     temporally incoherent since classify/approve are steps 1-2 of the very flow being entered;
+     `SKILL.md`'s own "has changed shape before" ADR citation list was missing `FRW-ADR-0012`; and
+     a third Decision condition ("narrated distinctly to the user") was asserted in the ADR's prose
+     but never actually operationalized in any doc a session would read while acting — fixed by
+     folding it into condition (a) as a concrete "say so explicitly" instruction, then adding that
+     instruction to `framework-maintenance.md` step 2 and `SKILL.md` step 2 for real.
+  5. Round 5: the diagram-spec file (`_diagrams/framework_update_flow/framework-update-flow.md`)
+     and `_design/domain-model.md`'s Inbound-sync glossary row were missing the new same-session
+     sync trigger that every other narration site had gained — added to both; then a further check
+     found `_design/architecture.md`'s own Inbound-sync flow (flow 3) still missing it too —
+     fixed.
+  6. Round 6: clean pass across all ten in-scope files, plus one out-of-scope landmine caught and
+     fixed anyway (`.claude/skills/README.md` still carried the pre-`FRW-ADR-0012` absolute
+     wording) since it's the same false-positive risk class.
+  7. latteMCP-side merge (this commit): confirmed word-for-word merge fidelity against the upstream
+     `2e1ca85` diff (no defects); found the new `CHANGELOG.md` bullet pointed to a `review_log.md`
+     entry that didn't exist yet — this entry resolves that. Also flagged, not fixed locally: the
+     "Framework propagation (inside `_frw`'s own repo only)" section heading is stale relative to
+     its own reworded body, but that heading is inherited unchanged from upstream — fixing it only
+     in latteMCP's copy would itself create drift, so it was logged instead (see Framework
+     Reviewer, Enhancement suggestions below).
+
+### Framework Reviewer
+
+- Command: reused the Project Reviewer's invocations above in full (the entire push is
+  framework-level — every changed file is either inside `_frw`'s clone or this project's own
+  `docs/framework-maintenance.md` mirror of it).
+- Repo: same as above.
+- Module(s): n/a — framework-level.
+- Framework version: `26.08.24:20.29.178`
+- Outcome: same findings/fixes as Project Reviewer above, read through the
+  fidelity/ambiguity/enhancement lens — rounds 1-2 are fidelity contradictions (the wording
+  didn't match the ADR it was supposed to implement); rounds 3-5 are fidelity gaps (the same claim
+  left stale in files that weren't the primary edit target) and one ambiguity fix (the temporally
+  incoherent "entered after" phrasing); round 6 closed the loop with no new findings.
+- Enhancement suggestions: `CR-1787592628846-4d63` (a downstream-projects registry in `_frw`, so a
+  propagation can surface which projects still need to sync — deliberately deferred, not folded
+  into this change, per the user's explicit choice), `CR-1787592628857-e01a` (the `FRW-ADR-0012`
+  claim itself is independently restated across six-plus files with no single source of truth,
+  which is the actual mechanism that produced rounds 3-5's repeated drift findings), and
+  `CR-1787593149632-eabe` (the stale "Framework propagation (inside `_frw`'s own repo only)"
+  section heading, found during the latteMCP-side merge, inherited unchanged from upstream so not
+  fixed locally).

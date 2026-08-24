@@ -7,6 +7,29 @@ current year only and linking older ones from the top.
 
 ## 2026-08-24
 
+- Framework change, requested directly by the user: while resolving a proposed proactive
+  inbound-sync trigger (`CR-1787588514684-954f`), two `/code-review high` Framework Reviewer
+  passes found the natural wording for that trigger contradicted FRW-ADR-0011's absolute
+  "never as part of a task in this or any other downstream project" language for Framework
+  propagation — an ambiguity FRW-ADR-0011 never addressed: this tool supports a single
+  conversation holding several working directories at once, so a downstream-project task can
+  legitimately `cd` into the local `_frw` clone (an additional working directory) and run
+  Framework propagation directly. FRW-ADR-0012 clarifies (does not reverse) FRW-ADR-0011: the
+  working-directory requirement is about the cwd of the propagation commands themselves, not
+  about the conversation having no other directory open, provided propagation is only ever
+  entered through the Maintenance rule's own classify/approve steps. Reworded
+  `docs/framework-maintenance.md`'s "Since FRW-ADR-0011" paragraph and the Framework propagation
+  flow's opening/step-2 text accordingly, and added the originally-proposed Inbound-sync trigger
+  now that the contradiction is resolved: sync can run immediately after this same conversation
+  completes a Framework-propagation push, instead of only on demand/periodically. Propagated into
+  `claude-project-framework` (commit `2e1ca85`, after six Framework Reviewer passes — see
+  `docs/project/review_log.md`'s entry below); this project's own `docs/framework-maintenance.md`
+  synced to match and its "Bootstrapped from / last synced at" line updated. Resolved
+  `CR-1787588514684-954f`; deferred two related enhancement ideas surfaced along the way as
+  `CR-1787592628846-4d63` (a downstream-projects registry in `_frw`, so a propagation can surface
+  which projects still need to sync) and `CR-1787592628857-e01a` (the FRW-ADR-0012 wording itself
+  is independently restated across six-plus files with no single source of truth, which is what
+  produced the repeated drift findings across review passes).
 - Framework change, requested directly by the user (who asked which recurring `CLAUDE.md`
   processes could become Claude Code skills for faster, more consistent execution): consolidated
   everything a bootstrapped project receives under one new `copy_me/` folder in the shared `_frw`
