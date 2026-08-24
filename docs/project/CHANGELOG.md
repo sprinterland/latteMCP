@@ -7,6 +7,33 @@ current year only and linking older ones from the top.
 
 ## 2026-08-24
 
+- Framework change, requested directly by the user (who asked which recurring `CLAUDE.md`
+  processes could become Claude Code skills for faster, more consistent execution): consolidated
+  everything a bootstrapped project receives under one new `copy_me/` folder in the shared `_frw`
+  repo (`CLAUDE.md.template`, `PLAN.md.template`, `docs/`, moved via `git mv`) instead of an
+  implicit allowlist, and added 8 process skills encoding this framework's own repeated
+  procedures. 6 project-usage skills (`push-review-gate`, `log-change-request`,
+  `discovery-iteration`, `new-module`, `new-adr`, `new-api-operation`) now live at
+  `copy_me/.claude/skills/` in `_frw` and are installed in this project at `.claude/skills/`; 2
+  framework-development skills (`bootstrap-project`, `propagate-framework-change`) live only at
+  `_frw`'s own root `.claude/skills/`, never copied into a project. Each skill re-reads its own
+  source-of-truth rule/doc live at invocation time rather than freezing a copy of the procedure.
+  `docs/framework-maintenance.md`'s "What `_frw` is" section updated to describe the new split;
+  `FRW-ADR-0010` added. Propagated into `claude-project-framework` (commit `6b9b07d`, version
+  `26.08.24:15.00.729`). Three Rule 15/16 review passes (one after the initial restructuring, one
+  after fixing its findings, one independent multi-agent pass) found and fixed: `_design/`'s own
+  self-description (`00-index.md`, `architecture.md`, `domain-model.md`, `requirements.md`,
+  `test-spec.md`, a broken relative link in `decisions/README.md`) left describing the old flat
+  layout; the `new-module`/`new-api-operation` skills assuming a local module template that
+  bootstrapping actually renames away after first use (fixed to fall back to the shared `_frw`
+  clone's copy); `log-change-request` hardcoding the `severity` enum against its own stated
+  live-re-read principle; `push-review-gate` restating Rule 16's trigger-path list inside a
+  "re-read live" step; and an ambiguous tree label where two differently-scoped `.claude/skills/`
+  folders were both shown unqualified. One simplification idea (the skill roster is now listed in
+  four separate index files with no single source of truth) deferred as
+  `CR-1787573917472-b195`. See `docs/project/review_log.md`'s entry below and `_frw/_data/
+  push_reviews.jsonl` for the full list.
+
 - Framework fix, requested directly by the user: the Maintenance rule's step 1-2 approval (asking
   about a framework-level change, then drafting and getting sign-off on a written plan) split into
   two tiers. A **minor propagation** — confined to a single file (a project doc and its identical

@@ -565,3 +565,64 @@ records the `_frw/_data/change_requests.jsonl` `id`(s) of any enhancement sugges
       neither acted on since they'd mean redesigning already-approved criteria or adding back
       ceremony unilaterally; logged as `CR-1787520515394-219f` and `CR-1787520659261-b488`.
 - Enhancement suggestions: `CR-1787520515394-219f`, `CR-1787520659261-b488`.
+
+## 2026-08-24 15:31 — latteMCP: pending commit (this entry's own commit) / commit `6b9b07d` (claude-project-framework) — Add `copy_me/` boundary and 8 process skills (`FRW-ADR-0010`)
+
+This was a **Full framework change** (new top-level structure, 8 new files — past the
+minor-propagation criteria), so it went through the full ask-then-written-plan sequence (Plan
+Mode), including one round of user correction on where skills should live before the plan was
+approved.
+
+### Project Reviewer
+
+- Command: `/code-review high`, 3 separate invocations across the change (one after the initial
+  restructuring, one after fixing its findings, one final independent multi-agent pass — the third
+  itself spawned 4 parallel finder/verifier agents).
+- Repo: `claude-project-framework` @ `a7ff48a` → `fd0496d` → `1d00092` → `b2fa084` → `6b9b07d`
+  (amended four times — restructuring, review fixes, the `push_reviews.jsonl`/`update_history.jsonl`
+  entries below, then correcting their self-referenced commit hash to the actual final one — still
+  local/unpushed); latteMCP (this commit, pending).
+- Module(s): n/a — framework-level (`copy_me/` restructuring, 8 new skills, `_design/`
+  self-description, `docs/framework-maintenance.md`)
+- Framework version: `26.08.24:15.00.729`
+- Outcome: not clean on the first two invocations; every finding fixed in place via commit amends
+  (safe — still local/unpushed). Findings and fixes:
+  1. Fidelity: the `copy_me/` restructuring moved `docs/`, `CLAUDE.md.template`, `PLAN.md.template`
+     out from under the bundle root, but left `_design/00-index.md`, `architecture.md`,
+     `domain-model.md`, `requirements.md`, and `test-spec.md` — the bundle's own reflexive
+     self-description — still describing the old flat layout, plus one genuinely broken relative
+     link (`_design/decisions/README.md`'s `../../docs/decisions/TEMPLATE.md`, now
+     `../../copy_me/docs/decisions/TEMPLATE.md`) — fixed across all six files; `FRW-REQ-002/003`
+     widened to state the invariant covers `_design/`'s own cross-references too.
+  2. Correctness: `new-module` and `new-api-operation` (two of the new skills) instructed copying a
+     project-local `docs/modules/_module-template/`, but the bootstrap flow *renames* that folder
+     away on first use rather than copying it — so both skills would fail on every module after the
+     first, the common case — fixed to fall back to the shared `_frw` clone's permanent copy
+     (`copy_me/docs/modules/_module-template/`) when no local template survives.
+  3. Altitude: `log-change-request`'s own text warned the `change_requests.jsonl` schema "has grown
+     before" and told the author to re-read the `affected_entities` enum live, then hardcoded the
+     `severity` enum two lines later — fixed to defer to a live re-read for both fields.
+  4. Altitude: `push-review-gate` restated Rule 16's current trigger-path list verbatim inside a
+     step framed as "read the current rules live" — fixed to describe the classification step
+     without restating the list.
+  5. Clarity: `docs/framework-maintenance.md`'s bundle-contents tree showed two differently-scoped
+     `.claude/skills/` folders (bundle-root, framework-dev-only vs. `copy_me/`-nested,
+     project-usage) with the same unqualified label — fixed by naming the root one explicitly.
+  6. Reuse (deferred): the new 6-skill roster is enumerated verbatim in four separate index files
+     (`README.md`, `copy_me/docs/framework-maintenance.md`, and both `.claude/skills/README.md`
+     copies) with no single source of truth — the same duplication class `copy_me/` itself was just
+     introduced to eliminate for the bootstrap allowlist — not acted on now since fixing it would
+     mean designing a generation/single-source mechanism for markdown index content, larger than
+     the propagation in flight; logged as `CR-1787573917472-b195`.
+
+### Framework Reviewer
+
+- Command: reused the Project Reviewer's invocations above (full overlap — this push's entire
+  substance is framework-level).
+- Repo: same as above.
+- Module(s): n/a — framework-level.
+- Framework version: `26.08.24:15.00.729`
+- Outcome: same findings/fixes as Project Reviewer above, read through the fidelity/ambiguity/
+  enhancement lens — finding 1 is a fidelity gap (bundle self-description contradicting its own
+  fresh content), finding 5 is an ambiguity fix, finding 6 is the enhancement opportunity.
+- Enhancement suggestions: `CR-1787573917472-b195`.

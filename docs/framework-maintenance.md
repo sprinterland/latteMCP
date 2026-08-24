@@ -22,15 +22,25 @@ It contains:
 ```
 README.md              — how to use this bundle to bootstrap a new project
 VERSION                 — this bundle's version (see "Versioning" below)
-CLAUDE.md.template      — a tech/project-agnostic copy of a project's `CLAUDE.md`
-PLAN.md.template        — minimal starter plan.md
+.claude/skills/         — (bundle root — distinct from copy_me/.claude/skills/ below)
+                          framework-development skills (bootstrap-project,
+                          propagate-framework-change); run directly in the shared repo, never
+                          copied into a bootstrapped project
 _data/                  — `_frw`'s own framework-update notes; never copied into a bootstrapped
-                          project (unlike everything else above, which is)
+                          project
 _design/                — `_frw`'s own design rationale — why the bundle is shaped this way, enough
                           to recreate it from scratch; like `_data/`, never copied into a project
-docs/                   — mirrors a project's docs/ tree, but every file is a template: process
+copy_me/                — the entire copy boundary (see FRW-ADR-0010): everything a bootstrapped
+                          project receives lives here, and only here
+  CLAUDE.md.template      — a tech/project-agnostic copy of a project's `CLAUDE.md`
+  PLAN.md.template        — minimal starter plan.md
+  docs/                   — mirrors a project's docs/ tree, but every file is a template: process
                           and structure only, no project-specific facts. `modules/` holds one
                           `_module-template/` folder instead of real modules.
+  .claude/skills/         — project-usage skills (push-review-gate, log-change-request,
+                          discovery-iteration, new-module, new-adr, new-api-operation); copied
+                          verbatim into the bootstrapped project's own `.claude/skills/` — this
+                          project's own copy lives at `latteMCP/.claude/skills/`
 ```
 
 ## Versioning
@@ -55,9 +65,10 @@ still has something permanent to cite if the shared clone/repo is ever unreachab
 machine, no network, repo moved) at review time:
 
 **Bootstrapped from / last synced at [`claude-project-framework`](https://github.com/sprinterland/claude-project-framework)
-commit `1374628`, version `26.08.24:00.06.658`** (2026-08-24 — added a minor-propagation fast lane
-to the Maintenance rule's step 1-2 approval, requested directly by the user in latteMCP; see
-FRW-ADR-0009).
+commit `6b9b07d`, version `26.08.24:15.00.729`** (2026-08-24 — consolidated the bundle's copy
+boundary under `copy_me/` and added 8 process skills (6 project-usage, copied into this project's
+own `.claude/skills/`; 2 framework-development, `_frw`-only), requested directly by the user in
+latteMCP; see FRW-ADR-0010).
 This line records only the current sync as a static fact, same as the rest of this file's
 principle of pointing rather than restating — the full history of every prior sync already lives
 in `docs/project/CHANGELOG.md` and `_frw/_data/update_history.jsonl`, not here.
