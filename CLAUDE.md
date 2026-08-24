@@ -175,10 +175,15 @@ in it lives under a literal `_frw/` subfolder (that repo's root **is** the bundl
 `docs/framework-maintenance.md` for the full structure, the concrete location, and the exact
 project-vs-framework split.
 
-**Standing rule:** a framework-level change (something meant to apply to future projects too, not
-just a fact about this one) is never made unilaterally — ask the user first, then follow
-`docs/framework-maintenance.md`'s Maintenance rule end to end (that file, not this paraphrase, is
-the source of truth for the exact steps — they've changed shape before and will again).
+**Standing rule:** actually *making* a framework-level change (something meant to apply to future
+projects too, not just a fact about this one) is never done unilaterally — ask the user first.
+*Proposing* one is different and never gated on that: this project's own session has exactly one
+write path into the shared `_frw` repo, logging the idea to `_data/change_requests.jsonl` (Rule
+17), and that logging happens immediately, without asking, same as always. Turning an accepted
+proposal into an actual bundle change happens only directly inside `_frw`'s own repo, and this
+project only receives that change afterward by pulling it in — both of those follow
+`docs/framework-maintenance.md`'s Maintenance rule (that file, not this paraphrase, is the source
+of truth for the exact steps — they've changed shape before and will again).
 
 ## Two Concurrent Tracks: Discovery and Development
 
@@ -360,7 +365,9 @@ and what must not change during a rewrite.
     enhancement, however minor, even one you're about to fix as part of the very task you're
     doing, log it immediately to the shared `_frw/_data/change_requests.jsonl` (see
     `docs/framework-maintenance.md`'s "Framework activity logs" section for the schema) before
-    moving on — don't wait for the task, or a push, to log it. This is an append-only record:
+    moving on — don't wait for the task, or a push, to log it. This is this project's only write
+    path into the shared `_frw` repo (see "Reusable Framework Template" above); nothing else in
+    `_frw` is ever written from here. This is an append-only record:
     never delete an entry; mark it `resolved` (with how and when) instead of removing it. Like
     Rule 16's enhancement suggestions, logging an idea here is a proposal only — per
     `docs/framework-maintenance.md`'s standing rule, no framework change is applied without asking

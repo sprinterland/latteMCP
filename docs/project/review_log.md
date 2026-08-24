@@ -626,3 +626,68 @@ approved.
   enhancement lens — finding 1 is a fidelity gap (bundle self-description contradicting its own
   fresh content), finding 5 is an ambiguity fix, finding 6 is the enhancement opportunity.
 - Enhancement suggestions: `CR-1787573917472-b195`.
+
+## 2026-08-24 17:30 — latteMCP: pending commit (this entry's own commit) / commit `95c2c27` (claude-project-framework) — Restrict downstream-project writes into `_frw` to `_data/`; add `sync-framework-updates` (`FRW-ADR-0011`)
+
+This was a **Full framework change** (new rule content, changes an existing rule's meaning,
+architectural implication), so it went through the full ask-then-written-plan sequence (Plan
+Mode).
+
+### Project Reviewer
+
+- Command: `/code-review high`. First invocation mis-scoped (defaulted to latteMCP's own repo and
+  reviewed an unrelated already-pushed commit instead of the `_frw` clone) and was discarded;
+  redone via a general-purpose agent given an explicit `git -C /Users/sprn/claudework/newFrw show
+  HEAD` scope. A second, separately-scoped `/code-review high` ran correctly against this
+  project's own diff (`CLAUDE.md`, `docs/framework-maintenance.md`, `docs/project/CHANGELOG.md`,
+  `.claude/skills/README.md`, the new `.claude/skills/sync-framework-updates/`).
+- Repo: `claude-project-framework` @ `e485363` → `54aa332` → `78f817e` → `d6c75a1` (pushed) →
+  `5d22495` → `e2c1d51` → `b27a02d` → `fd486ae` (this last amend was already-pushed history —
+  caught before force-pushing; recovered via `git reset --hard origin/main` back to `4721d99`,
+  then fixed forward with two new commits, `8b9a0bb` and `95c2c27` — see the correctness note
+  below); latteMCP (this commit, pending).
+- Module(s): n/a — framework-level (Maintenance rule restructuring, new project-usage skill,
+  `_design/` updates)
+- Framework version: `26.08.24:17.26.719`
+- Outcome: not clean on the `_frw` side across two rounds; every finding fixed via commit amends
+  or, once one round was mistakenly amended after already being pushed, via forward-only commits
+  instead (see `_frw/_data/push_reviews.jsonl` `REV-0009`/`REV-0010`/`REV-0011` for the full
+  detail). Findings and fixes:
+  1. Ambiguity: `_design/requirements.md` spliced the new `FRW-REQ-009`/`FRW-REQ-010` in before
+     the pre-existing `FRW-REQ-008`, producing a confusing `007→009→010→008` reading order — fixed
+     by moving `009`/`010` to after `008`, restoring numeric order.
+  2. Ambiguity: `copy_me/CLAUDE.md.template`'s rewritten Standing-rule paragraph juxtaposed "ask
+     the user first" directly against the `change_requests.jsonl` write description, readable as
+     requiring approval before logging — contradicting Rule 17's "log it immediately... don't
+     wait" elsewhere in the same file — fixed by splitting the sentence so proposing (logging) is
+     explicitly never gated on asking, only actually making the change is. Mirrored into
+     latteMCP's own `CLAUDE.md`.
+  3. Altitude (fixed, not deferred): `propagate-framework-change/SKILL.md`'s own procedure used 6
+     steps while `framework-maintenance.md`'s "Framework propagation" flow it orchestrates uses 5
+     — merged the skill's "log and push" and "review" steps to match.
+  4. Altitude, caught in a follow-up minor propagation: the new `sync-framework-updates` skill
+     shipped with 7 steps instead of the 5-step "Inbound sync" flow it mirrors — same class as
+     finding 3, missed in the first round because the skill was newly authored rather than edited.
+     Fixed and propagated separately (commit `4721d99`, approved as a minor propagation per
+     `FRW-ADR-0009`).
+  5. Correctness (process, not content): while fixing finding 4, a `git commit --amend` was run
+     against `4721d99` *after* it had already been pushed, producing a rejected non-fast-forward
+     push. Caught immediately — no force-push was attempted. Recovered by `git reset --hard
+     origin/main` (discarding only the unpushed, easily-reproducible amend) and re-applying the
+     intended change (a missed `VERSION` bump) as a new forward-only commit (`8b9a0bb`), then
+     logging that recovery (`8b9a0bb`'s own review note, commit `95c2c27`).
+
+### Framework Reviewer
+
+- Command: reused the Project Reviewer's `_frw`-side invocations above (full overlap — this
+  push's entire substance is framework-level) for `CLAUDE.md`/`docs/framework-maintenance.md`;
+  the `.claude/skills/README.md` and `docs/project/CHANGELOG.md` changes are Project-Reviewer-only
+  (not Rule-16 paths).
+- Repo: same as above.
+- Module(s): n/a — framework-level.
+- Framework version: `26.08.24:17.26.719`
+- Outcome: same `_frw`-side findings/fixes as Project Reviewer above, read through the
+  fidelity/ambiguity/enhancement lens — findings 1 and 2 are ambiguity fixes; findings 3 and 4 are
+  fidelity gaps (a skill's own procedure drifting from the doc flow it claims to mirror); no new
+  enhancement opportunities beyond what was already fixed in place.
+- Enhancement suggestions: none.

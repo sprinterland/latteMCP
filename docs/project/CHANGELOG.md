@@ -51,6 +51,35 @@ current year only and linking older ones from the top.
   (6 parallel finder agents across 3 invocations) found and fixed real gaps, and deferred two
   design-level concerns as logged change requests — see `docs/project/review_log.md`'s entry below
   and `_frw/_data/push_reviews.jsonl` `REV-0007` for the full list.
+- Framework change, requested directly by the user (who asked whether latteMCP tracks `_frw`'s
+  version, then whether it gets updated on each framework push, then asked to restrict outbound
+  writes and add a missing inbound-sync mechanism): the Maintenance rule let a project's session
+  write anywhere in the shared `_frw` repo (`copy_me/`, `VERSION`, push) as part of one
+  project-driven procedure, and had no way for a project to pull in a framework change it didn't
+  originate. Split the rule into three named flows — Outbound (a project's only write into `_frw`
+  is now `_data/change_requests.jsonl`, nothing else), Framework propagation (runs only inside
+  `_frw`'s own repo, never orchestrated from a project session), Inbound sync (new: the
+  `sync-framework-updates` skill pulls `copy_me/*` and merges structural changes into a project's
+  own `CLAUDE.md`/`docs/`/`.claude/skills/`, logging a change request **and** stopping to ask the
+  user on any ambiguous merge rather than guessing). The old "apply to the requesting project's own
+  files first" step is gone — a project now always receives a framework change via its own inbound
+  sync, whether or not it originated it. Propagated into `claude-project-framework` (commit
+  `95c2c27`, version `26.08.24:17.26.719`); `FRW-ADR-0011` added; `_design/requirements.md`,
+  `architecture.md` (new Inbound-sync flow, renumbered push-gate flow), `domain-model.md`, and
+  `test-spec.md` updated to match. A review (redone after an initial `/code-review` invocation
+  mis-scoped to latteMCP's own repo instead of `_frw`) found and fixed a confusing requirement
+  reading-order splice, a Standing-rule sentence readable as gating change-request logging on
+  asking first, and a step-count mismatch between `propagate-framework-change` and the doc it
+  orchestrates — see `docs/project/review_log.md`'s entry below and
+  `_frw/_data/push_reviews.jsonl` `REV-0009`. latteMCP mirrored the `CLAUDE.md`/
+  `docs/framework-maintenance.md` changes and added `sync-framework-updates` to its own
+  `.claude/skills/`. A follow-up minor propagation (commit `4721d99`) then fixed
+  `sync-framework-updates` itself, which had shipped with a 7-step procedure instead of the
+  5-step "Inbound sync" flow it mirrors — same class of drift as the `propagate-framework-change`
+  fix above, caught by a targeted review. During that recovery, an attempted amend of the
+  already-pushed `4721d99` was caught before force-pushing and fixed forward instead (`8b9a0bb`
+  bumped the `VERSION` that commit had missed; `95c2c27` logged the review entry) — no history was
+  rewritten on the shared remote.
 
 ## 2026-08-23
 
