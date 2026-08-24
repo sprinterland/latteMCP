@@ -7,6 +7,20 @@ current year only and linking older ones from the top.
 
 ## 2026-08-24
 
+- Framework change, requested directly by the user: even with the review-fix cap in place, a
+  small framework change still felt slow — diagnosed that every framework change structurally
+  pays for a full `/code-review high` pass at least twice (once in `_frw` during propagation,
+  again in the consuming project's `push-review-gate` for the sync merge), often redundant since
+  the second pass re-reviews content already reviewed once, byte-identical to upstream. Rule 16
+  (`CLAUDE.md`) now substitutes a plain `diff` against the cited upstream `_frw` commit for the
+  full Framework Reviewer pass when a push's entire Rule-16-scoped diff is a verified,
+  unambiguous `sync-framework-updates` merge — excluding lines that are always project-filled-in
+  placeholders (the "Bootstrapped from" line, `dev-practices.md`'s `Selected:` values) from the
+  comparison, since those can never match upstream's generic template by design. Any merge
+  needing local adaptation, or a non-sync-driven edit, still gets the full pass. Documented as
+  `FRW-ADR-0013`. Propagated into `claude-project-framework` (commit `392d6e3`, 2 review rounds —
+  the cap — with 3 mechanical round-2 findings fixed directly without a 3rd round per Rule 4; see
+  `docs/project/review_log.md`'s entry below). Resolved `CR-1787595516088-a898`.
 - Framework change, requested directly by the user: capped the review-fix loop at 2 rounds
   before checking back in (re-applied at every subsequent check-in, never silently exceeded),
   with a proactive-grep instruction so a duplicated-claim finding gets fixed everywhere in one

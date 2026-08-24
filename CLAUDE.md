@@ -327,7 +327,23 @@ and what must not change during a rewrite.
     `docs/dev-practices.md`'s menu/structure itself (its "Secondary Review Before Push" section is
     this two-reviewer policy's own canonical description, so a structural change there can itself
     be a framework-level change needing propagation into the shared `_frw` — see
-    `docs/framework-maintenance.md`) — also run `/code-review high` scoped to those paths. `_frw`
+    `docs/framework-maintenance.md`) — also run `/code-review high` scoped to those paths, with one
+    substitution: if the entire touched-path diff is the verified, unambiguous output of a
+    `sync-framework-updates` merge, confirmed by two checks — (a) that merge is part of the commits
+    this push is about to send (`git log <this project's own remote>..HEAD` includes it, not an
+    older, already-pushed sync recalled from session memory), and (b) each touched file matches its
+    counterpart in the shared `_frw` clone at the commit `docs/framework-maintenance.md`'s own
+    "Bootstrapped from / last synced at" line was just updated to cite, **except** lines that are
+    *always* project-filled-in and can never match `_frw`'s generic template — that "Bootstrapped
+    from" line itself, `docs/dev-practices.md`'s `Selected:` values, and any other line the
+    template ships as an explicit fill-in-the-blank placeholder — which are excluded from the
+    comparison by definition, not treated as a mismatch. A plain `diff` against the `_frw` commit
+    substitutes for the full review on every other touched line. The content was already reviewed
+    once during Framework propagation, and an otherwise-byte-identical merge introduces nothing new
+    to review. Any merge that required local adaptation, or any non-sync-driven edit to these
+    paths, still gets the full `/code-review high` pass; when unsure
+    whether a file is genuinely byte-identical (beyond the one excluded line), default to the full
+    pass. Log which case applied in the `review_log.md` entry (see below). `_frw`
     itself lives outside this repo, in its own repo (see "Reusable Framework Template" above) — a
     push from this repo never touches it directly, so it falls outside this rule's scope;
     propagating a change into it is a separate edit made directly in the shared `_frw` repo,
@@ -355,10 +371,13 @@ and what must not change during a rewrite.
     before the push proceeds. Log the run in `docs/project/review_log.md` as a **Framework
     Reviewer** sub-entry the same way Rule 15 does, plus the `_frw/_data/change_requests.jsonl`
     `id`(s) of any enhancement suggestions raised this round (or "none") — cite the id rather than
-    restate the suggestion's text, so the two logs don't drift apart. This sub-entry is always
-    present in every push's log entry, even when this rule didn't apply — its content then simply
-    states "not run: push touched no framework paths" instead of a command and outcome, so the log
-    format never depends on whether this rule fired.
+    restate the suggestion's text, so the two logs don't drift apart. When the diff-verification
+    substitution above applied, say so explicitly instead of citing a `/code-review` command (e.g.
+    "substituted diff-verification for a byte-identical sync merge against commit `<sha>`, no
+    findings possible by construction") rather than implying a full review ran. This sub-entry is
+    always present in every push's log entry, even when this rule didn't apply — its content then
+    simply states "not run: push touched no framework paths" instead of a command and outcome, so
+    the log format never depends on whether this rule fired.
 
 17. **Continuous framework-improvement log.** At any point during any activity — planning, Track
     B coding, Track A discovery, or a Rule 15/16 review — if you notice a possible framework-level

@@ -68,10 +68,10 @@ this project has actually pulled in, and still has something permanent to cite i
 clone/repo is ever unreachable (different machine, no network, repo moved) at review time:
 
 **Bootstrapped from / last synced at [`claude-project-framework`](https://github.com/sprinterland/claude-project-framework)
-commit `108742e`, version `26.08.24:21.01.945`** (2026-08-24 — capped the Framework-propagation
-and push-review-gate review-fix loops at 2 rounds, with a proactive-grep instruction for
-duplicated-claim findings, requested directly by the user in latteMCP after an unbounded 6-round
-loop cost roughly half an hour on a prior change).
+commit `392d6e3`, version `26.08.24:21.35.195`** (2026-08-24 — Rule 16 now substitutes a plain
+`diff` against upstream for the full Framework Reviewer pass when a push is a verified,
+byte-identical `sync-framework-updates` merge, cutting one of the (typically two-to-three) full
+`/code-review high` passes a framework change costs; see FRW-ADR-0013).
 This line records only the current sync as a static fact, same as the rest of this file's
 principle of pointing rather than restating — the full history of every prior sync already lives
 in `docs/project/CHANGELOG.md` and `_frw/_data/update_history.jsonl`, not here.

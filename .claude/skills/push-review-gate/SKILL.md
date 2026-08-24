@@ -22,10 +22,22 @@ live every time this skill runs rather than trusting this summary.
 4. **Classify.** Per Rule 15/16's current text: Rule 15 covers everything Rule 16 doesn't claim.
    Does the diff from step 2 touch any path Rule 16 currently names? Note yes/no and why.
 5. **Run the Project Reviewer.** Invoke `/code-review high` scoped per Rule 15.
-6. **Run the Framework Reviewer, if step 4 was yes.** Either reuse step 5's invocation (re-read
-   through Rule 16's fidelity / ambiguity / enhancement-opportunity lens) when the two scopes
-   substantially overlap, or run a second `/code-review high` scoped to the Rule-16 paths — follow
-   Rule 16's own text for which applies. If step 4 was no, the sub-entry is "not run: push touched
+6. **Run the Framework Reviewer, if step 4 was yes.** First check Rule 16's diff-verification
+   substitution — confirm both: (a) the `sync-framework-updates` merge commit(s) are part of this
+   push (`git log <this project's own remote>..HEAD` includes them, not an older already-pushed
+   sync), and (b) the shared `_frw` clone commit to diff against is the one
+   `docs/framework-maintenance.md`'s "Bootstrapped from / last synced at" line was just updated to
+   cite. If both hold, `diff` each touched file against its counterpart in the `_frw` clone at that
+   commit — every line must match exactly *except* lines that are always project-filled-in and can
+   never match `_frw`'s generic template (the "Bootstrapped from" line itself,
+   `docs/dev-practices.md`'s `Selected:` values, and any other explicit fill-in-the-blank
+   placeholder), which are excluded from the comparison by definition. If everything else matches,
+   that stands in for the full review (log it as such, don't also run `/code-review high`).
+   Otherwise, either reuse step 5's invocation
+   (re-read through Rule 16's fidelity / ambiguity / enhancement-opportunity lens) when the two
+   scopes substantially overlap, or run a second `/code-review high` scoped to the Rule-16 paths —
+   follow Rule 16's own text for which applies, and default to the full pass whenever it's unclear
+   the diff is genuinely byte-identical. If step 4 was no, the sub-entry is "not run: push touched
    no framework paths."
 7. **Resolve every finding.** Fix it, or explicitly ask the user (per Rule 2 — a finding that's
    itself ambiguous, hard-to-reverse, or touches security/architecture/business rules is never
@@ -50,5 +62,7 @@ live every time this skill runs rather than trusting this summary.
     recording: command + scope, repo/commit, module(s) touched (or "n/a — framework-level"),
     framework version, and outcome in prose (what was found, what was fixed, what was deferred —
     not a strict tally). The Framework Reviewer sub-entry also cites the change-request id(s) from
-    step 8.
+    step 8. If step 6's diff-verification substitution applied, say so explicitly instead of citing
+    a `/code-review` command (e.g. "substituted diff-verification for a byte-identical sync merge
+    against commit `<sha>`, no findings possible by construction").
 11. **Stop here.** This skill logs and gates; it does not run `git push` itself.
