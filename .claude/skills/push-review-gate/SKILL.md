@@ -30,7 +30,14 @@ live every time this skill runs rather than trusting this summary.
 7. **Resolve every finding.** Fix it, or explicitly ask the user (per Rule 2 — a finding that's
    itself ambiguous, hard-to-reverse, or touches security/architecture/business rules is never
    just logged and pushed past) and log a deliberate deferral (e.g. in `PLAN.md` or
-   `docs/project/completed_plan.md`) if they decline to fix it now.
+   `docs/project/completed_plan.md`) if they decline to fix it now. If fixing a finding requires
+   re-running review, cap it at 2 rounds on the same push — a 3rd round due means stop and ask the
+   user how to proceed instead of continuing silently (same cap as the Maintenance rule's
+   Framework-propagation step 4, `docs/framework-maintenance.md`); if they choose to keep fixing,
+   the same 2-round cap applies again before the next check-in — never run more than 2 rounds
+   without asking. If a round flags a claim/pattern as duplicated elsewhere, `grep` the repo for
+   every occurrence before the next
+   round rather than letting review rediscover files one at a time.
 8. **Log any enhancement suggestion** from step 6's lens (c) using the `log-change-request` skill
    — record the resulting `change_requests.jsonl` id(s) (or "none") for step 10.
 9. **Resolve the framework version.** Read `docs/framework-maintenance.md`'s "Versioning" section

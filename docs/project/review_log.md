@@ -773,3 +773,53 @@ Reviewer passes flagged the same contradiction on two different wording attempts
   `CR-1787593149632-eabe` (the stale "Framework propagation (inside `_frw`'s own repo only)"
   section heading, found during the latteMCP-side merge, inherited unchanged from upstream so not
   fixed locally).
+
+## 2026-08-24 21:05 — latteMCP: pending commit (this entry's own commit) / commit `aaf829b` → `108742e` (cosmetic) (claude-project-framework) — Cap review-fix iteration at 2 rounds; grep proactively on duplicated findings
+
+Triggered directly by the immediately preceding push: the `FRW-ADR-0012` propagation ran 6
+unbounded `/code-review high` rounds for a small doc-wording fix, costing roughly half an hour and
+a large amount of tokens. User asked for either an optimization or a defined stop/escalate
+procedure. Logged as `CR-1787593416032-6ff2`, then applied the same session on explicit "do it
+now" — small, self-contained wording addition, executed directly rather than through a full
+Plan-Mode round-trip given the user's stated preference to reduce process overhead, per Rule 4.
+
+### Project Reviewer
+
+- Command: `/code-review high`, 2 rounds against the `_frw` clone (the cap this change itself
+  defines), then one round against latteMCP's own merge diff.
+- Repo: `claude-project-framework` @ `db4158a` → `93522ef` → `aaf829b` (pushed, reviewed) →
+  `108742e` (cosmetic line-wrap fix only, not separately reviewed — no content change); latteMCP
+  (this commit, pending).
+- Module(s): n/a — framework-level (`framework-maintenance.md` Framework-propagation step 4,
+  `push-review-gate/SKILL.md` step 7, plus 3 cross-referencing files).
+- Framework version: `26.08.24:21.01.945`
+- Outcome: not clean until round 2 on the `_frw` side; see `_frw/_data/push_reviews.jsonl`
+  `REV-0013` for full detail. Round 1: proactively grepped the repo for the same "fix findings...
+  re-run" pattern before editing (applying the very rule being added) and found 5 files carrying
+  it, not just the 2 originally planned — fixed all 5 in one pass, making `framework-maintenance.md`
+  step 4 canonical and having the other 4 cross-reference it instead of restating it (directly
+  addressing `CR-1787592628857-e01a`'s duplication concern). Round 2: found round 1's own
+  escape-hatch fix was itself wrong — it misdirected deferred findings to `_data/change_requests.jsonl`
+  based on an overly literal reading of that file's schema description, when `push_reviews.jsonl`'s
+  own `enhancement_suggestions` field and 3 prior entries (`REV-0005`/`0006`/`0008`) already
+  established the correct pattern (log to `change_requests.jsonl`, cross-reference by id) — reverted
+  to the established pattern without a 3rd review round, since the fix was unambiguous and
+  well-precedented (Rule 4). The latteMCP-side merge found two cosmetic line-wrap mismatches against
+  the cited upstream commit (a stray missing line break introduced during round-2's edit, and one
+  more in the same section) — fixed by hand to byte-match upstream exactly, and one commit-citation
+  error in the CHANGELOG (attributed the reviewed content to `108742e`, an unreviewed cosmetic-only
+  follow-up commit, instead of the actually-reviewed `aaf829b`) — corrected.
+
+### Framework Reviewer
+
+- Command: reused the Project Reviewer's invocations above in full (the entire push is
+  framework-level).
+- Repo: same as above.
+- Module(s): n/a — framework-level.
+- Framework version: `26.08.24:21.01.945`
+- Outcome: same findings/fixes as Project Reviewer above, read through the
+  fidelity/ambiguity/enhancement lens — round 1's file-duplication findings are fidelity gaps;
+  round 2's escape-hatch reversal is a fidelity fix (matching established schema usage); the
+  latteMCP-side line-wrap and citation fixes are fidelity/ambiguity fixes ensuring the local mirror
+  byte-matches its cited upstream commit.
+- Enhancement suggestions: none.

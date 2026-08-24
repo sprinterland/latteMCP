@@ -7,6 +7,21 @@ current year only and linking older ones from the top.
 
 ## 2026-08-24
 
+- Framework change, requested directly by the user: capped the review-fix loop at 2 rounds
+  before checking back in (re-applied at every subsequent check-in, never silently exceeded),
+  with a proactive-grep instruction so a duplicated-claim finding gets fixed everywhere in one
+  pass instead of one file per round. Added to `docs/framework-maintenance.md`'s
+  Framework-propagation step 4 (canonical wording) and `push-review-gate`'s step 7 (independent
+  copy, for this project's own pushes); 3 other files that previously restated step 4's text
+  (`propagate-framework-change/SKILL.md`, `_design/architecture.md`, the diagram spec) now
+  cross-reference it by name instead. Triggered by the immediately preceding FRW-ADR-0012 change
+  running 6 unbounded review rounds for a small doc-wording fix (~30 minutes, high token cost) —
+  logged as `CR-1787593416032-6ff2`, then applied the same session on explicit request. Propagated
+  into `claude-project-framework` (commit `aaf829b`, 2 review rounds — the cap this change itself
+  defines — the 2nd round catching a regression in the 1st round's own fix, corrected without a
+  3rd round since it matched well-established prior practice; see `docs/project/review_log.md`'s
+  entry below), then a cosmetic line-wrap-only follow-up (commit `108742e`, unreviewed — no
+  content change). Resolved `CR-1787593416032-6ff2`.
 - Framework change, requested directly by the user: while resolving a proposed proactive
   inbound-sync trigger (`CR-1787588514684-954f`), two `/code-review high` Framework Reviewer
   passes found the natural wording for that trigger contradicted FRW-ADR-0011's absolute

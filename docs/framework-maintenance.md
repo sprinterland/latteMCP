@@ -68,9 +68,10 @@ this project has actually pulled in, and still has something permanent to cite i
 clone/repo is ever unreachable (different machine, no network, repo moved) at review time:
 
 **Bootstrapped from / last synced at [`claude-project-framework`](https://github.com/sprinterland/claude-project-framework)
-commit `2e1ca85`, version `26.08.24:20.29.178`** (2026-08-24 — clarified FRW-ADR-0011's
-session-boundary wording for the multi-working-directory case and added an immediate-after-push
-Inbound-sync trigger, requested directly by the user in latteMCP; see FRW-ADR-0012).
+commit `108742e`, version `26.08.24:21.01.945`** (2026-08-24 — capped the Framework-propagation
+and push-review-gate review-fix loops at 2 rounds, with a proactive-grep instruction for
+duplicated-claim findings, requested directly by the user in latteMCP after an unbounded 6-round
+loop cost roughly half an hour on a prior change).
 This line records only the current sync as a static fact, same as the rest of this file's
 principle of pointing rather than restating — the full history of every prior sync already lives
 in `docs/project/CHANGELOG.md` and `_frw/_data/update_history.jsonl`, not here.
@@ -230,7 +231,18 @@ open, provided propagation is entered only through this flow's own classify/appr
 4. Run `/code-review high` scoped to the changed `_frw` files, in the `_frw` repo itself (the
    Framework Reviewer lens — fidelity, ambiguity, enhancement opportunities — applied here since
    `_frw` carries no Rule 15/16 of its own). Fix findings or amend the still-local commit and
-   re-run; once clean, append the outcome to `_frw/_data/push_reviews.jsonl` and push.
+   re-run — but cap it at 2 review rounds before checking back in. If a 3rd round would still be
+   needed, stop: summarize the remaining findings and ask the user how to proceed — keep fixing
+   (in which case the same 2-round cap applies again before the next check-in; never run more than
+   2 rounds without asking), accept and push with the remainder logged to
+   `_data/change_requests.jsonl` as usual (`activity: "review"`) and cross-referenced by id in this
+   run's `_frw/_data/push_reviews.jsonl` `enhancement_suggestions` field — the established pattern
+   for a deferred review finding, not just a proactively-noticed idea — or reconsider the approach.
+   If a round flags a claim/pattern as duplicated elsewhere, `grep` the repo for every occurrence
+   before the next round instead of letting review rediscover files one at a time — this is what
+   actually drives a loop past the cap. Once clean (or the user has decided how to proceed past
+   the cap), append the outcome to
+   `_frw/_data/push_reviews.jsonl` and push.
 5. Append a record to `_frw/_data/update_history.jsonl` summarizing the update (see "Framework
    activity logs" above).
 
