@@ -823,3 +823,51 @@ Plan-Mode round-trip given the user's stated preference to reduce process overhe
   latteMCP-side line-wrap and citation fixes are fidelity/ambiguity fixes ensuring the local mirror
   byte-matches its cited upstream commit.
 - Enhancement suggestions: none.
+
+## 2026-08-25 00:30 — latteMCP: commit `20680f3` / commit `392d6e3` (claude-project-framework) — Sync FRW-ADR-0013 (diff-verification substitution for byte-identical sync merges)
+
+Immediately after the iteration-cap fix (`CR-1787593416032-6ff2`), user asked whether the update
+still felt slow and requested further enhancement suggestions. Diagnosed that every framework
+change pays for a full `/code-review high` pass at least twice — once in `_frw`, again in the
+consuming project's `push-review-gate` for the sync merge — even when the second pass re-reviews
+already-reviewed, byte-identical content. `FRW-ADR-0013` adds a diff-verification substitution for
+that specific case. This entry logs the push that pulled it into latteMCP — the first real use of
+the new substitution, on itself.
+
+### Project Reviewer
+
+- Command: `/code-review high`, scoped to the two Rule-15-only files this push touches (`CLAUDE.md`
+  and `docs/framework-maintenance.md` are Rule-16 scope, handled below).
+- Repo: `claude-project-framework` @ `db4158a` → `93522ef` → `aaf829b` → `108742e` →
+  `c391598` → `392d6e3` (pushed, 2 review rounds — the cap — 3 round-2 findings fixed directly
+  without a 3rd round per Rule 4, see `_frw/_data/push_reviews.jsonl` `REV-0014`); latteMCP @
+  `20680f3`.
+- Module(s): n/a — framework-level (`.claude/skills/push-review-gate/SKILL.md`,
+  `docs/project/CHANGELOG.md`).
+- Framework version: `26.08.24:21.35.195`
+- Outcome: `push-review-gate/SKILL.md` confirmed byte-identical to its upstream counterpart at
+  `392d6e3`; `CHANGELOG.md`'s new entry verified accurate against the shared clone (commit exists,
+  `CR-1787595516088-a898` resolved, `FRW-ADR-0013` exists) — except its forward reference to this
+  review_log.md entry, which didn't exist yet at review time (the entry had not yet been appended
+  when the review ran, mid-way through this same push) — now resolved by this entry's own
+  existence. One out-of-scope finding, not fixed here: `push-review-gate/SKILL.md` step 6's
+  diff-verification instructions don't state the `copy_me/`-prefix / `.template`-suffix path-
+  mapping needed to find a file's upstream counterpart — logged as `CR-1787608885289-5e2c` for a
+  future `_frw` propagation rather than forked locally, since this skill file must stay
+  byte-identical to the synced template.
+
+### Framework Reviewer
+
+- Command: diff-verification substitution (`FRW-ADR-0013`) — `CLAUDE.md`'s Rule 16 section
+  confirmed byte-identical to `copy_me/CLAUDE.md.template` at commit `392d6e3`; the only change to
+  `docs/framework-maintenance.md` was its own "Bootstrapped from / last synced at" line (the
+  explicitly excluded, always-project-filled-in placeholder) — both checks in Rule 16's
+  substitution condition confirmed (commit `20680f3` appears in `git log origin/main..HEAD`; the
+  cited `_frw` commit matches the "Bootstrapped from" line this same commit just updated). No
+  findings possible by construction.
+- Repo: same as above.
+- Module(s): n/a — framework-level.
+- Framework version: `26.08.24:21.35.195`
+- Outcome: substitution applied cleanly — first real use of `FRW-ADR-0013` since it was added.
+- Enhancement suggestions: `CR-1787608885289-5e2c` (path-mapping clarity in
+  `push-review-gate/SKILL.md` step 6, found during the Project Reviewer pass above).
