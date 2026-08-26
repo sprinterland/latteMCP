@@ -127,7 +127,7 @@ records the `_frw/_data/change_requests.jsonl` `id`(s) of any enhancement sugges
 - Repo: latteMCP @ `07e20dc`
 - Module(s): n/a — docs/framework-process change, no module code touched
 - Framework version: `26.08.23:17.26.865` (live-read from the shared external `_frw/` clone at
-  `/Users/sprn/claudework/newFrw/_frw/`, commit `a1c86e4` in `claude-project-framework`)
+  `/Users/sprn/claudework/claude-project-framework/_frw/`, commit `a1c86e4` in `claude-project-framework`)
 - Outcome: one finding, fixed — `docs/dev-practices.md` still described `_frw/` as something
   local to this repo (bare references to `_frw/docs/dev-practices.md`) without reflecting that
   it's now the external shared clone/repo described in `docs/framework-maintenance.md`; fixed by
@@ -165,7 +165,7 @@ records the `_frw/_data/change_requests.jsonl` `id`(s) of any enhancement sugges
 - Repo: latteMCP @ `a83a01c`
 - Module(s): n/a — docs/framework-process change, no module code touched
 - Framework version: `26.08.23:17.49.988` (live-read from the shared external `_frw` clone at
-  `/Users/sprn/claudework/newFrw/`, commit `a644991` in `claude-project-framework`)
+  `/Users/sprn/claudework/claude-project-framework/`, commit `a644991` in `claude-project-framework`)
 - Outcome: clean — a thorough multi-angle pass (line-by-line, removed-behavior audit, cross-file/
   cross-repo tracing, and external verification against the actual `claude-project-framework` repo
   contents) found no correctness bugs, no dropped invariants, and no broken cross-references. Two
@@ -197,7 +197,7 @@ records the `_frw/_data/change_requests.jsonl` `id`(s) of any enhancement sugges
 - Repo: latteMCP @ `306a0cb`
 - Module(s): n/a — docs/framework-process change, no module code touched
 - Framework version: `26.08.23:18.23.266` (live-read from the shared external `_frw` clone at
-  `/Users/sprn/claudework/newFrw/`, commit `9512282` in `claude-project-framework`)
+  `/Users/sprn/claudework/claude-project-framework/`, commit `9512282` in `claude-project-framework`)
 - Outcome: clean — verified every live/prescriptive reference to the old paths was updated, no
   stray `docs/_discovery`/`docs/_project` directories or references remained, the external `_frw`
   clone matched what `docs/framework-maintenance.md` and the CHANGELOG claimed, `CLAUDE.md`'s
@@ -234,7 +234,7 @@ records the `_frw/_data/change_requests.jsonl` `id`(s) of any enhancement sugges
   @ `9cea998` (reviewed at `0808624`, fixes landed here)
 - Module(s): n/a — docs/framework-process change, no module code touched
 - Framework version: `26.08.23:19.09.808` (live-read from the shared external `_frw` clone at
-  `/Users/sprn/claudework/newFrw/`, commit `9cea998` in `claude-project-framework`)
+  `/Users/sprn/claudework/claude-project-framework/`, commit `9cea998` in `claude-project-framework`)
 - Outcome: not clean — 9 distinct findings surfaced across the 8 agents (after de-duplicating
   overlapping reports of the same underlying issues): a collision-prone `change_requests.jsonl` ID
   scheme whose own "never concurrent" justification was directly contradicted by the very rule
@@ -637,7 +637,7 @@ Mode).
 
 - Command: `/code-review high`. First invocation mis-scoped (defaulted to latteMCP's own repo and
   reviewed an unrelated already-pushed commit instead of the `_frw` clone) and was discarded;
-  redone via a general-purpose agent given an explicit `git -C /Users/sprn/claudework/newFrw show
+  redone via a general-purpose agent given an explicit `git -C /Users/sprn/claudework/claude-project-framework show
   HEAD` scope. A second, separately-scoped `/code-review high` ran correctly against this
   project's own diff (`CLAUDE.md`, `docs/framework-maintenance.md`, `docs/project/CHANGELOG.md`,
   `.claude/skills/README.md`, the new `.claude/skills/sync-framework-updates/`).
