@@ -21,6 +21,10 @@
 - `project/completed_plan.md` — archive of tasks checked off in `../PLAN.md`
 - `project/review_log.md` — per-push log of Rule 15/16 secondary-review runs (command, repo,
   module(s), framework version)
+- `project/tasks/README.md` — Task Record pipeline: per-task folder layout, `status.jsonl`/
+  `.claim` schemas, which role/skill touches which file
+- `project/task_log.md` — index of open Task Records only
+- `project/completed_tasks.md` — archive of closed Task Records
 
 ## Modules
 

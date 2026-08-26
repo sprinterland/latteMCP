@@ -43,13 +43,23 @@ live every time this skill runs rather than trusting this summary.
    itself ambiguous, hard-to-reverse, or touches security/architecture/business rules is never
    just logged and pushed past) and log a deliberate deferral (e.g. in `PLAN.md` or
    `docs/project/completed_plan.md`) if they decline to fix it now. If fixing a finding requires
-   re-running review, cap it at 2 rounds on the same push — a 3rd round due means stop and ask the
-   user how to proceed instead of continuing silently (same cap as the Maintenance rule's
-   Framework-propagation step 4, `docs/framework-maintenance.md`); if they choose to keep fixing,
-   the same 2-round cap applies again before the next check-in — never run more than 2 rounds
-   without asking. If a round flags a claim/pattern as duplicated elsewhere, `grep` the repo for
-   every occurrence before the next
-   round rather than letting review rediscover files one at a time.
+   re-running review, cap it at 2 rounds on the same push — announce the round count out loud at
+   every invocation past the first ("this is round N since the last check-in"), the same
+   discipline as the Maintenance rule's Framework-propagation step 4. A 3rd round due means stop
+   and offer the user that same step's check-in menu instead of continuing silently; if they choose
+   to keep fixing, the same 2-round cap re-arms before the next check-in — never run more than 2
+   rounds without asking. If a round flags a claim/pattern as duplicated elsewhere, `grep` the
+   repo for every occurrence before the next round rather than letting review rediscover files one
+   at a time.
+
+   Persist the round-since-check-in count the same way the Maintenance rule's Framework-propagation
+   step 4 does (see `docs/framework-maintenance.md`) — a small scratch state file (e.g.
+   `_tmp/review_checkin_state.json`, or this project's own scratch convention), anchored to this
+   project's own repo root instead of `_frw`'s, with the same scope-matched-existence-means-resume /
+   announce-before-the-round-starts / increment-after-verified-clean / reset-on-keep-fixing /
+   delete-on-loop-end lifecycle (deleted as part of step 10 below). This is what makes it safe to
+   clear conversation context between rounds (right after a round's fixes are verified clean, never
+   mid-fix), not just at larger push/phase boundaries.
 8. **Log any enhancement suggestion** from step 6's lens (c) using the `log-change-request` skill
    — record the resulting `change_requests.jsonl` id(s) (or "none") for step 10.
 9. **Resolve the framework version.** Read `docs/framework-maintenance.md`'s "Versioning" section
@@ -64,5 +74,6 @@ live every time this skill runs rather than trusting this summary.
     not a strict tally). The Framework Reviewer sub-entry also cites the change-request id(s) from
     step 8. If step 6's diff-verification substitution applied, say so explicitly instead of citing
     a `/code-review` command (e.g. "substituted diff-verification for a byte-identical sync merge
-    against commit `<sha>`, no findings possible by construction").
+    against commit `<sha>`, no findings possible by construction"). If step 7 used the persisted
+    round-check-in counter, delete its scratch state file now — the loop it belonged to is over.
 11. **Stop here.** This skill logs and gates; it does not run `git push` itself.

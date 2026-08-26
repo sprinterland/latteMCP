@@ -19,7 +19,9 @@ freeze a stale field list.
 2. **Re-read the current schema** in `docs/framework-maintenance.md`'s "Framework activity logs"
    section — the exact field list, the current `activity` and `affected_entities` enums, and the
    current `severity` tiers.
-3. **Generate the id.** `CR-<unix-epoch-milliseconds>-<4 random hex chars>` — self-generated, no
+3. **Generate the id.** Run this project's own `.claude/skills/_lib/append_jsonl.py --gen-id CR`
+   (copied from `copy_me/.claude/skills/_lib/`) rather than composing the
+   `CR-<unix-epoch-milliseconds>-<4 random hex chars>` format by hand — self-generated, no
    coordination with any other writer needed (this is why `change_requests.jsonl` uses this scheme
    instead of a plain incrementing counter — see the doc section for why).
 4. **Compose the entry** with today's fields: `id`, `timestamp` (ISO 8601, local offset), `project`
@@ -28,9 +30,14 @@ freeze a stale field list.
    tiers — re-read step 2's schema, don't reuse a remembered list; it has grown before too, e.g.
    `moderate` was added after `minor`/`major`), `affected_entities` (array from the current enum,
    same reasoning), `status: "open"`, `resolution: null`, `resolved_at: null`.
-5. **Append** the entry as one JSON line at the end of the file — never rewrite or delete existing
-   lines. "Resolving" an existing entry later means appending a *new* line with the same `id` and
-   updated `status`/`resolution`/`resolved_at`, not editing the original.
+5. **Append** the entry via `.claude/skills/_lib/append_jsonl.py <path-to-the-shared-clone's>
+   _data/change_requests.jsonl --stdin`, piping the composed JSON in (e.g. write it to a scratch
+   file first and redirect that file's contents in, or heredoc it) — **never** `--json '<...>'`
+   with the JSON interpolated straight into a shell-quoted argument, since any apostrophe in the
+   description (routine in prose — "doesn't", "can't") breaks single-quoting and can silently
+   corrupt or truncate the entry; `--stdin` exists specifically to avoid this. Never rewrite or
+   delete existing lines by hand. "Resolving" an existing entry later means appending a *new* line
+   with the same `id` and updated `status`/`resolution`/`resolved_at`, not editing the original.
 6. **Say so, and stop.** State what was logged and its id. This is a proposal only — per
    `docs/framework-maintenance.md`'s standing rule, no framework change is applied without asking
    the user first, whether or not it's logged here. Do not commit/push this on its own — it rides

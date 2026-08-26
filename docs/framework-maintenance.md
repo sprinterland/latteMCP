@@ -11,7 +11,7 @@ philosophy — a bootstrap kit for starting a *different* project with the same 
 **outside this repo**, in its own GitHub repo — [`sprinterland/claude-project-framework`](https://github.com/sprinterland/claude-project-framework)
 (public) — rather than being vendored into any one project, and not nested under a literal
 `_frw/` subfolder anywhere: that repo's own root **is** the bundle. The canonical copy is that
-GitHub repo; the local clone at `/Users/sprn/claudework/newFrw/` (a sibling of this and every
+GitHub repo; the local clone at `/Users/sprn/claudework/claude-project-framework/` (a sibling of this and every
 other project directory under `~/claudework/`) is what a project on this machine actually reads
 from and bumps `VERSION` in before pushing back to GitHub. Multiple projects bootstrap from, and
 propagate framework-level changes into, this same shared repo; it is not copied into a project
@@ -37,7 +37,8 @@ copy_me/                — the entire copy boundary (see FRW-ADR-0010): everyth
   docs/                   — mirrors a project's docs/ tree, but every file is a template: process
                           and structure only, no project-specific facts. `modules/` holds one
                           `_module-template/` folder instead of real modules.
-  .claude/skills/         — project-usage skills (push-review-gate, log-change-request,
+  .claude/skills/         — project-usage skills (file-task, analyst-plan-task,
+                          developer-work-task, push-review-gate, log-change-request,
                           discovery-iteration, new-module, new-adr, new-api-operation,
                           sync-framework-updates); copied verbatim into the bootstrapped
                           project's own `.claude/skills/` — this project's own copy lives at
@@ -68,10 +69,16 @@ this project has actually pulled in, and still has something permanent to cite i
 clone/repo is ever unreachable (different machine, no network, repo moved) at review time:
 
 **Bootstrapped from / last synced at [`claude-project-framework`](https://github.com/sprinterland/claude-project-framework)
-commit `392d6e3`, version `26.08.24:21.35.195`** (2026-08-24 — Rule 16 now substitutes a plain
-`diff` against upstream for the full Framework Reviewer pass when a push is a verified,
-byte-identical `sync-framework-updates` merge, cutting one of the (typically two-to-three) full
-`/code-review high` passes a framework change costs; see FRW-ADR-0013).
+commit `1a7e51f`, version `26.08.26:08.36.235`** (2026-08-26 — pulled in the Phase 0-3 rollout of
+the Analyst/Developer/Reviewer/Tester/Auditor Task Record pipeline: `file-task`,
+`analyst-plan-task`, and `developer-work-task` skills, the `_lib/` shared scripts
+(`append_jsonl.py`, `claim_lock.py`), `docs/project/tasks/README.md` + `task_log.md` +
+`completed_tasks.md`, a new `dev-practices.md` "Task Classification (Analyst)" section, and the
+persisted round-check-in counter fix for the Framework-propagation/push-review-gate review loops).
+Previously synced at commit `392d6e3`, version `26.08.24:21.35.195` (2026-08-24 — Rule 16 now
+substitutes a plain `diff` against upstream for the full Framework Reviewer pass when a push is a
+verified, byte-identical `sync-framework-updates` merge, cutting one of the (typically
+two-to-three) full `/code-review high` passes a framework change costs; see FRW-ADR-0013).
 This line records only the current sync as a static fact, same as the rest of this file's
 principle of pointing rather than restating — the full history of every prior sync already lives
 in `docs/project/CHANGELOG.md` and `_frw/_data/update_history.jsonl`, not here.
@@ -231,20 +238,77 @@ open, provided propagation is entered only through this flow's own classify/appr
 4. Run `/code-review high` scoped to the changed `_frw` files, in the `_frw` repo itself (the
    Framework Reviewer lens — fidelity, ambiguity, enhancement opportunities — applied here since
    `_frw` carries no Rule 15/16 of its own). Fix findings or amend the still-local commit and
-   re-run — but cap it at 2 review rounds before checking back in. If a 3rd round would still be
-   needed, stop: summarize the remaining findings and ask the user how to proceed — keep fixing
-   (in which case the same 2-round cap applies again before the next check-in; never run more than
-   2 rounds without asking), accept and push with the remainder logged to
-   `_data/change_requests.jsonl` as usual (`activity: "review"`) and cross-referenced by id in this
-   run's `_frw/_data/push_reviews.jsonl` `enhancement_suggestions` field — the established pattern
-   for a deferred review finding, not just a proactively-noticed idea — or reconsider the approach.
-   If a round flags a claim/pattern as duplicated elsewhere, `grep` the repo for every occurrence
-   before the next round instead of letting review rediscover files one at a time — this is what
-   actually drives a loop past the cap. Once clean (or the user has decided how to proceed past
-   the cap), append the outcome to
+   re-run — but cap it at 2 review rounds before checking back in. Announce the round count out
+   loud at every invocation past the first ("this is round N since the last check-in") — losing
+   count under time/session pressure while absorbed in a real fix is the actual failure mode this
+   cap exists to prevent, not just an admin nicety. If a 3rd round would still be needed, stop:
+   summarize the remaining findings and offer the user four options — keep fixing (in which case
+   the same 2-round cap re-arms before the next check-in; never run more than 2 rounds without
+   asking), accept and push with the remainder logged to `_data/change_requests.jsonl` as usual
+   (`activity: "review"`) and cross-referenced by id in this run's `_frw/_data/push_reviews.jsonl`
+   `enhancement_suggestions` field — the established pattern for a deferred review finding, not
+   just a proactively-noticed idea — reconsider the approach, or search for prior art / known
+   solutions to the underlying problem before patching its next symptom (worth naming explicitly
+   when successive rounds keep finding variations on the same bug class — e.g. a concurrency-
+   primitive race — rather than unrelated issues). If a round flags a claim/pattern as duplicated
+   elsewhere, `grep` the repo for every occurrence before the next round instead of letting review
+   rediscover files one at a time — this is what actually drives a loop past the cap.
+
+   Persist the round-since-check-in count to a small scratch state file (e.g.
+   `_tmp/review_checkin_state.json`, or `_frw`'s own scratch convention — this step runs in `_frw`'s
+   own repo, never a downstream project's) rather than relying on conversation memory alone, so a
+   conversation-context clear between rounds doesn't silently reset the check-in cadence. Resolve
+   its path once, at the start of the loop, as an absolute path anchored to `_frw`'s own repo root
+   (e.g. via `git -C <path to the shared _frw clone> rev-parse --show-toplevel`, or simply the
+   already-known absolute path to that clone) — never a bare relative path, and never re-resolved
+   per round — and reuse that resolved path for the rest of the loop. Even under FRW-ADR-0012's
+   same-conversation case, where a downstream project's own push-review-gate loop may also be
+   active with a different working directory, the two flows' counters must never collide or be
+   shared. (If this step is ever run directly against `copy_me/` while it is still inside `_frw`'s
+   own checkout, before `bootstrap-project` has copied it into a project with its own separate
+   `.git` — dogfooding or testing the skill pre-bootstrap, say — this repo root and a downstream
+   project's own repo root could coincide; that is a known, accepted limitation of an unusual case,
+   not solved here.)
+
+   Before running a round's review, check the state file against this loop's own `scope` — a short
+   fixed description of the change decided once when the loop starts (e.g. "persist round-check-in
+   counter"), not the commit sha, since that changes on every amend within the loop. If the file
+   exists and its recorded `scope` matches, this loop is resuming — including possibly after a
+   conversation-context clear — so read `rounds_completed` and treat it as authoritative regardless
+   of what conversation memory does or doesn't recall. If the file does not exist, **or** exists
+   with a different (or missing) `scope` — a leftover from a different, already-ended loop, e.g. one
+   that crashed or was abandoned before reaching its own delete-on-loop-end step — treat this as the
+   loop's first round: (re)write the file with this loop's own `scope` and `rounds_completed: 0`,
+   discarding whatever was there before.
+
+   If `rounds_completed` is already 2, stop and check in instead of running another round.
+   Otherwise, the round about to run is round `rounds_completed + 1` — announce it now, *before*
+   starting that round's review-and-fix work, if that number is 2 or more (stay silent only on the
+   loop's first, baseline round). This ordering matters: the announcement exists specifically to
+   guard against losing count while absorbed in a real fix, so it has to happen going into that
+   work, not be logged after the fact once it's already done.
+
+   After the round's fixes are verified clean, increment `rounds_completed` by 1 and write it back
+   (same `scope`) — this is the write that happens as part of ordinary round progress. Separately:
+   when a check-in resolves to keep fixing, reset the file to `rounds_completed: 0` (same `scope`,
+   the cap re-arms); when the loop ends, delete the file entirely as part of step 5 below — it must
+   not outlive the loop it belongs to, or it becomes exactly the stale-leftover case the `scope`
+   check above exists to catch.
+
+   This is deliberately trivial bookkeeping (a scope tag and an integer, single writer, no
+   concurrency) — not
+   one of `_frw`'s own tracked `_data/*.jsonl` artifacts, and deliberately not built as one either
+   (an append-only, self-generating-id log is the right shape for the multi-writer, collision-prone
+   case those artifacts solve; this is a single-agent, single-loop counter with no concurrent
+   writers, so that heavier machinery would be over-built for what it's actually protecting) — but
+   it's what makes it safe to clear conversation context between rounds (right after a round's
+   fixes are verified clean, never mid-fix), not just at larger push/phase boundaries.
+
+   Once clean (or the user has decided how to proceed past the cap), append the outcome to
    `_frw/_data/push_reviews.jsonl` and push.
 5. Append a record to `_frw/_data/update_history.jsonl` summarizing the update (see "Framework
-   activity logs" above).
+   activity logs" above). If step 4 used the persisted round-check-in counter, delete its scratch
+   state file now, if not already done.
 
 ### Inbound sync: pulling framework updates into this project (pull, from this project)
 

@@ -81,6 +81,35 @@ hook). Consistent with this project's existing recommend-don't-block pattern (Tr
 Other option (not selected): No dedicated secondary review before push — rely on whatever review
 happens at PR/merge time only.
 
+## Task Classification (Analyst)
+
+Selected: _\<fill in — this section has no default; a project using the Task Record pipeline
+(`docs/project/tasks/README.md`) must decide it explicitly before filing real tasks\>_
+
+Governs the classify step of the Analyst role (`analyst-plan-task`) — whether a filed Task Record
+is **minor** or **major**, which scales `plan.md`'s ceremony and gates whether a human checkpoint
+is required after the automated review pass, before merge (see `docs/project/tasks/README.md`'s
+ceremony table). All four criteria below must hold for **minor**, else the task is **major**:
+
+1. Confined to a single module, or no module at all (pure docs/config/wording) — spanning
+   multiple modules' architecture defaults to major.
+2. A well-scoped, low-risk change (bug fix, small enhancement, wording fix) — not a new feature
+   area.
+3. Introduces no new requirement needing its own ADR, no new architectural component, and doesn't
+   change an existing requirement's meaning.
+4. Carries no security, data-integrity, business-rule, or user-facing-behavior risk of its own.
+
+Any doubt on any criterion defaults to major.
+
+**Not configurable away:** unlike the other settings in this file, the major-task human checkpoint
+this classification gates is not something a project can select out of — every major task gets a
+human sign-off after the automated review pass clears, before merge, regardless of what's
+recorded here. This section only decides which tasks *are* major; it never decides whether a
+major task's checkpoint runs.
+
+This mirrors `_frw`'s own minor/full split for framework propagation, one level down — project
+tasks, not framework changes.
+
 ## Transition Note
 
 This policy was adopted 2026-08-23, after `latteAPI` and `latteMCP` had already reached

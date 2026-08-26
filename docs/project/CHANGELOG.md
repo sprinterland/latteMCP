@@ -5,6 +5,29 @@ log — only entries that change what a reader of `docs/` would believe about th
 scale, split into `CHANGELOG-<year>.md` once this file gets unwieldy, keeping this file as the
 current year only and linking older ones from the top.
 
+## 2026-08-26
+
+- Ran `sync-framework-updates` (skill), pulling `claude-project-framework` from commit `392d6e3`
+  (version `26.08.24:21.35.195`) to commit `1a7e51f` (version `26.08.26:08.36.235`) — the Phase
+  0-3 rollout of the new Analyst/Developer/Reviewer/Tester/Auditor Task Record pipeline. Merged in:
+  three new pipeline skills (`file-task`, `analyst-plan-task`, `developer-work-task`), the
+  `.claude/skills/_lib/` shared scripts (`append_jsonl.py` — safe append-only JSONL writer plus
+  self-generated-id helper; `claim_lock.py` — atomic claim/lock helper for Task Record folders),
+  `docs/project/tasks/README.md` (the pipeline's file-layout/schema source of truth),
+  `docs/project/task_log.md` and `docs/project/completed_tasks.md` (open/closed Task Record
+  indices), a new `docs/dev-practices.md` "Task Classification (Analyst)" section (left as an
+  unfilled placeholder — this project hasn't adopted the pipeline yet, so no `Selected:` value was
+  invented), `docs/00-index.md` entries for the three new files, and — the fix that triggered this
+  sync — the persisted round-check-in counter for the Framework-propagation and `push-review-gate`
+  review-fix loops (a scratch state file survives a conversation-context clear between rounds
+  instead of silently losing count of "how many rounds since the last check-in", per updated
+  `docs/framework-maintenance.md` step 4 and `push-review-gate/SKILL.md` step 7). All sixteen
+  changed `copy_me/` files merged cleanly with no ambiguity — the changes were net-new files or
+  additive process/structure edits that didn't collide with this project's own customizations
+  (`dev-practices.md`'s existing `Selected:` values, `docs/project/`'s own history, the
+  "Bootstrapped from" line's prior value). Updated `docs/framework-maintenance.md`'s "Bootstrapped
+  from / last synced at" line to cite the new commit/version above.
+
 ## 2026-08-24
 
 - Framework change, requested directly by the user: even with the review-fix cap in place, a
